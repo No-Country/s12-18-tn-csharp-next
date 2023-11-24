@@ -15,7 +15,7 @@ Una aplicación que sirva para hacer donativos, ya sea de suministros o dinero p
 | [Juan Oscco Mori](https://github.com/jcom-dev) |
 | [María Eugenia Costa](https://github.com/eugenia1984) |
 | [Oscar Miguel Luciani](https://github.com/OLuciani) |
-| [Giovanni Gonzalez Rivera](https://github.com/GoRiDeveloper) |
+| [Govanni Gonzalez Rivera](https://github.com/GoRiDeveloper) |
 
 | <img width="30" height="30" src="https://img.icons8.com/external-itim2101-lineal-color-itim2101/30/external-server-network-technology-itim2101-lineal-color-itim2101-2.png" alt="external server network"/> Back End |
 | -------- |
@@ -32,7 +32,7 @@ Una aplicación que sirva para hacer donativos, ya sea de suministros o dinero p
 
 [Agustin](https://github.com/agustcord)
 
-[Daniel Serrano](https://github.com/Mecht21)
+
 
 ---
 
