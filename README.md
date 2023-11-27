@@ -1,87 +1,36 @@
-# Seleccionado 12 - Grupo 18 (tn) - C# y NEXTjs
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Aplicación de ayuda humanitaria
+## Getting Started
 
-Una aplicación que sirva para hacer donativos, ya sea de suministros o dinero para apoyar a gente que vivió un fenómeno natural devastador.
+First, run the development server:
 
----
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
 
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## <img width="40" height="40" src="https://img.icons8.com/emoji/40/technologyst.png" alt="technologyst"/> Integrantes
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-| <img width="30" height="30" src="https://img.icons8.com/external-flaticons-flat-flat-icons/30/external-front-end-ux-and-ui-flaticons-flat-flat-icons.png" alt="front end ux and ui"/>  Front End |
-| --------- |
-| [Juan Pablo Quintana](https://github.com/jp-quintana) |
-| [Juan Oscco Mori](https://github.com/jcom-dev) |
-| [María Eugenia Costa](https://github.com/eugenia1984) |
-| [Oscar Miguel Luciani](https://github.com/OLuciani) |
-| [Govanni Gonzalez Rivera](https://github.com/GoRiDeveloper) |
+This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-| <img width="30" height="30" src="https://img.icons8.com/external-itim2101-lineal-color-itim2101/30/external-server-network-technology-itim2101-lineal-color-itim2101-2.png" alt="external server network"/> Back End |
-| -------- |
-| [Daniel Torres](https://github.com/DnTo) |
-| [Lautaro Villarroel](https://github.com/lautaro0298) |
-| [Sebastián Perichón](https://github.com/modestsp) |
+## Learn More
 
-| <img width="30" height="30" src="https://img.icons8.com/external-smashingstocks-flat-smashing-stocks/30/external-Tester-testing-services-smashingstocks-flat-smashing-stocks.png" alt="Tester testing services"/> QA |
-| -- |
-| Maira Mora	|
+To learn more about Next.js, take a look at the following resources:
 
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-[Jareth Guerrero](https://github.com/JarethGuerrero)
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-[Agustin](https://github.com/agustcord)
+## Deploy on Vercel
 
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-
----
-
-## <img width="40" height="40" src="https://img.icons8.com/emoji/40/laptop-emoji.png" alt="laptop emoji"/> Tecnologías
-
-### <img width="30" height="30" src="https://img.icons8.com/external-flaticons-flat-flat-icons/30/external-front-end-ux-and-ui-flaticons-flat-flat-icons.png" alt="front end ux and ui"/> Front End
-
-- Framework: [<img width="30" height="30" src="https://img.icons8.com/color/30/nextjs.png" alt="nextjs"/> **NEXTjs**](https://nextjs.org/)
-
-- Estilos: [<img width="30" height="30" src="https://img.icons8.com/fluency/30/tailwind_css.png" alt="tailwind_css"/> **TailwindCSS**](https://tailwindcss.com/)
-
-- Manejo de estado global: Redux / Zustand
-
-- Peticiones: Axios / RTK
-
-- Formularios: YUP y Formik / React Hook Form
-
-### <img width="30" height="30" src="https://img.icons8.com/external-itim2101-lineal-color-itim2101/30/external-server-network-technology-itim2101-lineal-color-itim2101-2.png" alt="external server network"/> Back End
-
-- Asp.Net
-
-- MVC WebApi
-
-- SqlServer
-
-- Microsoft Identity
-
-###  <img width="30" height="30" src="https://img.icons8.com/external-smashingstocks-flat-smashing-stocks/30/external-Tester-testing-services-smashingstocks-flat-smashing-stocks.png" alt="Tester testing services"/> QA
-
-- Excell
-
-- <img width="30" height="30" src="https://img.icons8.com/color/30/jira.png" alt="jira"/> Jira
-
-
-
----
-
-## <img width="40" height="40" src="https://img.icons8.com/external-flaticons-lineal-color-flat-icons/40/external-mvp-computer-programming-flaticons-lineal-color-flat-icons.png" alt="mvp computer programming"/>  MVP
-
-- Como usuario, quiero poder crear eventos de ayuda humanitaria y customizarlos.
-
-- Como usuario anonimo, quiero poder ver que eventos de ayuda humanitaria existen.
-
-- Como usuario anonimo, quiero poder donar a eventos de ayuda humanitaria.
-
-- Como usuario, quiero poder registrarme en la plataforma y modificar mi perfil y mis eventos.
-
-- Como usuario, quiero poder denunciar un evento que me parezca fraudulento
-
-- Como usuario, quiero tener la opción de eliminar mi cuenta si ya no deseo utilizar en la plataforma.
-
----
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
