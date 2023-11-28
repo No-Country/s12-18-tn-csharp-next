@@ -1,0 +1,15 @@
+@s12_HostAddress = https://localhost:7006/api
+
+GET {{s12_HostAddress}}/Itworks/
+Accept: application/json
+
+###
+
+POST {{s12_HostAddress}}/Itworks
+Content-Type: application/json
+
+{
+  "name": "User"
+}
+
+###
