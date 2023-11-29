@@ -5,7 +5,7 @@ namespace s12.Repositories.Interfaces;
 
 public interface IAuthenticationRepository
 {
-    Task<LoginResponse> Register(RegisterRequest request);
+    Task<RegisterResponse> Register(RegisterRequest request);
 
     Task<LoginResponse> Login(LoginRequest request);
 }
