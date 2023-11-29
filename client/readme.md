@@ -7,9 +7,9 @@ Una aplicación que sirva para hacer donativos, ya sea de suministros o dinero p
 ---
 
 
-## <img width="40" height="40" src="https://img.icons8.com/emoji/40/technologyst.png" alt="technologyst"/> Integrantes
+## <img width="40" height="40" src="https://img.icons8.com/emoji/40/technologyst.png" alt="technologyst"/> Integrantes del equipo de FRont End
 
-| <img width="30" height="30" src="https://img.icons8.com/external-flaticons-flat-flat-icons/30/external-front-end-ux-and-ui-flaticons-flat-flat-icons.png" alt="front end ux and ui"/>  Front End |
+| Integrantes |
 | --------- |
 | [Juan Pablo Quintana](https://github.com/jp-quintana) |
 | [Juan Oscco Mori](https://github.com/jcom-dev) |
@@ -17,28 +17,9 @@ Una aplicación que sirva para hacer donativos, ya sea de suministros o dinero p
 | [Oscar Miguel Luciani](https://github.com/OLuciani) |
 | [Govanni Gonzalez Rivera](https://github.com/GoRiDeveloper) |
 
-| <img width="30" height="30" src="https://img.icons8.com/external-itim2101-lineal-color-itim2101/30/external-server-network-technology-itim2101-lineal-color-itim2101-2.png" alt="external server network"/> Back End |
-| -------- |
-| [Daniel Torres](https://github.com/DnTo) |
-| [Lautaro Villarroel](https://github.com/lautaro0298) |
-| [Sebastián Perichón](https://github.com/modestsp) |
-
-| <img width="30" height="30" src="https://img.icons8.com/external-smashingstocks-flat-smashing-stocks/30/external-Tester-testing-services-smashingstocks-flat-smashing-stocks.png" alt="Tester testing services"/> QA |
-| -- |
-| Maira Mora	|
-
-
-[Jareth Guerrero](https://github.com/JarethGuerrero)
-
-[Agustin](https://github.com/agustcord)
-
-
-
 ---
 
 ## <img width="40" height="40" src="https://img.icons8.com/emoji/40/laptop-emoji.png" alt="laptop emoji"/> Tecnologías
-
-### <img width="30" height="30" src="https://img.icons8.com/external-flaticons-flat-flat-icons/30/external-front-end-ux-and-ui-flaticons-flat-flat-icons.png" alt="front end ux and ui"/> Front End
 
 - Framework: [<img width="30" height="30" src="https://img.icons8.com/color/30/nextjs.png" alt="nextjs"/> **NEXTjs**](https://nextjs.org/)
 
@@ -50,38 +31,28 @@ Una aplicación que sirva para hacer donativos, ya sea de suministros o dinero p
 
 - Formularios: YUP y Formik / React Hook Form
 
-### <img width="30" height="30" src="https://img.icons8.com/external-itim2101-lineal-color-itim2101/30/external-server-network-technology-itim2101-lineal-color-itim2101-2.png" alt="external server network"/> Back End
-
-- Asp.Net
-
-- MVC WebApi
-
-- SqlServer
-
-- Microsoft Identity
-
-###  <img width="30" height="30" src="https://img.icons8.com/external-smashingstocks-flat-smashing-stocks/30/external-Tester-testing-services-smashingstocks-flat-smashing-stocks.png" alt="Tester testing services"/> QA
-
-- Excell
-
-- <img width="30" height="30" src="https://img.icons8.com/color/30/jira.png" alt="jira"/> Jira
-
-
-
 ---
 
 ## <img width="40" height="40" src="https://img.icons8.com/external-flaticons-lineal-color-flat-icons/40/external-mvp-computer-programming-flaticons-lineal-color-flat-icons.png" alt="mvp computer programming"/>  MVP
 
-- Como usuario, quiero poder crear eventos de ayuda humanitaria y customizarlos.
+## SPRINT 1:
 
-- Como usuario anonimo, quiero poder ver que eventos de ayuda humanitaria existen.
+- Component **header**
 
-- Como usuario anonimo, quiero poder donar a eventos de ayuda humanitaria.
+- Página **landing page** con los componentes : **hero section**, **events section**, **join section** y **categories section**
 
-- Como usuario, quiero poder registrarme en la plataforma y modificar mi perfil y mis eventos.
+- Componente el **footer**
 
-- Como usuario, quiero poder denunciar un evento que me parezca fraudulento
+- Página de **register**
 
-- Como usuario, quiero tener la opción de eliminar mi cuenta si ya no deseo utilizar en la plataforma.
+## SPRINT 2:
+
+- Página de **login**
+
+- Página de **detalle de evento**
+
+## SPRINT 3:
+
+## SPRINT 4:
 
 ---
