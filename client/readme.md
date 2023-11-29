@@ -7,7 +7,7 @@ Una aplicación que sirva para hacer donativos, ya sea de suministros o dinero p
 ---
 
 
-## <img width="40" height="40" src="https://img.icons8.com/emoji/40/technologyst.png" alt="technologyst"/> Integrantes del equipo de FRont End
+## <img width="40" height="40" src="https://img.icons8.com/emoji/40/technologyst.png" alt="technologyst"/> Integrantes del equipo de Front End
 
 | Integrantes |
 | --------- |
@@ -56,3 +56,15 @@ Una aplicación que sirva para hacer donativos, ya sea de suministros o dinero p
 ## SPRINT 4:
 
 ---
+
+## Pre requisitos:
+
+- Tener ya instalado **Node.js** desde la versión 16 en adelante
+
+---
+
+## ¿Cómo levantar el proyecto ?
+
+1. Ir a al archivo **client** con: `cs client`
+
+2. Una vez dentro instala las dependencias con 
