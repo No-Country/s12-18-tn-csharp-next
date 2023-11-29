@@ -1,4 +1,4 @@
-@s12_HostAddress = https://localhost:7006/api
+@s12_HostAddress = https://localhost:7006
 
 GET {{s12_HostAddress}}/Itworks/
 Accept: application/json
@@ -10,6 +10,19 @@ Content-Type: application/json
 
 {
   "name": "User"
+}
+
+###
+
+
+
+POST {{s12_HostAddress}}/auth/register
+Content-Type: application/json
+
+{
+   "name":"sad3454sdf2",
+   "email": "dada3sdff4sd54@2asdas.com",
+   "password" : "123!adasSDS"
 }
 
 ###
