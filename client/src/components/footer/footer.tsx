@@ -41,8 +41,8 @@ const Footer = () => {
           <Link href="/"><Instagram size={ 20 } /></Link>
         </div>
       </section>
-      <section className="container md:flex md:flex-col mb-8">
-        <p className="mb-4">&copy; { currentYear } Humanitarian Aid</p>
+      <section className="container md:flex md:flex-col pb-8">
+        <p className="pb-4">&copy; { currentYear } Humanitarian Aid</p>
       </section>
     </footer>
   )
