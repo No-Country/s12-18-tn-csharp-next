@@ -15,7 +15,7 @@ export default function RootLayout({
   children,
 }: PropsWithChildren) {
   return (
-    <html lang="es" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <body>
         <Providers>
           <Nav />
