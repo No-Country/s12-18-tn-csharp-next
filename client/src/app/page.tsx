@@ -1,13 +1,19 @@
 import React from "react";
 import { CardSection } from "@/components/sections/card-section-lading-page/card-section";
+import Banner from "@/components/banner";
 
 
 
 export default function page() {
   return (
-    <main className="container flex flex-col gap-3">
+    <main>
+      {/* Banner */}
+      <Banner />
+      
       {/* Cards */}
-      <CardSection/>
+      <div className="container flex flex-col gap-3">
+        <CardSection/>
+      </div>
     </main>
   );
 }
