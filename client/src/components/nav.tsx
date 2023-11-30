@@ -69,7 +69,9 @@ const Nav = () => {
           </div>
         </nav>
       </header>
-      { modalIsOpen && <NavModal closeModal={ () => setModalIsOpen(false) } /> }
+      { modalIsOpen &&
+        <NavModal closeModal={ () => setModalIsOpen(false) } />
+      }
     </>
   );
 };

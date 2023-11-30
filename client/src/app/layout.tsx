@@ -2,6 +2,7 @@ import type { PropsWithChildren } from "react";
 import type { Metadata } from 'next';
 
 import Nav from "@/components/nav";
+import Footer from "../components/footer/footer";
 
 import { Providers } from "@/providers";
 import './globals.css';
@@ -19,7 +20,8 @@ export default function RootLayout({
       <body>
         <Providers>
           <Nav />
-          {children}
+          { children }
+          <Footer />
         </Providers>
       </body>
     </html>
