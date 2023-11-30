@@ -26,16 +26,14 @@ const Footer = () => {
           </ul>
         </div>
         <div>
-          <h2 className="my-4">Ayuda Humanitaria</h2>
+          <h2 className="my-4">Humanitarian Aid</h2>
           <ul>
             <FooterLink href="/about" text="About" />
           </ul>
         </div>
       </section>
       <section className="container md:flex md:flex-col md:items-start mb-8">
-        <h2 className="my-4">
-          Follow us
-        </h2>
+        <h2 className="my-4">Follow us</h2>
         <div className="flex gap-4">
           <Link href="/"><Facebook size={ 20 } /></Link>
           <Link href="/"><Twitter size={ 20 } /></Link>
@@ -43,10 +41,8 @@ const Footer = () => {
           <Link href="/"><Instagram size={ 20 } /></Link>
         </div>
       </section>
-      <section className="container md:flex md:flex-col mb-8">
-        <p className="mb-4">
-          &copy; { currentYear } Ayuda Humanitaria
-        </p>
+      <section className="container md:flex md:flex-col pb-8">
+        <p className="pb-4">&copy; { currentYear } Humanitarian Aid</p>
       </section>
     </footer>
   )

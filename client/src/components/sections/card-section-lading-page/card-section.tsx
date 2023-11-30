@@ -28,9 +28,7 @@ export function CardSection() {
       <section>
         <article className="mb-5 mt-5 flex items-center justify-between">
           <div className="flex items-center gap-5">
-            <h2>
-              Events near
-            </h2>
+            <h2>Near events</h2>
             <div className="mb-2 mt-1 rounded-lg bg-sky-500 p-2">
               <a
                 href="#"
@@ -63,9 +61,7 @@ export function CardSection() {
       <section>
         <article className="mb-5 mt-5 flex items-center justify-between">
           <div className="flex items-center gap-5">
-            <h2>
-              Next on-line events
-            </h2>
+            <h2>Next on-line events</h2>
           </div>
           <a href="#" className="hidden sm:block">
             See all the events
