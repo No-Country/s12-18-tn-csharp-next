@@ -1,6 +1,8 @@
 import type { PropsWithChildren } from "react";
 import type { Metadata } from 'next';
 
+import Nav from "@/components/nav";
+
 import { Providers } from "@/providers";
 import './globals.css';
 
@@ -16,6 +18,7 @@ export default function RootLayout({
     <html lang="es" suppressHydrationWarning>
       <body>
         <Providers>
+          <Nav />
           {children}
         </Providers>
       </body>
