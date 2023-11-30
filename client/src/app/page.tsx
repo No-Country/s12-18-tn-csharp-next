@@ -1,6 +1,6 @@
 import React from "react";
 import { CardSection } from "@/components/sections/card-section-lading-page/card-section";
-import Banner from "@/components/sections/card-section-lading-page/banner";
+import Banner from "@/components/banner";
 
 
 
