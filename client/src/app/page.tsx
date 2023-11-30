@@ -9,9 +9,9 @@ export default function page() {
   return (
     <main>
       <Banner />
-      <div className="container flex flex-col gap-3">
+      <section className="container flex flex-col gap-3">
         <CardSection/>
-      </div>
+      </section>
     </main>
   );
 }
