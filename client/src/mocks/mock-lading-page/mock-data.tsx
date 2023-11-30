@@ -3,7 +3,7 @@ const firstCardData = [
     title: "Card 1",
     picture: "https://source.unsplash.com/random/600x300/?nature",
     content:
-      "Join us for an exciting nature hike through the beautiful landscapes. Don't miss this adventure!",
+      "Join us for an exciting nature hike through the beautiful landscapes.",
     time: "Dec 01 2023 20:00:00 PET",
     going: "10 going",
   },
@@ -11,7 +11,7 @@ const firstCardData = [
     title: "Card 2",
     picture: "https://source.unsplash.com/random/600x300/?landscape",
     content:
-      "Explore stunning landscapes and capture breathtaking views with fellow nature enthusiasts.",
+      "Explore stunning landscapes and capture breathtaking .",
     time: "Dec 02 2023 21:30:00 PET",
     going: "5 going",
   },
@@ -19,7 +19,7 @@ const firstCardData = [
     title: "Card 3",
     picture: "https://source.unsplash.com/random/600x300/?architecture",
     content:
-      "Discover the architectural wonders of the city. Join us for an informative walking tour!",
+      "Discover the architectural wonders of the city.",
     time: "Dec 03 2023 19:45:00 PET",
     going: "8 going",
   },
@@ -27,7 +27,7 @@ const firstCardData = [
     title: "Card 4",
     picture: "https://source.unsplash.com/random/600x300/?travel",
     content:
-      "Embark on a thrilling travel adventure! Share your travel stories and get inspired.",
+      "Embark on a thrilling travel adventure!.",
     time: "Dec 04 2023 22:15:00 PET",
     going: "12 going",
   },
@@ -35,7 +35,7 @@ const firstCardData = [
     title: "Card 5",
     picture: "https://source.unsplash.com/random/600x300/?food",
     content:
-      "Experience a culinary delight with a food tasting event. Bring your appetite!",
+      "Experience a culinary delight with a food tasting event!",
     time: "Dec 05 2023 18:30:00 PET",
     going: "15 going",
   },
@@ -43,7 +43,7 @@ const firstCardData = [
     title: "Card 6",
     picture: "https://source.unsplash.com/random/600x300/?technology",
     content:
-      "Stay updated on the latest in technology. Join our tech meetup for networking and discussions.",
+      "Stay updated on the latest in technology.",
     time: "Dec 06 2023 20:45:00 PET",
     going: "7 going",
   },
@@ -51,15 +51,15 @@ const firstCardData = [
     title: "Card 7",
     picture: "https://source.unsplash.com/random/600x300/?city",
     content:
-      "Explore the city's hidden gems and enjoy an evening of culture and entertainment.",
+      "Explore the city's hidden gems.",
     time: "Dec 07 2023 23:00:00 PET",
     going: "9 going",
   },
   {
     title: "Card 8",
-    picture: "https://source.unsplash.com/random/600x300/?people",
+    picture: "https://source.unsplash.com/random/600x300/?animals",
     content:
-      "Connect with like-minded individuals. Join our social gathering for a fun and lively atmosphere.",
+      "Connect with like-minded individuals.",
     time: "Dec 08 2023 17:15:00 PET",
     going: "20 going",
   },
@@ -70,7 +70,7 @@ const secondCardData = [
     title: "Card 1",
     picture: "https://source.unsplash.com/random/600x300/?nature",
     content:
-      "Join us for an exciting nature hike through the beautiful landscapes. Don't miss this adventure!",
+      "Join us for an exciting nature hike through the beautiful landscapes.",
     time: "Dec 01 2023 20:00:00 PET",
     going: "10 going",
   },
@@ -78,7 +78,7 @@ const secondCardData = [
     title: "Card 2",
     picture: "https://source.unsplash.com/random/600x300/?landscape",
     content:
-      "Explore stunning landscapes and capture breathtaking views with fellow nature enthusiasts.",
+      "Explore stunning landscapes and capture breathtaking.",
     time: "Dec 02 2023 21:30:00 PET",
     going: "5 going",
   },
@@ -86,7 +86,7 @@ const secondCardData = [
     title: "Card 3",
     picture: "https://source.unsplash.com/random/600x300/?architecture",
     content:
-      "Discover the architectural wonders of the city. Join us for an informative walking tour!",
+      "Discover the architectural wonders of the city.",
     time: "Dec 03 2023 19:45:00 PET",
     going: "8 going",
   },
@@ -94,7 +94,7 @@ const secondCardData = [
     title: "Card 4",
     picture: "https://source.unsplash.com/random/600x300/?travel",
     content:
-      "Embark on a thrilling travel adventure! Share your travel stories and get inspired.",
+      "Embark on a thrilling travel adventure!",
     time: "Dec 04 2023 22:15:00 PET",
     going: "12 going",
   },
