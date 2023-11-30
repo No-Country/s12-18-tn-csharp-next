@@ -8,6 +8,7 @@ using s12.DataService.Data;
 using s12.Entities.DbSet;
 using s12.Repositories;
 using s12.Repositories.Interfaces;
+using s12.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -107,6 +108,9 @@ builder.Services.AddCors(policyBuilder =>
             .AllowAnyHeader()
             .AllowAnyHeader())
 );
+
+builder.Services.AddSingleton<Events_Service>();
+
 
 var app = builder.Build();
 app.UseCors();

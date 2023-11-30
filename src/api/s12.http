@@ -26,3 +26,11 @@ Content-Type: application/json
 }
 
 ###
+
+GET {{s12_HostAddress}}/events
+
+###
+
+GET {{s12_HostAddress}}/events/1
+
+###
