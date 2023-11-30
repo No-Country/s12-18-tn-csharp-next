@@ -19,8 +19,8 @@ const NavModal = ({ closeModal }: Props) => {
           <X size={20} />
         </Button>
         <div className="mt-10 flex w-full flex-col gap-5">
-          <Link href="/sign-in" className="inlink-block">
-            <Button className={cn("w-full")}>Sign in</Button>
+          <Link href="/sign-up" className="inlink-block">
+            <Button className={cn("w-full")}>Sign up</Button>
           </Link>
           <Link href="/sign-up" className="inlink-block">
             <Button className={cn("w-full")}>Sign up</Button>
