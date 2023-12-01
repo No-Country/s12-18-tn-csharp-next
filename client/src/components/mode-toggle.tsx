@@ -1,8 +1,10 @@
 "use client";
 
-import { Moon, Sun } from "lucide-react";
-import { useTheme } from "next-themes";
 import React from "react";
+
+import { useTheme } from "next-themes";
+
+import { Moon, Sun } from "lucide-react";
 
 import {
     DropdownMenu,
@@ -14,11 +16,9 @@ import {
 
 /**
  * Componente del boton del tema de la aplicacion.
- * 
  * @returns { React.JSX.Element } Boton para cambiar el tema de la app.
  */
 export const ModeToggle: React.FC = (): React.JSX.Element => {
-    // Función para actualizar el tema en la app.
     const { setTheme } = useTheme();
 
     return (
@@ -35,13 +35,13 @@ export const ModeToggle: React.FC = (): React.JSX.Element => {
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => setTheme('light')}>
+                <DropdownMenuItem onClick={ () => setTheme('light') }>
                     Light
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme('dark')}>
+                <DropdownMenuItem onClick={ () => setTheme('dark') }>
                     Dark
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme('system')}>
+                <DropdownMenuItem onClick={ () => setTheme('system') }>
                     System
                 </DropdownMenuItem>
             </DropdownMenuContent>

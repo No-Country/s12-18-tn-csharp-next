@@ -28,9 +28,7 @@ export function CardSection() {
       <section>
         <article className="mb-5 mt-5 flex items-center justify-between">
           <div className="flex items-center gap-5">
-            <h2>
-              Events near
-            </h2>
+            <h2>Near events</h2>
             <div className="mb-2 mt-1 rounded-lg bg-sky-500 p-2">
               <a
                 href="#"
@@ -47,7 +45,7 @@ export function CardSection() {
         { loading ? (
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
             { [...Array(8).keys()].map((index) => (
-              <div key={ index } className="rounded-md bg-white p-4 shadow-md">
+              <div key={ index } className="rounded-md  p-4 shadow-md">
                 <Skeleton className="h-[150px] w-full bg-gray-500" />
                 <div className="mt-4">
                   <Skeleton className="mb-2 h-[20px] w-[80%] bg-gray-500" />
@@ -63,9 +61,7 @@ export function CardSection() {
       <section>
         <article className="mb-5 mt-5 flex items-center justify-between">
           <div className="flex items-center gap-5">
-            <h2>
-              Next on-line events
-            </h2>
+            <h2>Next on-line events</h2>
           </div>
           <a href="#" className="hidden sm:block">
             See all the events

@@ -39,7 +39,7 @@ const Nav = () => {
                   height={ 28 }
                 />
                 <span className="font-bold max-md:hidden">
-                  Ayuda Humanitaria
+                  Humanitarian Aid
                 </span>
               </Link>
             </div>
