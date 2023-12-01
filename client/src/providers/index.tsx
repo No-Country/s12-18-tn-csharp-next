@@ -8,7 +8,7 @@ import { StoreProvider } from "@/providers/store.provider";
 /**
  * Componente donde se centralizan todos los proveedores de la app.
  * 
- * @param { PropsWithChildren } param0 - Propiedades por defecto con children.
+ * @param { PropsWithChildren } param0 - Props por defecto de un componente.
  * 
  * @returns { JSX.Element } Proveedores centralizados de la app.
  */
