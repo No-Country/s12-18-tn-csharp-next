@@ -1,3 +1,4 @@
+import { HTTP_METHODS } from "@/models";
 import { authApi } from "@/app/(auth)/services";
 
 /**
@@ -11,7 +12,7 @@ export const signUpApi = authApi.injectEndpoints({
         signUp: builder.mutation({
             query: (body) => ({
                 url: "",
-                method: "",
+                method: HTTP_METHODS.POST,
                 body
             }),
             transformResponse: (response) => response
