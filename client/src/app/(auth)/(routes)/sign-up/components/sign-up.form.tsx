@@ -2,6 +2,9 @@
 
 import type { FC, JSX } from "react";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
 
 import {
     Button,
@@ -15,11 +18,25 @@ import {
     FormMessage,
     RadioGroup,
     RadioGroupItem,
+    Calendar,
+    Popover,
+    PopoverContent,
+    PopoverTrigger
 } from "@/components/ui";
+import { cn } from "@/lib";
+import { signUpSchema } from "@/app/(auth)/(routes)/sign-up/schemas";
+import type { SignUpSchema } from "@/app/(auth)/(routes)/sign-up/models";
 
 export const SignUpForm: FC = (): JSX.Element => {
-    const form = useForm();
+    /**
+     * Hook del formulario de registro en la aplicación.
+     */
+    const form = useForm<SignUpSchema>({
+        resolver: zodResolver(signUpSchema)
+    });
+
     const handleSignUp = () => {};
+
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(handleSignUp)}>
@@ -87,14 +104,43 @@ export const SignUpForm: FC = (): JSX.Element => {
                     control={form.control}
                     name="dateOfBirth"
                     render={({field}) => (
-                        <FormItem>
-                            <FormLabel> Fecha de Nacimiento : </FormLabel>
-                            <FormControl>
-                                <Input
-                                    placeholder="Ingresa tu Fecha de Nacimiento :"
-                                    {...field}
-                                />
-                            </FormControl>
+                        <FormItem className="flex flex-col">
+                            <FormLabel>Date of birth</FormLabel>
+                            <Popover>
+                                <PopoverTrigger asChild>
+                                    <FormControl>
+                                        <Button
+                                            variant={"outline"}
+                                            className={cn(
+                                                "w-[240px] pl-3 text-left font-normal",
+                                                !field.value && "text-muted-foreground"
+                                            )}
+                                        >
+                                            {field.value ? (
+                                                format(field.value as any, "PPP")
+                                            ) : (
+                                                <span> Pick a date </span>
+                                            )}
+                                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                        </Button>
+                                    </FormControl>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-auto p-0" align="start">
+                                    <Calendar
+                                        mode="single"
+                                        selected={field.value as any}
+                                        onSelect={field.onChange}
+                                        disabled={(date) =>
+                                            date > new Date() || date < new Date("1900-01-01")
+                                        }
+                                        initialFocus
+                                    />
+                                </PopoverContent>
+                            </Popover>
+                            <FormDescription>
+                                Your date of birth is used to calculate your age.
+                            </FormDescription>
+                            <FormMessage />
                         </FormItem>
                     )}
                 />
