@@ -18,15 +18,22 @@ public class AuthController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterRequest request)
     {
-        var jwt = await _authRepository.Register(request);
-        return Ok(jwt);
+        var result = await _authRepository.Register(request);
+
+        if (!result.isSuccesfully)
+            return BadRequest(result.message);
+
+        return Ok(result.jwt);
     }
 
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
-        var jwt = await _authRepository.Login(request);
+        var result = await _authRepository.Login(request);
 
-        return Ok(jwt);
+        if (!result.isSuccesfully)
+            return Unauthorized(result.message);
+
+        return Ok(result.jwt);
     }
 }
