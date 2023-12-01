@@ -3,6 +3,7 @@
 import type { FC, PropsWithChildren, JSX } from "react";
 
 import { ThemeProvider } from "@/providers/theme.provider";
+import { StoreProvider } from "@/providers/store.provider";
 
 /**
  * Componente donde se centralizan todos los proveedores de la app.
@@ -19,7 +20,9 @@ export const Providers: FC<PropsWithChildren> = ({ children }: PropsWithChildren
             enableSystem={false}
             storageKey="help-theme"
         >
-            { children }
+            <StoreProvider>
+                { children }
+            </StoreProvider>
         </ThemeProvider>
     );
 }
