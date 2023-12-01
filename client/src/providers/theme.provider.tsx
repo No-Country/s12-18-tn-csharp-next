@@ -7,7 +7,9 @@ import type { ThemeProviderProps } from "next-themes/dist/types";
 
 /**
  * Componente del proveedor de temas de la app.
- * @param param0 
+ * 
+ * @param { ThemeProviderProps } param0 - Props del componente proveedor de temas.
+ * 
  * @returns { JSX.Element } Proveedor de los temas de la app.
  */
 export const ThemeProvider: FC<ThemeProviderProps> = ({
