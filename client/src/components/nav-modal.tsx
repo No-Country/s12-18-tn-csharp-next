@@ -6,6 +6,7 @@ import Link from "next/link";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui";
+import { ModeToggle } from "./mode-toggle";
 
 interface Props {
   closeModal: () => void;
@@ -13,8 +14,8 @@ interface Props {
 
 const NavModal = ({ closeModal }: Props) => {
   return (
-    <div className="fixed inset-0 z-10 min-h-screen bg-black px-6 py-6">
-      <div className="flex w-full flex-col">
+    <div className="fixed inset-0 z-10 min-h-screen bg-white px-6 py-6 dark:bg-black">
+      <div className="flex h-full w-full flex-col">
         <Button className={cn("self-end")} onClick={closeModal}>
           <X size={20} />
         </Button>
@@ -25,6 +26,9 @@ const NavModal = ({ closeModal }: Props) => {
           <Link href="/sign-up" className="inlink-block">
             <Button className={cn("w-full")}>Sign up</Button>
           </Link>
+        </div>
+        <div className="mt-auto self-end">
+          <ModeToggle />
         </div>
       </div>
     </div>

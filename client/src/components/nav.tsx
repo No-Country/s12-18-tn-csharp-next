@@ -8,6 +8,7 @@ import { useMediaQuery } from "react-responsive";
 import { Search, Menu } from "lucide-react";
 import { Button, Input } from "./ui";
 import NavModal from "./nav-modal";
+import { ModeToggle } from "./mode-toggle";
 
 const Nav = () => {
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
@@ -24,7 +25,7 @@ const Nav = () => {
 
   return (
     <>
-      <header>
+      <header className="bg-white dark:bg-black">
         <nav className="flex justify-between gap-10 px-6 py-3">
           <div className="flex flex-1 items-center gap-10">
             <div>
@@ -50,16 +51,19 @@ const Nav = () => {
               </Button>
             </div>
           </div>
-          <ul className="flex items-center gap-10 max-md:hidden">
-            <li>
-              <Link href="/sign-in">Log in</Link>
-            </li>
-            <li>
-              <Link href="/sign-up">
-                <Button>Sign up</Button>
-              </Link>
-            </li>
-          </ul>
+          <div className="flex items-center gap-10 max-md:hidden">
+            <ul className="flex items-center gap-10">
+              <li>
+                <Link href="/sign-in">Log in</Link>
+              </li>
+              <li>
+                <Link href="/sign-up">
+                  <Button>Sign up</Button>
+                </Link>
+              </li>
+              <ModeToggle />
+            </ul>
+          </div>
           <div className="flex items-center md:hidden">
             <Menu
               size={24}
