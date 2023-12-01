@@ -33,10 +33,10 @@ const Nav = () => {
                 className="flex items-center gap-2 whitespace-nowrap"
               >
                 <Image
-                  src="assets/logo.svg"
+                  src="/assets/logo.svg"
                   alt="logo"
-                  width={ 28 }
-                  height={ 28 }
+                  width={28}
+                  height={28}
                 />
                 <span className="font-bold max-md:hidden">
                   Humanitarian Aid
@@ -46,7 +46,7 @@ const Nav = () => {
             <div className="flex w-full items-center space-x-2 md:max-w-sm">
               <Input type="text" placeholder="Search" />
               <Button type="submit">
-                <Search size={ 20 } />
+                <Search size={20} />
               </Button>
             </div>
           </div>
@@ -62,16 +62,14 @@ const Nav = () => {
           </ul>
           <div className="flex items-center md:hidden">
             <Menu
-              size={ 24 }
+              size={24}
               className="cursor-pointer"
-              onClick={ () => setModalIsOpen(true) }
+              onClick={() => setModalIsOpen(true)}
             />
           </div>
         </nav>
       </header>
-      { modalIsOpen &&
-        <NavModal closeModal={ () => setModalIsOpen(false) } />
-      }
+      {modalIsOpen && <NavModal closeModal={() => setModalIsOpen(false)} />}
     </>
   );
 };

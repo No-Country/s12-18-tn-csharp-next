@@ -13,17 +13,17 @@ interface Props {
 
 const NavModal = ({ closeModal }: Props) => {
   return (
-    <div className="fixed inset-0 z-10 min-h-screen bg-background px-6 py-6">
+    <div className="fixed inset-0 z-10 min-h-screen bg-black px-6 py-6">
       <div className="flex w-full flex-col">
-        <Button className={ cn("self-end") } onClick={ closeModal }>
-          <X size={ 20 } />
+        <Button className={cn("self-end")} onClick={closeModal}>
+          <X size={20} />
         </Button>
         <div className="mt-10 flex w-full flex-col gap-5">
           <Link href="/log-in" className="inlink-block">
-            <Button className={ cn("w-full") }>Log in</Button>
+            <Button className={cn("w-full")}>Log in</Button>
           </Link>
           <Link href="/sign-up" className="inlink-block">
-            <Button className={ cn("w-full") }>Sign up</Button>
+            <Button className={cn("w-full")}>Sign up</Button>
           </Link>
         </div>
       </div>
