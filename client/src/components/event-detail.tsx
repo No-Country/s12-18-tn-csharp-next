@@ -4,53 +4,65 @@ import Image from "next/image";
 import Container from "./shared/container";
 import { Button } from "./ui";
 
-import { Heart } from "lucide-react";
+import { Heart, MapPin } from "lucide-react";
+import EventProgress from "./event-progress";
 
 interface Props {
   title: string;
-  creator: { name: string; image: string };
-  banner: string;
+  creator: string;
   content: string;
-  tags: string[];
-  topDonators: { name: string; image: string }[];
-  images: string[];
+  geo: {
+    country: string;
+    provice: string;
+    city: string;
+    lat: number;
+    long: number;
+  };
+  collected: number;
+  goal: number;
+  media: { type: string; url: string }[];
+  // banner: string;
+  // tags: string[];
+  // topDonators: { name: string; image: string }[];
+  // images: string[];
+  // creator: { name: string; image: string };
 }
 
-const PostDetail = ({
+const EventDetail = ({
   title,
   creator,
-  banner,
   content,
-  tags,
-  topDonators,
-  images,
+  geo,
+  collected,
+  goal,
+  media,
 }: Props) => {
   return (
     <>
-      <div className="border-b border-t border-[#e6e8e9] bg-[#000000]">
+      <div className="border-b border-t border-[#e6e8e9] dark:border-none dark:bg-[#000000]">
         <Container className="py-6">
           <h1>{title}</h1>
           <div className="mt-5 flex items-center gap-3">
-            <div className="relative h-12 w-12 overflow-hidden rounded-full">
-              <Image
+            <div className="relative h-12 w-12 overflow-hidden rounded-full bg-red-600">
+              {/* <Image
                 src={creator.image}
                 alt="creator image"
                 fill
                 className="object-cover"
-              />
+              /> */}
             </div>
             <div>
               <p>Created by</p>
-              <p className="font-bold">{creator.name}</p>
+              <p className="font-bold">{creator}</p>
             </div>
           </div>
         </Container>
       </div>
-      <div className="relative">
-        <Container className="grid grid-cols-3 gap-4 py-8">
+      <div className="relative min-h-screen">
+        <Container className="grid grid-cols-3 gap-16 py-8">
           <div className="col-span-2">
             <Image
-              src={banner}
+              src={media[0].url}
               alt="creator image"
               height={480}
               width={851}
@@ -58,6 +70,7 @@ const PostDetail = ({
             />
             <h2 className="mt-6 font-bold">Details</h2>
             <p className="mt-4">
+              {/* {content} */}
               Lorem ipsum dolor sit amet consectetur adipisicing elit. A earum
               asperiores rem, eaque delectus deleniti ducimus voluptate
               provident labore deserunt laboriosam quasi explicabo ratione non
@@ -97,17 +110,30 @@ const PostDetail = ({
               dolorum?
             </p>
           </div>
-          <div></div>
+          <div>
+            <div>
+              <h2 className="mb-3">
+                Event Goal: <span className="font-bold">${goal}</span>
+              </h2>
+              <EventProgress collected={collected} goal={goal} />
+            </div>
+            <div className="mt-10 flex w-full flex-col gap-6 rounded-sm bg-black px-3 py-3 dark:bg-white">
+              <div className="flex items-center gap-3 text-white dark:text-slate-800">
+                <MapPin size={20} />
+                <p>{`${geo.country}, ${geo.provice}, ${geo.city}`}</p>
+              </div>
+            </div>
+          </div>
         </Container>
       </div>
-      <div className="sticky bottom-0 z-10 bg-[#000000]">
+      <div className="sticky bottom-0 z-10 border-t border-[#e6e8e9] bg-white dark:border-none dark:bg-[#000000]">
         <Container className="flex items-center justify-between py-6">
           <p>
-            Collaborate with <span className="font-bold">{creator.name}</span>{" "}
-            and contribute to this cause?
+            Collaborate with <span className="font-bold">{creator}</span> and
+            contribute to this cause?
           </p>
           <div className="flex items-center gap-6">
-            <Heart />
+            <Heart className="cursor-pointer" />
             <Button>Share</Button>
             <Button>Donate</Button>
           </div>
@@ -117,4 +143,4 @@ const PostDetail = ({
   );
 };
 
-export default PostDetail;
+export default EventDetail;

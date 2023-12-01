@@ -208,3 +208,56 @@ export const POSTS = [
     ],
   },
 ];
+
+export const DUMMY_POSTS = [
+  {
+    event_Id: 1,
+    created_Date: "2023-11-30",
+    created_By_User: "Organizacion Caritativa 1",
+    is_Validated: true,
+    title: "Fondo de Ayuda por Terremoto en Nepal",
+    description:
+      "Ayuda a las víctimas del reciente terremoto en Nepal contribuyendo a nuestro fondo de ayuda.",
+    collect_Goal: 100000,
+    collected: 0,
+    media: [
+      {
+        type: "Image",
+        url: "https://source.unsplash.com/random/600x300/?humanitarian",
+      },
+      {
+        type: "Video",
+        url: "https://example.com/nepal_terremoto_video.mp4",
+      },
+    ],
+    geo: {
+      country: "Nepal",
+      provice: "Bagmati",
+      city: "Kathmandu",
+      lat: 27.7172,
+      long: 85.324,
+    },
+    has_Complaints: true,
+    complaints: [
+      {
+        complaint_Id: 1,
+        complaint_Date: "2023-11-30",
+        reporter_Id: 1001,
+        reporter_Name: "UsuarioReportero",
+        title: "Problema con la Recaudación de Fondos",
+        description:
+          "Me gustaría informar sobre un problema relacionado con la recaudación de fondos para el evento de ayuda por terremoto en Nepal.",
+        media: [
+          {
+            type: "Image",
+            url: "https://example.com/complaint_image.jpg",
+          },
+          {
+            type: "Document",
+            url: "https://example.com/complaint_document.pdf",
+          },
+        ],
+      },
+    ],
+  },
+];
