@@ -8,6 +8,7 @@ import { useMediaQuery } from "react-responsive";
 import { Search, Menu } from "lucide-react";
 import { Button, Input } from "./ui";
 import NavModal from "./nav-modal";
+import { ModeToggle } from "./mode-toggle";
 
 const Nav = () => {
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
@@ -24,7 +25,7 @@ const Nav = () => {
 
   return (
     <>
-      <header>
+      <header className="bg-white dark:bg-black">
         <nav className="flex justify-between gap-10 px-6 py-3">
           <div className="flex flex-1 items-center gap-10">
             <div>
@@ -33,10 +34,10 @@ const Nav = () => {
                 className="flex items-center gap-2 whitespace-nowrap"
               >
                 <Image
-                  src="assets/logo.svg"
+                  src="/assets/logo.svg"
                   alt="logo"
-                  width={ 28 }
-                  height={ 28 }
+                  width={28}
+                  height={28}
                 />
                 <span className="font-bold max-md:hidden">
                   Humanitarian Aid
@@ -46,32 +47,33 @@ const Nav = () => {
             <div className="flex w-full items-center space-x-2 md:max-w-sm">
               <Input type="text" placeholder="Search" />
               <Button type="submit">
-                <Search size={ 20 } />
+                <Search size={20} />
               </Button>
             </div>
           </div>
-          <ul className="flex items-center gap-10 max-md:hidden">
-            <li>
-              <Link href="/sign-in">Log in</Link>
-            </li>
-            <li>
-              <Link href="/sign-up">
-                <Button>Sign up</Button>
-              </Link>
-            </li>
-          </ul>
+          <div className="flex items-center gap-10 max-md:hidden">
+            <ul className="flex items-center gap-10">
+              <li>
+                <Link href="/sign-in">Log in</Link>
+              </li>
+              <li>
+                <Link href="/sign-up">
+                  <Button>Sign up</Button>
+                </Link>
+              </li>
+              <ModeToggle />
+            </ul>
+          </div>
           <div className="flex items-center md:hidden">
             <Menu
-              size={ 24 }
+              size={24}
               className="cursor-pointer"
-              onClick={ () => setModalIsOpen(true) }
+              onClick={() => setModalIsOpen(true)}
             />
           </div>
         </nav>
       </header>
-      { modalIsOpen &&
-        <NavModal closeModal={ () => setModalIsOpen(false) } />
-      }
+      {modalIsOpen && <NavModal closeModal={() => setModalIsOpen(false)} />}
     </>
   );
 };
