@@ -71,7 +71,7 @@ export function CardPropsLanging({ cardData }: CardPropsLandingProps) {
 
             <section>
               <CardHeader className="p-2">
-                <CardTitle className="text-lg font-bold">
+                <CardTitle className="text-lg font-bold hover:underline">
                   {card.title}
                 </CardTitle>
                 <CardDescription>
