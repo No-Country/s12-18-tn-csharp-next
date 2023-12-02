@@ -39,7 +39,8 @@ export const SignUpForm: FC = (): JSX.Element => {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(handleSignUp)}>
+            <form onSubmit={form.handleSubmit(handleSignUp)} className="flex flex-col gap-y-5">
+                <h1 className="text-4xl text-center"> Registrate </h1>
                 <FormField
                     control={form.control}
                     name="name"
@@ -48,7 +49,7 @@ export const SignUpForm: FC = (): JSX.Element => {
                             <FormLabel> Nombre : </FormLabel>
                             <FormControl>
                                 <Input
-                                    placeholder="Ingresa tu Nombre :"
+                                    placeholder="Ingresa tu Nombre"
                                     {...field}
                                 />
                             </FormControl>
@@ -63,7 +64,7 @@ export const SignUpForm: FC = (): JSX.Element => {
                             <FormLabel> E-Mail : </FormLabel>
                             <FormControl>
                                 <Input
-                                    placeholder="Ingresa tu E-mail :"
+                                    placeholder="Ingresa tu E-mail"
                                     {...field}
                                 />
                             </FormControl>
@@ -78,7 +79,7 @@ export const SignUpForm: FC = (): JSX.Element => {
                             <FormLabel> Contraseña : </FormLabel>
                             <FormControl>
                                 <Input
-                                    placeholder="Ingresa tu Contraseña :"
+                                    placeholder="Ingresa tu Contraseña"
                                     {...field}
                                 />
                             </FormControl>
@@ -93,7 +94,7 @@ export const SignUpForm: FC = (): JSX.Element => {
                             <FormLabel> DNI : </FormLabel>
                             <FormControl>
                                 <Input
-                                    placeholder="Ingresa tu DNI :"
+                                    placeholder="Ingresa tu DNI"
                                     {...field}
                                 />
                             </FormControl>
@@ -105,21 +106,21 @@ export const SignUpForm: FC = (): JSX.Element => {
                     name="dateOfBirth"
                     render={({field}) => (
                         <FormItem className="flex flex-col">
-                            <FormLabel>Date of birth</FormLabel>
+                            <FormLabel> Fecha de Nacimiento : </FormLabel>
                             <Popover>
                                 <PopoverTrigger asChild>
                                     <FormControl>
                                         <Button
                                             variant={"outline"}
                                             className={cn(
-                                                "w-[240px] pl-3 text-left font-normal",
+                                                "w-full pl-3 text-left font-normal",
                                                 !field.value && "text-muted-foreground"
                                             )}
                                         >
                                             {field.value ? (
                                                 format(field.value as any, "PPP")
                                             ) : (
-                                                <span> Pick a date </span>
+                                                <span> Selecciona una Fecha </span>
                                             )}
                                             <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                                         </Button>
@@ -137,9 +138,6 @@ export const SignUpForm: FC = (): JSX.Element => {
                                     />
                                 </PopoverContent>
                             </Popover>
-                            <FormDescription>
-                                Your date of birth is used to calculate your age.
-                            </FormDescription>
                             <FormMessage />
                         </FormItem>
                     )}
@@ -184,7 +182,7 @@ export const SignUpForm: FC = (): JSX.Element => {
                         </FormItem>
                     )}
                 />
-                <Button type="submit"> Registrarse </Button>
+                <Button className="mt-5 bg-black text-white hover:border hover:border-black dark:hover:border-white dark:bg-white dark:text-black hover:bg-white hover:text-black dark:hover:bg-black dark:hover:text-white" type="submit"> Registrate </Button>
             </form>
         </Form>
     );

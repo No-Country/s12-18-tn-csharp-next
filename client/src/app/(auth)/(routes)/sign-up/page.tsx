@@ -4,9 +4,7 @@ import { SignUpForm } from "@/app/(auth)/(routes)/sign-up/components"
 
 const SignUpPage: FC = (): JSX.Element => {
     return (
-        <section>
-            <SignUpForm />
-        </section>
+        <SignUpForm />
     );
 }
 
