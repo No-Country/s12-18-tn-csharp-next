@@ -30,14 +30,18 @@ public class AuthenticationRepository : IAuthenticationRepository
                 Email = request.Email,
                 Name = request.Name,
                 UserName = request.Email,
+                Dni = request.Dni,
+                Date_Of_Birth = request.DateOfBirth,
+                Gender = request.Gender,
+                Bank_Details = request?.Bank_Details
             };
 
             var result = await _userManager.CreateAsync(user, request.Password);
 
-            if(result.Succeeded)
+            if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync(user, Role.User);
-                var jwt = GetToken(user, new[] { new Claim("Role", Role.User) } );
+                var jwt = GetToken(user, new[] { new Claim("Role", Role.User) });
                 return new RegisterResponse(jwt, "Success", true);
             }
             else
@@ -48,7 +52,7 @@ public class AuthenticationRepository : IAuthenticationRepository
         }
         catch (Exception e)
         {
-            return new RegisterResponse("", e.Message, false); 
+            return new RegisterResponse("", e.Message, false);
         }
     }
     public async Task<LoginResponse> Login(LoginRequest request)
@@ -59,7 +63,7 @@ public class AuthenticationRepository : IAuthenticationRepository
 
         if (user is null || !await _userManager.CheckPasswordAsync(user, request.Password))
         {
-            return new LoginResponse("Invalid Credentials");
+            return new LoginResponse(null, "Invalid Credentials", false);
         }
 
         var authClaims = new List<Claim>
@@ -75,7 +79,7 @@ public class AuthenticationRepository : IAuthenticationRepository
 
         var token = GetToken(authClaims);
 
-        return new LoginResponse(new JwtSecurityTokenHandler().WriteToken(token));
+        return new LoginResponse(new JwtSecurityTokenHandler().WriteToken(token), "Login Successful", true);
     }
 
 

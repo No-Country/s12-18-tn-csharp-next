@@ -9,4 +9,15 @@ public class MyDbContext : IdentityDbContext<User>
     public MyDbContext(DbContextOptions<MyDbContext> options) : base(options)
     {
     }
+
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+        builder
+            .Entity<User>()
+            .OwnsOne(u => u.Bank_Details, builder =>
+            {
+                builder.ToJson();
+            });
+    }
 }
