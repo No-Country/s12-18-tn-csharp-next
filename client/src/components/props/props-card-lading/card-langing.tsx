@@ -61,12 +61,12 @@ export function CardPropsLanging({ cardData }: CardPropsLandingProps) {
         <Link href={`event/${card.event_Id}`}>
           <Card
             key={card.event_Id}
-            className="flex flex-row-reverse justify-between dark:border-none  md:flex-col md:justify-start"
+            className="flex flex-row-reverse justify-between dark:border-none  md:flex-col md:justify-start md:h-96"
           >
             <img
               src={card.media[0].url}
               alt="image"
-              className="mx-4 mt-5 h-20 w-20 rounded-md md:mx-0 md:mt-0 md:h-48 md:w-full"
+              className="mx-4 mt-5 h-20 w-20 rounded-md md:mx-0 md:mt-0 md:h-40 md:w-full"
             />
 
             <section>
@@ -81,7 +81,7 @@ export function CardPropsLanging({ cardData }: CardPropsLandingProps) {
 
               <CardContent className="flex flex-col p-2">
                 <span className="flex items-center gap-1">
-                  <Calendar className="h-5 w-5 text-gray-500" />{" "}
+                  <Calendar className="h-5 w-5 text-gray-500" />
                   {card.created_Date}
                 </span>
                 <section className="flex items-center gap-3">

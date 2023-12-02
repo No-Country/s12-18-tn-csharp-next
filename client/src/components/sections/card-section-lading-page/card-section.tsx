@@ -68,7 +68,7 @@ export function CardSection() {
         {loading ? (
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
             {[...Array(4).keys()].map((index) => (
-              <div key={index} className="rounded-md p-4 shadow-md">
+              <div key={index} className="rounded-md p-4 shadow-md mb-4">
                 <Skeleton className="h-[150px] w-full bg-gray-500" />
                 <div className="mt-4">
                   <Skeleton className="mb-2 h-[20px] w-[80%] bg-gray-500" />
