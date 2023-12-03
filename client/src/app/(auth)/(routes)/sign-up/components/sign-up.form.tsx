@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 
+import { signUpDefaultValues, validDate, type SignUpSchema } from "@/app/(auth)/(routes)/sign-up/models";
 import {
     Button,
     Input,
@@ -25,17 +26,18 @@ import {
 } from "@/components/ui";
 import { cn } from "@/lib";
 import { signUpSchema } from "@/app/(auth)/(routes)/sign-up/schemas";
-import type { SignUpSchema } from "@/app/(auth)/(routes)/sign-up/models";
+import { useSignUp } from "@/app/(auth)/(routes)/sign-up/hooks";
 
 export const SignUpForm: FC = (): JSX.Element => {
     /**
      * Hook del formulario de registro en la aplicación.
      */
     const form = useForm<SignUpSchema>({
-        resolver: zodResolver(signUpSchema)
+        resolver: zodResolver(signUpSchema),
+        defaultValues: signUpDefaultValues
     });
 
-    const handleSignUp = () => {};
+    const { handleSignUp } = useSignUp();
 
     return (
         <Form {...form}>
@@ -53,6 +55,7 @@ export const SignUpForm: FC = (): JSX.Element => {
                                     {...field}
                                 />
                             </FormControl>
+                            <FormMessage />
                         </FormItem>
                     )}
                 />
@@ -68,6 +71,7 @@ export const SignUpForm: FC = (): JSX.Element => {
                                     {...field}
                                 />
                             </FormControl>
+                            <FormMessage />
                         </FormItem>
                     )}
                 />
@@ -83,6 +87,7 @@ export const SignUpForm: FC = (): JSX.Element => {
                                     {...field}
                                 />
                             </FormControl>
+                            <FormMessage />
                         </FormItem>
                     )}
                 />
@@ -98,6 +103,7 @@ export const SignUpForm: FC = (): JSX.Element => {
                                     {...field}
                                 />
                             </FormControl>
+                            <FormMessage />
                         </FormItem>
                     )}
                 />
@@ -118,7 +124,7 @@ export const SignUpForm: FC = (): JSX.Element => {
                                             )}
                                         >
                                             {field.value ? (
-                                                format(field.value as any, "PPP")
+                                                format(field.value, "PPP")
                                             ) : (
                                                 <span> Selecciona una Fecha </span>
                                             )}
@@ -129,10 +135,11 @@ export const SignUpForm: FC = (): JSX.Element => {
                                 <PopoverContent className="w-auto p-0" align="start">
                                     <Calendar
                                         mode="single"
-                                        selected={field.value as any}
+                                        selected={field.value}
                                         onSelect={field.onChange}
+                                        defaultMonth={validDate}
                                         disabled={(date) =>
-                                            date > new Date() || date < new Date("1900-01-01")
+                                            date > new Date() || date < new Date("1900-01-01") || date > validDate
                                         }
                                         initialFocus
                                     />
