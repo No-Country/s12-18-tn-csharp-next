@@ -42,7 +42,7 @@ namespace s12.Controllers
 
         //[Authorize]
         [HttpPost("{event_id}/complaints")]
-        public ActionResult<IEnumerable<Complaint>> Post_Event_Complaints(int event_id, Complaint_Post new_Complaint)
+        public ActionResult<IEnumerable<Complaint>> Post_Event_Complaints(int event_id, [FromForm]Complaint_Post new_Complaint)
         {
 
             //TODO All This to service
