@@ -3,9 +3,8 @@
 import React from "react";
 import { CardPropsLanging } from "@/components/props/props-card-lading/card-langing";
 import {
-  firstCardData,
-  secondCardData,
-} from "@/mocks/mock-lading-page/mock-data";
+  backendDataEvents, secondBackendDataEvents
+} from "@/mocks/mock-lading-page/mock-data-cards";
 
 import { Skeleton } from "../../ui/skeleton";
 
@@ -13,7 +12,6 @@ export function CardSection() {
   const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
-    // Simular una carga asíncrona (por ejemplo, una llamada a una API)
     const fetchData = async () => {
       setTimeout(() => {
         setLoading(false);
@@ -42,21 +40,21 @@ export function CardSection() {
             See all the events
           </a>
         </article>
-        { loading ? (
+        {loading ? (
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-            { [...Array(8).keys()].map((index) => (
-              <div key={ index } className="rounded-md  p-4 shadow-md">
+            {[...Array(8).keys()].map((index) => (
+              <div key={index} className="rounded-md  p-4 shadow-md">
                 <Skeleton className="h-[150px] w-full bg-gray-500" />
                 <div className="mt-4">
                   <Skeleton className="mb-2 h-[20px] w-[80%] bg-gray-500" />
                   <Skeleton className="w-100% h-[60px] bg-gray-500" />
                 </div>
               </div>
-            )) }
+            ))}
           </div>
         ) : (
-          <CardPropsLanging cardData={ firstCardData } />
-        ) }
+          <CardPropsLanging cardData={backendDataEvents} />
+        )}
       </section>
       <section>
         <article className="mb-5 mt-5 flex items-center justify-between">
@@ -67,21 +65,22 @@ export function CardSection() {
             See all the events
           </a>
         </article>
-        { loading ? (
+        {loading ? (
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-            { [...Array(4).keys()].map((index) => (
-              <div key={ index } className="rounded-md bg-white p-4 shadow-md">
+            {[...Array(4).keys()].map((index) => (
+              <div key={index} className="rounded-md p-4 shadow-md mb-4">
                 <Skeleton className="h-[150px] w-full bg-gray-500" />
                 <div className="mt-4">
                   <Skeleton className="mb-2 h-[20px] w-[80%] bg-gray-500" />
                   <Skeleton className="w-100% h-[60px] bg-gray-500" />
                 </div>
               </div>
-            )) }
+            ))}
           </div>
         ) : (
-          <CardPropsLanging cardData={ secondCardData } />
-        ) }
+          <CardPropsLanging cardData={ secondBackendDataEvents } />
+          
+        )}
       </section>
     </React.Fragment>
   );

@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 
 const Banner = () => {
     return (
-        <div className="w-screen px-4 pb-5 md:flex md:py-6 ">
+        <div className="px-4 pb-5 md:flex md:py-6 ">
             <div className="md:flex md:w-1/2 md:justify-end">
                 <div className="md:w-[85%] lg:w-[70%]">
                     <h2 className="py-5 text-left text-3xl font-bold md:text-[30px] lg:text-[42px]">
