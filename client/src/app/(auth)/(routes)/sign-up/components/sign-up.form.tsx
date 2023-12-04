@@ -27,6 +27,7 @@ import {
 import { cn } from "@/lib";
 import { signUpSchema } from "@/app/(auth)/(routes)/sign-up/schemas";
 import { useSignUp } from "@/app/(auth)/(routes)/sign-up/hooks";
+//import { GenericFormField } from "@/app/(auth)/components";
 
 export const SignUpForm: FC = (): JSX.Element => {
     /**
@@ -151,7 +152,7 @@ export const SignUpForm: FC = (): JSX.Element => {
                 />
                 <FormField
                     control={form.control}
-                    name="gendre"
+                    name="gender"
                     render={({ field }) => (
                         <FormItem className="space-y-3">
                             <FormLabel> Género : </FormLabel>

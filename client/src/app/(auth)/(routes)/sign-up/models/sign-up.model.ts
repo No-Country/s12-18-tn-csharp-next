@@ -1,7 +1,7 @@
 import z from "zod";
 
 import { signUpSchema } from "@/app/(auth)/(routes)/sign-up/schemas";
-import { Gendre } from "@/app/(auth)/models";
+import { Gender } from "@/app/(auth)/models";
 import { validDate } from "./date.model";
 
 /**
@@ -17,6 +17,6 @@ export const signUpDefaultValues = {
     email: "",
     password: "",
     dni: "",
-    gendre: Gendre.PREFER_NOT_TO_SAY,
+    gender: Gender.PREFER_NOT_TO_SAY,
     dateOfBirth: validDate
 };

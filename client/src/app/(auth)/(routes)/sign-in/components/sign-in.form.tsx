@@ -15,6 +15,7 @@ import {
 } from "@/components/ui";
 import { signInSchema } from "@/app/(auth)/(routes)/sign-in/schemas";
 import type { SignInSchema } from "@/app/(auth)/(routes)/sign-in/models";
+import { useSignIn } from "@/app/(auth)/(routes)/sign-in/hooks";
 
 export const SignInForm: FC = (): JSX.Element => {
     /**
@@ -24,7 +25,7 @@ export const SignInForm: FC = (): JSX.Element => {
         resolver: zodResolver(signInSchema)
     });
 
-    const handleSignIn = () => {};
+    const { handleSignIn } = useSignIn();
 
     return (
         <Form {...form}>
