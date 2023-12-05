@@ -26,11 +26,5 @@ export const signUpSchema = z.object({
         invalid_type_error: AuthErrorsModel.INVALID_DNI
     }).min(8, { message: AuthErrorsModel.DNI_MIN_LENGTH }),
     dateOfBirth: z.date({ required_error: AuthErrorsModel.DOB_REQUIRED, invalid_type_error: AuthErrorsModel.INVALID_TYPE_DOB }),
-    gender: z.enum(
-        [Gender.PREFER_NOT_TO_SAY, Gender.FEMALE, Gender.MALE],
-        {
-            required_error: AuthErrorsModel.GENDRE_REQUIRED,
-            invalid_type_error: AuthErrorsModel.INVALID_GENDRE
-        }
-    )
+    gender: z.nativeEnum(Gender, { required_error: AuthErrorsModel.GENDRE_REQUIRED, invalid_type_error: AuthErrorsModel.INVALID_GENDRE })
 });

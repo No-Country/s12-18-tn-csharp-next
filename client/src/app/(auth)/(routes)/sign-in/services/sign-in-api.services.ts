@@ -18,7 +18,7 @@ export const signInApi = authApi.injectEndpoints({
                 body
             }),
             transformResponse: (response) => {
-                debugger;
+                console.log({response});
                 return response;
             }
         })

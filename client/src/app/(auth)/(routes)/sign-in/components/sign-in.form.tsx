@@ -14,7 +14,7 @@ import {
     FormLabel,
 } from "@/components/ui";
 import { signInSchema } from "@/app/(auth)/(routes)/sign-in/schemas";
-import type { SignInSchema } from "@/app/(auth)/(routes)/sign-in/models";
+import { signUpDefaultValues, type SignInSchema } from "@/app/(auth)/(routes)/sign-in/models";
 import { useSignIn } from "@/app/(auth)/(routes)/sign-in/hooks";
 
 export const SignInForm: FC = (): JSX.Element => {
@@ -22,7 +22,8 @@ export const SignInForm: FC = (): JSX.Element => {
      * Hook del formulario de autenticación en la aplicación.
      */
     const form = useForm<SignInSchema>({
-        resolver: zodResolver(signInSchema)
+        resolver: zodResolver(signInSchema),
+        defaultValues: signUpDefaultValues
     });
 
     const { handleSignIn } = useSignIn();
@@ -41,6 +42,8 @@ export const SignInForm: FC = (): JSX.Element => {
                                 <Input
                                     placeholder="Ingresa tu E-mail"
                                     {...field}
+                                    value={field.value}
+                                    onChange={field.onChange}
                                 />
                             </FormControl>
                         </FormItem>
@@ -56,6 +59,8 @@ export const SignInForm: FC = (): JSX.Element => {
                                 <Input
                                     placeholder="Ingresa tu Contraseña"
                                     {...field}
+                                    value={field.value}
+                                    onChange={field.onChange}
                                 />
                             </FormControl>
                         </FormItem>
