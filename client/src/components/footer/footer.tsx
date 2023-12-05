@@ -9,7 +9,7 @@ const Footer = () => {
   const currentYear = new Date().getFullYear()
 
   return (
-    <footer className="w-full">
+    <footer className="w-full text-white">
       <section className="container mx-auto p-8 md:grid md:grid-cols-3 gap-8">
         <div>
           <h2 className="my-4">Your Account</h2>
