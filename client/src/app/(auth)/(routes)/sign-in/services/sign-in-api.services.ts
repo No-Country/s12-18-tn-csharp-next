@@ -1,6 +1,7 @@
 import type { SignInSchema } from "@/app/(auth)/(routes)/sign-in/models";
-import { API_AUTH_ROUTES } from "@/app/(auth)/models";
+import { API_AUTH_ROUTES, type AuthUser } from "@/app/(auth)/models";
 import { authApi } from "@/app/(auth)/services";
+import { authUserAdapter } from "@/app/(auth)/adapters";
 import { HTTP_METHODS } from "@/models";
 
 /**
@@ -17,10 +18,7 @@ export const signInApi = authApi.injectEndpoints({
                 method: HTTP_METHODS.POST,
                 body
             }),
-            transformResponse: (response) => {
-                console.log({response});
-                return response;
-            }
+            transformResponse: (response): AuthUser => authUserAdapter(response)
         })
     }),
 });

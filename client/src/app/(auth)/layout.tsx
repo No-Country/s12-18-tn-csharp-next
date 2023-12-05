@@ -11,7 +11,7 @@ const AuthLayout: FC<PropsWithChildren> = ({
     children
 }: PropsWithChildren): JSX.Element => {
     return (
-        <div className="h-full flex items-center justify-center">
+        <div className="min-h-screen flex items-center justify-center">
             <section className="w-full md:w-[50%] max-w-[30rem] m-10 p-10 border dark:border-white border-black rounded-md">
                 { children }
             </section>

@@ -1,10 +1,10 @@
 import type { PropsWithChildren } from "react";
 import type { Metadata } from 'next';
 
-import Nav from "@/components/nav";
-import Footer from "../components/footer/footer";
-
 import { Providers } from "@/providers";
+import { Nav } from "@/components/nav";
+import { Footer } from "@/components/footer";
+
 import './globals.css';
 
 export const metadata: Metadata = {
