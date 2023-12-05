@@ -10,7 +10,7 @@ import { Button, Input } from "./ui";
 import NavModal from "./nav-modal";
 import { ModeToggle } from "./mode-toggle";
 
-const Nav = () => {
+export const Nav = () => {
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
 
   const isBigScreen = useMediaQuery({
@@ -77,5 +77,3 @@ const Nav = () => {
     </>
   );
 };
-
-export default Nav;

@@ -1,13 +1,18 @@
 import React from "react";
-import EventDetail from "@/components/event-detail";
-import { DUMMY_POSTS } from "@/mocks/event-detail-page";
+import { CardSectionDetails } from "@/components/sections/card-event-detail/card-section-details";
+import {
+  backendDataEvents,
+  secondBackendDataEvents,
+} from "@/mocks/mock-lading-page/mock-data-cards";
 
 interface Props {
   params: { id: string };
 }
 
 const page = async ({ params }: Props) => {
-  const event = DUMMY_POSTS.find((p) => p.event_Id.toString() === params.id);
+  const event = [...backendDataEvents, ...secondBackendDataEvents].find(
+    (p) => p.event_Id.toString() === params.id,
+  );
 
   // TODO: update
   if (!event) {
@@ -16,7 +21,7 @@ const page = async ({ params }: Props) => {
 
   return (
     <section>
-      <EventDetail
+      <CardSectionDetails
         title={event.title}
         creator={event.created_By_User}
         content={event.description}
@@ -24,6 +29,7 @@ const page = async ({ params }: Props) => {
         collected={event.collected}
         goal={event.collect_Goal}
         media={event.media}
+        created_Date={event.created_Date}
         // banner={event.banner}
         // tags={event.tags}
         // topDonators={event.topDonators}

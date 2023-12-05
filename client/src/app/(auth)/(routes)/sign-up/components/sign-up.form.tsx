@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 
+import { signUpDefaultValues, validDate, type SignUpSchema } from "@/app/(auth)/(routes)/sign-up/models";
 import {
     Button,
     Input,
@@ -25,21 +26,24 @@ import {
 } from "@/components/ui";
 import { cn } from "@/lib";
 import { signUpSchema } from "@/app/(auth)/(routes)/sign-up/schemas";
-import type { SignUpSchema } from "@/app/(auth)/(routes)/sign-up/models";
+import { useSignUp } from "@/app/(auth)/(routes)/sign-up/hooks";
+//import { GenericFormField } from "@/app/(auth)/components";
 
 export const SignUpForm: FC = (): JSX.Element => {
     /**
      * Hook del formulario de registro en la aplicación.
      */
     const form = useForm<SignUpSchema>({
-        resolver: zodResolver(signUpSchema)
+        resolver: zodResolver(signUpSchema),
+        defaultValues: signUpDefaultValues
     });
 
-    const handleSignUp = () => {};
+    const { handleSignUp } = useSignUp();
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(handleSignUp)}>
+            <form onSubmit={form.handleSubmit(handleSignUp)} className="flex flex-col gap-y-5">
+                <h1 className="text-4xl text-center"> Registrate </h1>
                 <FormField
                     control={form.control}
                     name="name"
@@ -48,10 +52,11 @@ export const SignUpForm: FC = (): JSX.Element => {
                             <FormLabel> Nombre : </FormLabel>
                             <FormControl>
                                 <Input
-                                    placeholder="Ingresa tu Nombre :"
+                                    placeholder="Ingresa tu Nombre"
                                     {...field}
                                 />
                             </FormControl>
+                            <FormMessage />
                         </FormItem>
                     )}
                 />
@@ -63,10 +68,11 @@ export const SignUpForm: FC = (): JSX.Element => {
                             <FormLabel> E-Mail : </FormLabel>
                             <FormControl>
                                 <Input
-                                    placeholder="Ingresa tu E-mail :"
+                                    placeholder="Ingresa tu E-mail"
                                     {...field}
                                 />
                             </FormControl>
+                            <FormMessage />
                         </FormItem>
                     )}
                 />
@@ -78,10 +84,11 @@ export const SignUpForm: FC = (): JSX.Element => {
                             <FormLabel> Contraseña : </FormLabel>
                             <FormControl>
                                 <Input
-                                    placeholder="Ingresa tu Contraseña :"
+                                    placeholder="Ingresa tu Contraseña"
                                     {...field}
                                 />
                             </FormControl>
+                            <FormMessage />
                         </FormItem>
                     )}
                 />
@@ -93,10 +100,11 @@ export const SignUpForm: FC = (): JSX.Element => {
                             <FormLabel> DNI : </FormLabel>
                             <FormControl>
                                 <Input
-                                    placeholder="Ingresa tu DNI :"
+                                    placeholder="Ingresa tu DNI"
                                     {...field}
                                 />
                             </FormControl>
+                            <FormMessage />
                         </FormItem>
                     )}
                 />
@@ -105,21 +113,21 @@ export const SignUpForm: FC = (): JSX.Element => {
                     name="dateOfBirth"
                     render={({field}) => (
                         <FormItem className="flex flex-col">
-                            <FormLabel>Date of birth</FormLabel>
+                            <FormLabel> Fecha de Nacimiento : </FormLabel>
                             <Popover>
                                 <PopoverTrigger asChild>
                                     <FormControl>
                                         <Button
                                             variant={"outline"}
                                             className={cn(
-                                                "w-[240px] pl-3 text-left font-normal",
+                                                "w-full pl-3 text-left font-normal",
                                                 !field.value && "text-muted-foreground"
                                             )}
                                         >
                                             {field.value ? (
-                                                format(field.value as any, "PPP")
+                                                format(field.value, "PPP")
                                             ) : (
-                                                <span> Pick a date </span>
+                                                <span> Selecciona una Fecha </span>
                                             )}
                                             <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                                         </Button>
@@ -128,25 +136,23 @@ export const SignUpForm: FC = (): JSX.Element => {
                                 <PopoverContent className="w-auto p-0" align="start">
                                     <Calendar
                                         mode="single"
-                                        selected={field.value as any}
+                                        selected={field.value}
                                         onSelect={field.onChange}
+                                        defaultMonth={validDate}
                                         disabled={(date) =>
-                                            date > new Date() || date < new Date("1900-01-01")
+                                            date > new Date() || date < new Date("1900-01-01") || date > validDate
                                         }
                                         initialFocus
                                     />
                                 </PopoverContent>
                             </Popover>
-                            <FormDescription>
-                                Your date of birth is used to calculate your age.
-                            </FormDescription>
                             <FormMessage />
                         </FormItem>
                     )}
                 />
                 <FormField
                     control={form.control}
-                    name="gendre"
+                    name="gender"
                     render={({ field }) => (
                         <FormItem className="space-y-3">
                             <FormLabel> Género : </FormLabel>
@@ -184,7 +190,7 @@ export const SignUpForm: FC = (): JSX.Element => {
                         </FormItem>
                     )}
                 />
-                <Button type="submit"> Registrarse </Button>
+                <Button className="mt-5 bg-black text-white hover:border hover:border-black dark:hover:border-white dark:bg-white dark:text-black hover:bg-white hover:text-black dark:hover:bg-black dark:hover:text-white" type="submit"> Registrate </Button>
             </form>
         </Form>
     );

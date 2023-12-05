@@ -102,5 +102,19 @@ cd client
 pnpm i
 ```
 
+4. Correrlo en local, con:
+
+```BASH
+pnpm run dev
+```
+
 ---
 
+
+4. Correrlo en local, con
+
+```BASH
+pnpm run dev
+```
+
+---

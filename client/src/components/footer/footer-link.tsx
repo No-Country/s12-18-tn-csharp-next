@@ -15,7 +15,7 @@ const FooterLink: FC<FooterLinkProps> = ({
     <li className="mb-2">
       <Link
         href={ href }
-        className="inlink-block text-gray-300  hover:text-white focus:text-white">
+        className="inlink-block dark:text-gray-300  text-gray-300 hover:text-white focus:text-white">
         { text }
       </Link>
     </li>
