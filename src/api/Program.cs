@@ -110,6 +110,7 @@ builder.Services.AddCors(policyBuilder =>
 );
 
 builder.Services.AddSingleton<Events_Service>();
+builder.Services.AddScoped<Users_Service>();
 
 
 var app = builder.Build();
