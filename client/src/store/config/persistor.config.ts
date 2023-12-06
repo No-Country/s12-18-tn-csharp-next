@@ -7,5 +7,5 @@ export const persistConfig = {
         authApi.reducerPath
     ],
     storage,
-    transforms: [AuthTransform]
+    // transforms: const [AuthTransform]
 };

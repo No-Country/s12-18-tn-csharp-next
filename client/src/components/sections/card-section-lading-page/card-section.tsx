@@ -58,7 +58,7 @@ export function CardSection() {
             ))}
           </div>
         ) : (
-          <CardPropsLanging cardData={backendDataEvents} />
+          <CardPropsLanging cardData={data} />
         )}
       </section>
       <section>
