@@ -1,8 +1,7 @@
 import type { ThunkMiddleware } from "@reduxjs/toolkit";
 import type { CurriedGetDefaultMiddleware } from "@reduxjs/toolkit/dist/getDefaultMiddleware";
 
-import { defaultMiddlewareConfig } from "@/store/config";
-import { authMiddleware } from "@/app/(auth)/middlewares";
+import { authApiMiddleware, handlerDataInLocalStorage } from "@/app/(auth)/store";
 import { eventMiddleware } from "@/app/(main)/middlewares";
 
 /**
@@ -11,4 +10,8 @@ import { eventMiddleware } from "@/app/(main)/middlewares";
 export const rootMiddlewares = (
     getDefaultMiddleware: CurriedGetDefaultMiddleware
 ): ThunkMiddleware[] =>
-    getDefaultMiddleware(defaultMiddlewareConfig as any).concat(authMiddleware, eventMiddleware);
+    getDefaultMiddleware().concat(
+        authApiMiddleware,
+        eventMiddleware,
+        handlerDataInLocalStorage,
+    );

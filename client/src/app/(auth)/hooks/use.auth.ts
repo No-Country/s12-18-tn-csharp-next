@@ -1,0 +1,74 @@
+import { useEffect } from "react";
+import type { SubmitHandler } from "react-hook-form";
+import type { SerializedError } from "@reduxjs/toolkit";
+import type {
+    BaseQueryFn,
+    FetchArgs,
+    FetchBaseQueryError,
+    FetchBaseQueryMeta,
+    MutationDefinition
+} from "@reduxjs/toolkit/query";
+import type { MutationTrigger } from "@reduxjs/toolkit/dist/query/react/buildHooks";
+
+import type { AuthUser } from "@/app/(auth)/models";
+import { useAuthActions } from "@/app/(auth)/hooks";
+import { SignUpSchema } from "@/app/(auth)/(routes)/sign-up/models";
+
+/**
+ * Modelo de las propiedades del hook de autenticación.
+ */
+interface UseAuthProps {
+    authFn: MutationTrigger<MutationDefinition<any, BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, {}, FetchBaseQueryMeta>, never, any, "authApi">>;
+    isSuccess: boolean;
+    UserLogged: AuthUser;
+    isLoading: boolean;
+    isError: boolean;
+    error: FetchBaseQueryError | SerializedError | undefined;
+}
+
+/**
+ * Hook para manejar las funcionalidades al autenticarse en la aplicación.
+ * 
+ * @param { UseAuthProps } param0 - Props del hook de autenticación.
+ * 
+ * @returns Funcionalidades de autenticación en la aplicación.
+ */
+export const useAuth = ({
+    authFn,
+    isSuccess,
+    UserLogged,
+    isLoading,
+    isError,
+    error
+}: UseAuthProps) => {
+    // Funcionalidades de los estados globales de autenticación de la aplicación.
+    const { handleSetUser } = useAuthActions();
+
+    useEffect(() => {
+        // Verificamos si la petición fue éxitosa.
+        if (isSuccess)
+            // Funcionalidad para configurar el usuario en el estado de autenticación.
+            handleSetUser(UserLogged);
+    }, [isSuccess]);
+
+    /**
+     * Función para manejar la autenticación de usuario.
+     *
+     * @param { any } values - Valores del formulario de autenticación.
+     */
+    const handleAuth: SubmitHandler<any> = async (
+        values: any
+    ) => {
+        // Funcionalidad para registrar un usuario.
+        await authFn(values);
+    };
+
+    return {
+        handleAuth,
+        status: {
+            isLoading,
+            isError,
+            error
+        }
+    };
+}

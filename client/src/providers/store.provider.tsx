@@ -1,8 +1,7 @@
 import type { FC, PropsWithChildren, JSX } from "react";
-import { PersistGate } from "redux-persist/integration/react";
 import { Provider } from "react-redux";
 
-import { store, persistor } from "@/store";
+import { store } from "@/store";
 
 /**
  * Componente proveedor de la store de la app.
@@ -14,9 +13,7 @@ import { store, persistor } from "@/store";
 export const StoreProvider: FC<PropsWithChildren> = ({ children }: PropsWithChildren): JSX.Element => {
     return (
         <Provider store={store}>
-            <PersistGate loading={null} persistor={persistor}>
-                { children }
-            </PersistGate>
+            { children }
         </Provider>
     );
 };
