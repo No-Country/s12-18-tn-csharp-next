@@ -1,4 +1,4 @@
-import { authSlice } from "@/app/(auth)/slices";
+import { authSlice } from "@/app/(auth)/store/slices";
 
 /**
  * Reducer de la sección de autenticación.

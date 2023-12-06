@@ -25,7 +25,7 @@ export const useSignIn = () => {
 
     // Usamos el hook de autenticación para obtener las funcionalidades del manejo
     // de las acciones de autenticación en los estados globales de la aplicación.
-    return useAuth({
+    const auth = useAuth({
         authFn: signIn,
         isSuccess,
         UserLogged,
@@ -33,4 +33,6 @@ export const useSignIn = () => {
         isError,
         error
     });
+
+    return auth;
 };
