@@ -10,6 +10,19 @@ export enum Gender {
 }
 
 /**
+ * Modelo del usuario anonimo.
+ */
+export const EmptyUser = {
+    token: "",
+    user: {
+        name: "",
+        dni: "",
+        dateOfBirth: "",
+        gender: ""
+    }
+};
+
+/**
  * Modelo de un usuario autenticado.
  */
 export interface AuthUser {

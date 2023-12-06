@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import {} from "react-persist";
 
 import { BASE_URL } from "@/models";
 import { BASE_API_AUTH_PATH } from "@/app/(auth)/models";
@@ -11,5 +12,8 @@ export const authApi = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: `${BASE_URL}${BASE_API_AUTH_PATH}`
     }),
-    endpoints: (_builder) => ({})
+    endpoints: (_builder) => ({}),
+    // extractRehydrationInfo: (action, { reducerPath, }) => {
+    //     if (action.type ===)
+    // },
 });
