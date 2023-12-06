@@ -20,10 +20,10 @@ const NavModal = ({ closeModal }: Props) => {
           <X size={20} />
         </Button>
         <div className="mt-10 flex w-full flex-col gap-5">
-          <Link href="/log-in" className="inlink-block">
+          <Link onClick={closeModal} href="/sign-in" className="inlink-block">
             <Button className={cn("w-full")}>Log in</Button>
           </Link>
-          <Link href="/sign-up" className="inlink-block">
+          <Link onClick={closeModal} href="/sign-up" className="inlink-block">
             <Button className={cn("w-full")}>Sign up</Button>
           </Link>
         </div>
