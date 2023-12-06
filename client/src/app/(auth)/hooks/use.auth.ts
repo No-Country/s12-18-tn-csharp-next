@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import { useEffect } from "react";
 import type { SubmitHandler } from "react-hook-form";
 import type { SerializedError } from "@reduxjs/toolkit";
@@ -11,8 +12,10 @@ import type {
 import type { MutationTrigger } from "@reduxjs/toolkit/dist/query/react/buildHooks";
 
 import type { AuthUser } from "@/app/(auth)/models";
+import { AppRoutesModel } from "@/models";
 import { useAuthActions } from "@/app/(auth)/hooks";
 import { SignUpSchema } from "@/app/(auth)/(routes)/sign-up/models";
+import { SignInSchema } from "../(routes)/sign-in/models";
 
 /**
  * Modelo de las propiedades del hook de autenticación.
@@ -49,15 +52,22 @@ export const useAuth = ({
         if (isSuccess)
             // Funcionalidad para configurar el usuario en el estado de autenticación.
             handleSetUser(UserLogged);
+            // Redirijimos a la pantalla principal.
+            redirect(AppRoutesModel.HOME);
     }, [isSuccess]);
+
+    /**
+     * Modelo de los valores del manejador de autenticación.
+     */
+    type AuthValues = SignUpSchema | SignInSchema;
 
     /**
      * Función para manejar la autenticación de usuario.
      *
      * @param { any } values - Valores del formulario de autenticación.
      */
-    const handleAuth: SubmitHandler<any> = async (
-        values: any
+    const handleAuth: SubmitHandler<AuthValues> = async (
+        values: AuthValues
     ) => {
         // Funcionalidad para registrar un usuario.
         await authFn(values);
