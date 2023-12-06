@@ -49,11 +49,12 @@ export const useAuth = ({
 
     useEffect(() => {
         // Verificamos si la petición fue éxitosa.
-        if (isSuccess)
+        if (isSuccess) {
             // Funcionalidad para configurar el usuario en el estado de autenticación.
             handleSetUser(UserLogged);
             // Redirijimos a la pantalla principal.
             redirect(AppRoutesModel.HOME);
+        };
     }, [isSuccess]);
 
     /**
