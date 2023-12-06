@@ -6,15 +6,20 @@ import {
   backendDataEvents, secondBackendDataEvents
 } from "@/mocks/mock-lading-page/mock-data-cards";
 
+
+import { useGetEventsQuery } from "./hooks";
 import { Skeleton } from "../../ui/skeleton";
 
 export function CardSection() {
-  const [loading, setLoading] = React.useState(true);
+
+  const { data, isLoading } = useGetEventsQuery(null, {});
+
+  console.log(data);
 
   React.useEffect(() => {
     const fetchData = async () => {
       setTimeout(() => {
-        setLoading(false);
+        isLoading;
       }, 2000);
     };
 
@@ -40,7 +45,7 @@ export function CardSection() {
             See all the events
           </a>
         </article>
-        {loading ? (
+        {isLoading ? (
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
             {[...Array(8).keys()].map((index) => (
               <div key={index} className="rounded-md  p-4 shadow-md">
@@ -65,7 +70,7 @@ export function CardSection() {
             See all the events
           </a>
         </article>
-        {loading ? (
+        {isLoading ? (
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
             {[...Array(4).keys()].map((index) => (
               <div key={index} className="rounded-md p-4 shadow-md mb-4">
@@ -78,7 +83,7 @@ export function CardSection() {
             ))}
           </div>
         ) : (
-          <CardPropsLanging cardData={ secondBackendDataEvents } />
+          <CardPropsLanging cardData={ data } />
           
         )}
       </section>

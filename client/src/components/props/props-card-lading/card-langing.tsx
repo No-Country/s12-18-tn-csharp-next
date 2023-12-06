@@ -55,6 +55,7 @@ interface CardPropsLandingProps {
 }
 
 export function CardPropsLanging({ cardData }: CardPropsLandingProps) {
+  
   return (
     <section className="mb-5 grid grid-cols-1 gap-6 md:grid-cols-3 lg:grid-cols-4">
       {cardData.map((card) => (
