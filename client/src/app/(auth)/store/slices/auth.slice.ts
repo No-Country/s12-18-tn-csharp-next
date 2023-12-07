@@ -1,13 +1,21 @@
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import {
+    createSlice,
+    type PayloadAction
+} from "@reduxjs/toolkit";
 
 import type { RootState } from "@/models";
 import { getLocalStorageItem } from "@/utils";
-import { AuthLocalStorageModel, EmptyUser, type AuthUser } from "@/app/(auth)/models";
+import {
+    AuthLocalStorageModel,
+    EmptyUser,
+    type AuthUser
+} from "@/app/(auth)/models";
 
 /**
  * Sesión del usuario persistente.
  */
-const session: AuthUser = getLocalStorageItem(AuthLocalStorageModel.AUTH) || EmptyUser;
+const session: AuthUser =
+    getLocalStorageItem(AuthLocalStorageModel.AUTH) || EmptyUser;
 
 /**
  * Slice del estado de autenticación.
@@ -27,6 +35,11 @@ export const authSlice = createSlice({
          * @returns { AuthUser } Usuario autenticado.
          */
         setUser: (_state, action: PayloadAction<AuthUser>) => action.payload,
+        /**
+         * Función para remover a un usuario autenticado en el estado.
+         * 
+         * @returns Usuario vacio.
+         */
         removeUser: (): AuthUser => EmptyUser
     }
 });

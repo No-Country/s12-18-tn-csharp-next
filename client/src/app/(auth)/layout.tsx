@@ -1,7 +1,7 @@
 import type { FC, PropsWithChildren, JSX } from "react";
 
 /**
- * Layput de la sección de autenticación.
+ * Layout de la sección de autenticación.
  * 
  * @param { PropsWithChildren } param0 - Props por defecto de un componente.
  * 

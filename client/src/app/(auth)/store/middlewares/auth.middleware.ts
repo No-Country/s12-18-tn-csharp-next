@@ -49,7 +49,7 @@ export const handlerDataInLocalStorage: Middleware =
     // Verificamos si la acción es para remover al usuario de la aplicación.
     if (
         actionState === AuthStoreActionsModel.REMOVE_USER &&
-        !!state.auth.token
+        !state.auth.token
     )
         // Removemos a ese usuario de Local Storage.
         removeLocalStorageItem(keyStateAction);

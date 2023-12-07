@@ -1,7 +1,3 @@
-import { redirect } from "next/navigation";
-import { useEffect } from "react";
-import type { SubmitHandler } from "react-hook-form";
-import type { SerializedError } from "@reduxjs/toolkit";
 import type {
     BaseQueryFn,
     FetchArgs,
@@ -9,7 +5,11 @@ import type {
     FetchBaseQueryMeta,
     MutationDefinition
 } from "@reduxjs/toolkit/query";
+import type { SubmitHandler } from "react-hook-form";
+import type { SerializedError } from "@reduxjs/toolkit";
 import type { MutationTrigger } from "@reduxjs/toolkit/dist/query/react/buildHooks";
+import { redirect } from "next/navigation";
+import { useEffect } from "react";
 
 import type { AuthUser } from "@/app/(auth)/models";
 import { AppRoutesModel } from "@/models";
@@ -21,7 +21,15 @@ import { SignInSchema } from "../(routes)/sign-in/models";
  * Modelo de las propiedades del hook de autenticación.
  */
 interface UseAuthProps {
-    authFn: MutationTrigger<MutationDefinition<any, BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, {}, FetchBaseQueryMeta>, never, any, "authApi">>;
+    authFn: MutationTrigger<
+        MutationDefinition<
+            any,
+            BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, {}, FetchBaseQueryMeta>,
+            never,
+            any,
+            "authApi"
+        >
+    >;
     isSuccess: boolean;
     UserLogged: AuthUser;
     isLoading: boolean;
