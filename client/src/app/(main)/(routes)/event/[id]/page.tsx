@@ -1,18 +1,15 @@
+"use client";
 import React from "react";
-import { CardSectionDetails } from "@/components/sections/card-event-detail/card-section-details";
-import {
-  backendDataEvents,
-  secondBackendDataEvents,
-} from "@/mocks/mock-lading-page/mock-data-cards";
+import { useGetEventByIdQuery } from "@/components/sections/card-event-detail/hooks/use-get-events-detail-api";
+
+import { CardLandingDetails } from "@/components/props/props-card-landing-details/card-landing-details";
 
 interface Props {
-  params: { id: string };
+  params: { id: number };
 }
 
-const page = async ({ params }: Props) => {
-  const event = [...backendDataEvents, ...secondBackendDataEvents].find(
-    (p) => p.event_Id.toString() === params.id,
-  );
+const PageDetailEvent = ({ params }: Props) => {
+  const { data: event } = useGetEventByIdQuery(params.id, {});
 
   // TODO: update
   if (!event) {
@@ -21,22 +18,9 @@ const page = async ({ params }: Props) => {
 
   return (
     <section>
-      <CardSectionDetails
-        title={event.title}
-        creator={event.created_By_User}
-        content={event.description}
-        geo={event.geo}
-        collected={event.collected}
-        goal={event.collect_Goal}
-        media={event.media}
-        created_Date={event.created_Date}
-        // banner={event.banner}
-        // tags={event.tags}
-        // topDonators={event.topDonators}
-        // images={event.images}
-      />
+      <CardLandingDetails data={event} />
     </section>
   );
 };
 
-export default page;
+export default PageDetailEvent;
