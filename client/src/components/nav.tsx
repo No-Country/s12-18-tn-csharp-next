@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useMediaQuery } from "react-responsive";
 
 import { Search, Menu } from "lucide-react";
@@ -17,7 +18,20 @@ import ProfileDropdown from "./profile-dropdown";
 import { cn } from "@/lib";
 
 export const Nav = () => {
+  const router = useRouter();
+
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
+  const { user: currentUser } = useAppSelector(selectAuth);
+
+  const { handleRemoveUser } = useAuthActions();
+
+  const handleLogout = () => {
+    router.push("/");
+    handleRemoveUser();
+  };
+
+  // TODO: update logic
+  const isAuth = currentUser.name.length > 0;
 
   const isBigScreen = useMediaQuery({
     query: "(min-width: 768px)",
@@ -28,14 +42,6 @@ export const Nav = () => {
       setModalIsOpen(false);
     }
   }, [isBigScreen]);
-
-  const { handleRemoveUser } = useAuthActions();
-
-  const { user: currentUser } = useAppSelector(selectAuth);
-
-  // TODO: update logic
-  // const isAuth = currentUser.name.length > 0;
-  const isAuth = true;
 
   return (
     <>
@@ -60,7 +66,7 @@ export const Nav = () => {
             </div>
             <div className="flex w-full items-center space-x-2 md:max-w-sm">
               <Input type="text" placeholder="Search" />
-              <Button type="submit">
+              <Button type="submit" className={cn("px-2.5")}>
                 <Search size={20} />
               </Button>
             </div>
@@ -83,9 +89,7 @@ export const Nav = () => {
                 </li>
               </ul>
             ) : (
-              <>
-                {isBigScreen && <ProfileDropdown logout={handleRemoveUser} />}
-              </>
+              <>{isBigScreen && <ProfileDropdown logout={handleLogout} />}</>
             )}
             <ModeToggle />
           </div>
@@ -98,7 +102,13 @@ export const Nav = () => {
           </Button>
         </nav>
       </header>
-      {modalIsOpen && <NavModal closeModal={() => setModalIsOpen(false)} />}
+      {modalIsOpen && (
+        <NavModal
+          isAuth={isAuth}
+          logout={handleLogout}
+          closeModal={() => setModalIsOpen(false)}
+        />
+      )}
     </>
   );
 };

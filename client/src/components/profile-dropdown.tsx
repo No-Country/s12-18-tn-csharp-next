@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { LifeBuoy, LogOut, User, SquareUser } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -29,11 +31,13 @@ const ProfileDropdown = ({ logout }: Props) => {
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem className={cn("cursor-pointer")}>
-            <User className="mr-2 h-4 w-4" />
-            <span>Profile</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem className={cn("cursor-pointer")}>
+          <Link href="/me">
+            <DropdownMenuItem className={cn("cursor-pointer")}>
+              <User className="mr-2 h-4 w-4" />
+              <span>Profile</span>
+            </DropdownMenuItem>
+          </Link>
+          <DropdownMenuItem>
             <LifeBuoy className="mr-2 h-4 w-4" />
             <span>Support</span>
           </DropdownMenuItem>
