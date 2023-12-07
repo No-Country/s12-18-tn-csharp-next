@@ -23,7 +23,23 @@ public class AuthController : ControllerBase
         if (!result.isSuccesfully)
             return BadRequest(result.message);
 
-        return Ok(result.jwt);
+        var response = new
+        {
+            result.jwt,
+            user = new
+            {
+                result.user.Name,
+                result.user.Dni,
+                result.user.Date_Of_Birth,
+                result.user.Gender,
+                result.user.Is_Verified,
+                result.user.Is_Banned,
+                result.user.Is_Deleted,
+                result.user.Is_Ong,
+                result.user.Bank_Details
+            }
+        };
+        return CreatedAtAction(nameof(Register), response);
     }
 
     [HttpPost("login")]
@@ -34,6 +50,24 @@ public class AuthController : ControllerBase
         if (!result.isSuccesfully)
             return Unauthorized(result.message);
 
-        return Ok(result.jwt);
+
+        var response = new
+        {
+            result.jwt,
+            user = new
+            {
+                result.user.Name,
+                result.user.Dni,
+                result.user.Date_Of_Birth,
+                result.user.Gender,
+                result.user.Is_Verified,
+                result.user.Is_Banned,
+                result.user.Is_Deleted,
+                result.user.Is_Ong,
+                result.user.Bank_Details
+            }
+        };
+
+        return Ok(response);
     }
 }
