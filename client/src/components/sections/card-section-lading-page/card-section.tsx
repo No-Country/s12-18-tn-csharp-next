@@ -1,14 +1,13 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { CardPropsLanging } from "@/components/props/props-card-lading/card-langing";
-
 
 import { useGetEventsQuery } from "./hooks";
 import { Skeleton } from "../../ui/skeleton";
 
 export function CardSection() {
-
   const { data, isLoading } = useGetEventsQuery(null, {});
 
   // console.log(data);
@@ -38,9 +37,9 @@ export function CardSection() {
               </a>
             </div>
           </div>
-          <a href="#" className="hidden sm:block">
+          <Link href="/search" className="hidden sm:block">
             See all the events
-          </a>
+          </Link>
         </article>
         {isLoading ? (
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">

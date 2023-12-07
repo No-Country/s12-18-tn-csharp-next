@@ -66,9 +66,11 @@ export const Nav = () => {
             </div>
             <div className="flex w-full items-center space-x-2 md:max-w-sm">
               <Input type="text" placeholder="Search" />
-              <Button type="submit" className={cn("px-2.5")}>
-                <Search size={20} />
-              </Button>
+              <Link href="/search">
+                <Button type="submit" className={cn("px-2.5")}>
+                  <Search size={20} />
+                </Button>
+              </Link>
             </div>
           </div>
           <div
