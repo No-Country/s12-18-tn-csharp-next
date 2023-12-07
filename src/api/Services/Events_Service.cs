@@ -1,25 +1,34 @@
-﻿using s12.Controllers;
+﻿using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Validations;
+using s12.Controllers;
+using s12.DataService.Data;
+using System.Diagnostics.Eventing.Reader;
 
 namespace s12.Services
 {
     public class Events_Service
     {
-        //TODO  refactor 
+
+
+        //TODO  refactor for entity 
         public IList<Event_Get> Events { get; set; }
 
-        public Events_Service()
+        public Events_Service([FromServices] MyDbContext myDbContext)
         {
-            Events = Generate_Events();
+            Events = Generate_Events(myDbContext);
         }
 
         //TODO Refactor to service
-        private IList<Event_Get> Generate_Events()
+        private IList<Event_Get> Generate_Events( MyDbContext myDbContext)
         {
             List<Event_Get> eventos = new List<Event_Get>();
             //Event with complaint
             eventos.Add(new Event_Get
             {
                 Event_Id = 1,
+                Event_Owner_Email = "OrganizacionCaritativa1@mail.org",
                 Created_Date = DateOnly.FromDateTime(DateTime.Now),
                 Created_By_User = "OrganizacionCaritativa1",
                 Is_Validated = true,
@@ -62,6 +71,7 @@ namespace s12.Services
             eventos.Add(new Event_Get
             {
                 Event_Id = 2,
+                Event_Owner_Email = "OrganizacionCaritativa2@mail.org",
                 Created_Date = DateOnly.FromDateTime(DateTime.Now),
                 Created_By_User = "OrganizacionCaritativa2",
                 Is_Validated = true,
@@ -87,6 +97,7 @@ namespace s12.Services
             eventos.Add(new Event_Get
             {
                 Event_Id = 3,
+                Event_Owner_Email = "OrganizacionCaritativa3@mail.org",
                 Created_Date = DateOnly.FromDateTime(DateTime.Now),
                 Created_By_User = "OrganizacionCaritativa3",
                 Is_Validated = true,
@@ -109,6 +120,26 @@ namespace s12.Services
                 },
 
             });
+
+
+            //TODO this should come from donations_service
+            //get donors  count and amount
+            var ids = eventos.Select(x => x.Event_Id);
+            var donations = myDbContext.Donations.Where(x => ids.Contains(x.Event_Id));
+
+            var calculated = donations.GroupBy(x => x.Event_Id).Select(x => new
+            {
+                EventId = x.Key,
+                Collected = x.Sum(x => x.Donation_Amount),
+                Donors = x.Count()
+            });
+
+            foreach (var item in calculated)
+            {
+                var even = eventos.First(x => x.Event_Id == item.EventId);
+                even.Collected = item.Collected;
+                even.Donors_Count = item.Donors;
+            }
 
             return eventos;
         }

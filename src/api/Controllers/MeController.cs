@@ -22,7 +22,8 @@ namespace s12.Controllers
             //TODO change this when front has already been integrated, => remove parameter
             try
             {
-                var email = User.FindFirst(ClaimTypes.Email)?.Value;
+
+                var email = User.FindFirst("Email")?.Value;
                 return await _users_Service.Get_By_Email_Async(email ?? user_Email);
             }
             catch (Exception e)
