@@ -10,6 +10,7 @@ public class MyDbContext : IdentityDbContext<User>
     {
     }
 
+    public DbSet<Donation> Donations { get; set; }
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);

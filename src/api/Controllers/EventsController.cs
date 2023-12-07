@@ -61,6 +61,7 @@ namespace s12.Controllers
     public class Event_Get
     {
         public int Event_Id { get; set; }
+        public string Event_Owner_Email { get; set; }
         public DateOnly Created_Date { get; set; }
         public string Created_By_User { get; set; }
         public bool Is_Validated { get; set; } = false;
@@ -68,7 +69,7 @@ namespace s12.Controllers
         public string Description { get; set; }
         public decimal Collect_Goal { get; set; }
         public decimal Collected { get; set; }
-
+        public int Donors_Count { get;set; }
         public Media[] Media { get; set; }
         public Geo Geo { get; set; }
 
