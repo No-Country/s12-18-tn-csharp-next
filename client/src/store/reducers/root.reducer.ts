@@ -1,12 +1,11 @@
-import { combineReducers } from "@reduxjs/toolkit";
-
-import { authReducer } from "@/app/(auth)/reducers";
+import { authReducer, authApiReducer } from "@/app/(auth)/store";
 import { eventReducer } from "@/app/(main)/reducers";
 
 /**
  * Raíz de los reducers de la aplicación.
  */
-export const rootReducer = combineReducers({
-  ...authReducer,
-  ...eventReducer,
-});
+export const rootReducers = {
+    ...authReducer,
+    ...authApiReducer,
+    ...eventReducer
+};

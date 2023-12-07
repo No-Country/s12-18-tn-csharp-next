@@ -12,7 +12,7 @@ export const signInApi = authApi.injectEndpoints({
         /**
          * Petición para autenticar a un usuario en la api de autenticación.
          */
-        signIn: builder.mutation<any, SignInSchema>({
+        signIn: builder.mutation<AuthUser, SignInSchema>({
             query: (body) => ({
                 url: API_AUTH_ROUTES.LOGIN,
                 method: HTTP_METHODS.POST,

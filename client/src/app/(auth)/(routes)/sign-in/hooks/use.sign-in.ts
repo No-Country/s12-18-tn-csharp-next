@@ -1,24 +1,38 @@
-import type { SubmitHandler } from "react-hook-form";
-
+import type { AuthUser } from "@/app/(auth)/models";
 import { useSignInMutation } from "@/app/(auth)/(routes)/sign-in/hooks";
-import { SignInSchema } from "@/app/(auth)/(routes)/sign-in/models";
+import { useAuth } from "@/app/(auth)/hooks";
 
 /**
  * Hook para manejar la autenticación de un usuario.
  */
 export const useSignIn = () => {
     // Funcionalidades del hook de la api de autenticación.
-    const [signIn, { isLoading, isError, error }] = useSignInMutation();
+    const [
+        signIn,
+        {
+            data,
+            isSuccess,
+            isLoading,
+            isError,
+            error, 
+        }
+    ] = useSignInMutation();
 
     /**
-     * Función para manejar la autenticación de usuario.
-     * 
-     * @param { SignInSchema } values - Valores del formulario de autenticación.
+     * Usuario autenticado.
      */
-    const handleSignIn: SubmitHandler<SignInSchema> = (values: SignInSchema) => {
-        console.log({values});
-        signIn(values);
-    };
+    const UserLogged = data as AuthUser;
 
-    return { handleSignIn, status: { isLoading, isError, error } };
+    // Usamos el hook de autenticación para obtener las funcionalidades del manejo
+    // de las acciones de autenticación en los estados globales de la aplicación.
+    const auth = useAuth({
+        authFn: signIn,
+        isSuccess,
+        UserLogged,
+        isLoading,
+        isError,
+        error
+    });
+
+    return auth;
 };

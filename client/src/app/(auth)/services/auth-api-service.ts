@@ -7,12 +7,9 @@ import { BASE_API_AUTH_PATH } from "@/app/(auth)/models";
  * Servicio de la api de autenticación.
  */
 export const authApi = createApi({
-    reducerPath: "auth",
+    reducerPath: "authApi",
     baseQuery: fetchBaseQuery({
         baseUrl: `${BASE_URL}${BASE_API_AUTH_PATH}`
     }),
     endpoints: (_builder) => ({}),
-    // extractRehydrationInfo: (action, { reducerPath, }) => {
-    //     if (action.type ===)
-    // },
 });

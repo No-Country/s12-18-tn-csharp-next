@@ -38,11 +38,11 @@ export const SignUpForm: FC = (): JSX.Element => {
         defaultValues: signUpDefaultValues
     });
 
-    const { handleSignUp } = useSignUp();
+    const { handleAuth } = useSignUp();
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(handleSignUp)} className="flex flex-col gap-y-5">
+            <form onSubmit={form.handleSubmit(handleAuth)} className="flex flex-col gap-y-5">
                 <h1 className="text-4xl text-center"> Registrate </h1>
                 <FormField
                     control={form.control}

@@ -12,13 +12,13 @@ export enum Gender {
 /**
  * Modelo del usuario anonimo.
  */
-export const EmptyUser = {
+export const EmptyUser: AuthUser = {
     token: "",
     user: {
         name: "",
         dni: "",
-        dateOfBirth: "",
-        gender: ""
+        dateOfBirth: "" as unknown as Date,
+        gender: "" as Gender
     }
 };
 

@@ -1,6 +1,5 @@
-import type { SubmitHandler } from "react-hook-form";
-
-import { SignUpSchema } from "@/app/(auth)/(routes)/sign-up/models";
+import type { AuthUser } from "@/app/(auth)/models";
+import { useAuth } from "@/app/(auth)/hooks";
 import { useSignUpMutation } from "@/app/(auth)/(routes)/sign-up/hooks";
 
 /**
@@ -8,24 +7,30 @@ import { useSignUpMutation } from "@/app/(auth)/(routes)/sign-up/hooks";
  */
 export const useSignUp = () => {
     // Funcionalidades del hook de la api de registro.
-    const [signUp, { isLoading, isError, error }] = useSignUpMutation();
-
-    /**
-     * Función para manejar el registro de usuario.
-     * 
-     * @param { SignUpSchema } values - Valores del formulario de registro.
-     */
-    const handleSignUp: SubmitHandler<SignUpSchema> = (values: SignUpSchema) => {
-        console.log({values});
-        signUp(values);
-    };
-
-    return {
-        handleSignUp,
-        status: {
+    const [
+        signUp,
+        {
+            data,
+            isSuccess,
             isLoading,
             isError,
             error
-        } 
-    };
+        }
+    ] = useSignUpMutation();
+
+    /**
+     * Usuario autenticado.
+     */
+    const UserLogged = data as AuthUser;
+
+    // Usamos el hook de autenticación para obtener las funcionalidades del manejo
+    // de las acciones de autenticación en los estados globales de la aplicación.
+    return useAuth({
+        authFn: signUp,
+        isSuccess,
+        UserLogged,
+        isLoading,
+        isError,
+        error
+    });
 };
