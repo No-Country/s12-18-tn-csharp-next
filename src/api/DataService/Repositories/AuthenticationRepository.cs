@@ -42,17 +42,17 @@ public class AuthenticationRepository : IAuthenticationRepository
             {
                 await _userManager.AddToRoleAsync(user, Role.User);
                 var jwt = GetToken(user, new[] { new Claim("Role", Role.User) });
-                return new RegisterResponse(jwt, "Success", true);
+                return new RegisterResponse(jwt, "Success", true, user);
             }
             else
             {
                 var messages = String.Join("-", result.Errors.Select(x => $"{x.Code}|{x.Description}"));
-                return new RegisterResponse("", messages, false);
+                return new RegisterResponse("", messages, false, null);
             }
         }
         catch (Exception e)
         {
-            return new RegisterResponse("", e.Message, false);
+            return new RegisterResponse("", e.Message, false, null);
         }
     }
     public async Task<LoginResponse> Login(LoginRequest request)
@@ -63,7 +63,7 @@ public class AuthenticationRepository : IAuthenticationRepository
 
         if (user is null || !await _userManager.CheckPasswordAsync(user, request.Password))
         {
-            return new LoginResponse(null, "Invalid Credentials", false);
+            return new LoginResponse(null, "Invalid Credentials", false, null);
         }
 
         var authClaims = new List<Claim>
@@ -79,7 +79,7 @@ public class AuthenticationRepository : IAuthenticationRepository
 
         var token = GetToken(authClaims);
 
-        return new LoginResponse(new JwtSecurityTokenHandler().WriteToken(token), "Login Successful", true);
+        return new LoginResponse(new JwtSecurityTokenHandler().WriteToken(token), "Login Successful", true, user);
     }
 
 
