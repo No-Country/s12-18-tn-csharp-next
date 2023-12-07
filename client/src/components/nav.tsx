@@ -10,6 +10,12 @@ import { Button, Input } from "./ui";
 import NavModal from "./nav-modal";
 import { ModeToggle } from "./mode-toggle";
 
+import { useAuthActions } from "@/app/(auth)/hooks";
+import { selectAuth } from "@/app/(auth)/store";
+import { useAppSelector } from "@/hooks";
+import ProfileDropdown from "./profile-dropdown";
+import { cn } from "@/lib";
+
 export const Nav = () => {
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
 
@@ -22,6 +28,14 @@ export const Nav = () => {
       setModalIsOpen(false);
     }
   }, [isBigScreen]);
+
+  const { handleRemoveUser } = useAuthActions();
+
+  const { user: currentUser } = useAppSelector(selectAuth);
+
+  // TODO: update logic
+  // const isAuth = currentUser.name.length > 0;
+  const isAuth = true;
 
   return (
     <>
@@ -51,26 +65,37 @@ export const Nav = () => {
               </Button>
             </div>
           </div>
-          <div className="flex items-center gap-10 max-md:hidden">
-            <ul className="flex items-center gap-10">
-              <li>
-                <Link href="/sign-in">Log in</Link>
-              </li>
-              <li>
-                <Link href="/sign-up">
-                  <Button>Sign up</Button>
-                </Link>
-              </li>
-              <ModeToggle />
-            </ul>
+          <div
+            className={cn(
+              "flex items-center  max-md:hidden",
+              !isAuth ? "gap-10" : "gap-6",
+            )}
+          >
+            {!isAuth ? (
+              <ul className="flex items-center gap-10">
+                <li>
+                  <Link href="/sign-in">Log in</Link>
+                </li>
+                <li>
+                  <Link href="/sign-up">
+                    <Button>Sign up</Button>
+                  </Link>
+                </li>
+              </ul>
+            ) : (
+              <>
+                {isBigScreen && <ProfileDropdown logout={handleRemoveUser} />}
+              </>
+            )}
+            <ModeToggle />
           </div>
-          <div className="flex items-center md:hidden">
-            <Menu
-              size={24}
-              className="cursor-pointer"
-              onClick={() => setModalIsOpen(true)}
-            />
-          </div>
+          <Button
+            onClick={() => setModalIsOpen(true)}
+            variant="ghost"
+            className={cn("flex items-center px-2.5 md:hidden")}
+          >
+            <Menu size={20} className="cursor-pointer" />
+          </Button>
         </nav>
       </header>
       {modalIsOpen && <NavModal closeModal={() => setModalIsOpen(false)} />}

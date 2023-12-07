@@ -16,7 +16,11 @@ const NavModal = ({ closeModal }: Props) => {
   return (
     <div className="fixed inset-0 z-10 min-h-screen bg-white px-6 py-6 dark:bg-black">
       <div className="flex h-full w-full flex-col">
-        <Button className={cn("self-end")} onClick={closeModal}>
+        <Button
+          className={cn("self-end px-2.5")}
+          onClick={closeModal}
+          variant="ghost"
+        >
           <X size={20} />
         </Button>
         <div className="mt-10 flex w-full flex-col gap-5">
