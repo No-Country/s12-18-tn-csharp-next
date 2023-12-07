@@ -1,5 +1,4 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import {} from "react-persist";
 
 import { BASE_URL } from "@/models";
 import { BASE_API_AUTH_PATH } from "@/app/(auth)/models";

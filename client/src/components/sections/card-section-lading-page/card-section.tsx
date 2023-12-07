@@ -2,9 +2,6 @@
 
 import React from "react";
 import { CardPropsLanging } from "@/components/props/props-card-lading/card-langing";
-import {
-  backendDataEvents, secondBackendDataEvents
-} from "@/mocks/mock-lading-page/mock-data-cards";
 
 
 import { useGetEventsQuery } from "./hooks";
@@ -14,7 +11,7 @@ export function CardSection() {
 
   const { data, isLoading } = useGetEventsQuery(null, {});
 
-  console.log(data);
+  // console.log(data);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -61,7 +58,7 @@ export function CardSection() {
           <CardPropsLanging cardData={data} />
         )}
       </section>
-      <section>
+      {/* <section>
         <article className="mb-5 mt-5 flex items-center justify-between">
           <div className="flex items-center gap-5">
             <h2>Next on-line events</h2>
@@ -86,7 +83,7 @@ export function CardSection() {
           <CardPropsLanging cardData={ data } />
           
         )}
-      </section>
+      </section> */}
     </React.Fragment>
   );
 }

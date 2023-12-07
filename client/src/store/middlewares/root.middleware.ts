@@ -9,6 +9,9 @@ import { eventMiddleware } from "@/app/(main)/middlewares";
  * Raíz de los middlewares de la store de la aplicación.
  */
 export const rootMiddlewares = (
-    getDefaultMiddleware: CurriedGetDefaultMiddleware
+  getDefaultMiddleware: CurriedGetDefaultMiddleware,
 ): ThunkMiddleware[] =>
-    getDefaultMiddleware(defaultMiddlewareConfig as any).concat(authMiddleware, eventMiddleware);
+  getDefaultMiddleware(defaultMiddlewareConfig as any).concat(
+    authMiddleware,
+    eventMiddleware,
+  );
