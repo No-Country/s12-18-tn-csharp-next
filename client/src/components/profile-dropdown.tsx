@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { LifeBuoy, LogOut, User, SquareUser } from "lucide-react";
+import { LifeBuoy, LogOut, User, SquareUser, Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -28,24 +28,30 @@ const ProfileDropdown = ({ logout }: Props) => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuLabel>Mi Cuenta</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <Link href="/me">
             <DropdownMenuItem className={cn("cursor-pointer")}>
               <User className="mr-2 h-4 w-4" />
-              <span>Profile</span>
+              <span>Perfil</span>
+            </DropdownMenuItem>
+          </Link>
+          <Link href="/create-event">
+            <DropdownMenuItem className={cn("cursor-pointer")}>
+              <Plus className="mr-2 h-4 w-4" />
+              <span>Crear Evento</span>
             </DropdownMenuItem>
           </Link>
           <DropdownMenuItem>
             <LifeBuoy className="mr-2 h-4 w-4" />
-            <span>Support</span>
+            <span>Ayuda</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={logout} className={cn("cursor-pointer")}>
           <LogOut className="mr-2 h-4 w-4" />
-          <span>Log out</span>
+          <span>Cerrar sesión</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
