@@ -54,20 +54,27 @@ const NavModal = ({ isAuth, logout, closeModal }: Props) => {
                 href="/sign-in"
                 className="inlink-block"
               >
-                <Button className={cn("w-full")}>Log in</Button>
+                <Button className={cn("w-full")}>Ingreso</Button>
               </Link>
               <Link
                 onClick={closeModal}
                 href="/sign-up"
                 className="inlink-block"
               >
-                <Button className={cn("w-full")}>Sign up</Button>
+                <Button className={cn("w-full")}>Registro</Button>
               </Link>
             </>
           ) : (
             <>
               <Link onClick={closeModal} href="/me" className="inlink-block">
-                <Button className={cn("w-full")}>Profile</Button>
+                <Button className={cn("w-full")}>Perfil</Button>
+              </Link>
+              <Link
+                onClick={closeModal}
+                href="/create-event"
+                className="inlink-block"
+              >
+                <Button className={cn("w-full")}>Crear Evento</Button>
               </Link>
             </>
           )}

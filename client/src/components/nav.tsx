@@ -60,12 +60,12 @@ export const Nav = () => {
                   height={28}
                 />
                 <span className="font-bold max-md:hidden">
-                  Humanitarian Aid
+                  Ayuda Humanitaria
                 </span>
               </Link>
             </div>
             <div className="flex w-full items-center space-x-2 md:max-w-sm">
-              <Input type="text" placeholder="Search" />
+              <Input type="text" placeholder="Búsqueda" />
               <Link href="/search">
                 <Button type="submit" className={cn("px-2.5")}>
                   <Search size={20} />
@@ -82,11 +82,11 @@ export const Nav = () => {
             {!isAuth ? (
               <ul className="flex items-center gap-10">
                 <li>
-                  <Link href="/sign-in">Log in</Link>
+                  <Link href="/sign-in">Ingreso</Link>
                 </li>
                 <li>
                   <Link href="/sign-up">
-                    <Button>Sign up</Button>
+                    <Button>Registro</Button>
                   </Link>
                 </li>
               </ul>
