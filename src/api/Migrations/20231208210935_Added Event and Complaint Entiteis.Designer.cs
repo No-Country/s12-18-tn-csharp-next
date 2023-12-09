@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using s12.DataService.Data;
 
@@ -11,9 +12,11 @@ using s12.DataService.Data;
 namespace s12.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231208210935_Added Event and Complaint Entiteis")]
+    partial class AddedEventandComplaintEntiteis
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -170,15 +173,8 @@ namespace s12.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("EventId")
+                    b.Property<int>("Reporter_Id")
                         .HasColumnType("int");
-
-                    b.Property<int>("Event_Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Reporter_Id")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Reporter_Name")
                         .IsRequired()
@@ -189,8 +185,6 @@ namespace s12.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("EventId");
 
                     b.ToTable("Complaints");
                 });
@@ -243,6 +237,10 @@ namespace s12.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Complaints")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Created_Date")
                         .HasColumnType("datetime2");
@@ -425,10 +423,6 @@ namespace s12.Migrations
 
             modelBuilder.Entity("s12.Entities.DbSet.Complaint", b =>
                 {
-                    b.HasOne("s12.Entities.DbSet.Event", null)
-                        .WithMany("Complaints")
-                        .HasForeignKey("EventId");
-
                     b.OwnsMany("s12.Entities.DbSet.Media", "Media_Collection", b1 =>
                         {
                             b1.Property<int>("ComplaintId")
@@ -556,11 +550,6 @@ namespace s12.Migrations
                         });
 
                     b.Navigation("Bank_Details");
-                });
-
-            modelBuilder.Entity("s12.Entities.DbSet.Event", b =>
-                {
-                    b.Navigation("Complaints");
                 });
 #pragma warning restore 612, 618
         }

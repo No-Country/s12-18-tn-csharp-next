@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using s12.DataService.Data;
 
@@ -11,9 +12,11 @@ using s12.DataService.Data;
 namespace s12.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231209180002_Updated Complaint entity")]
+    partial class UpdatedComplaintentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -171,9 +174,6 @@ namespace s12.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("EventId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Event_Id")
                         .HasColumnType("int");
 
                     b.Property<string>("Reporter_Id")
