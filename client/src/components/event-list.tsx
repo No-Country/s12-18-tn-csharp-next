@@ -14,7 +14,7 @@ const EventList = ({ events }: Props) => {
           id={event.event_Id}
           title={event.title}
           description={event.description}
-          imgUrl={event.media[0].url}
+          imgUrl="example"
           date={event.created_Date}
           author={event.created_By_User}
         />
