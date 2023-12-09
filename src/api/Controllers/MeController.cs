@@ -11,13 +11,18 @@ namespace s12.Controllers
     [ApiController]
     public class MeController : ControllerBase
     {
-        private  readonly Users_Service _users_Service;
+        private readonly Users_Service _users_Service;
+        private readonly Events_Service _events_Service;
 
-        public MeController(Users_Service users_Service) => _users_Service = users_Service;
+        public MeController(Users_Service users_Service, Events_Service events_Service)
+        {
+            _users_Service = users_Service;
+            _events_Service = events_Service;
+        }
 
         [HttpGet]
         //[Authorize]
-        public async Task<ActionResult<User_Get>> Get([EmailAddress]string? user_Email)
+        public async Task<ActionResult<User_Get>> Get([EmailAddress] string? user_Email)
         {
             //TODO change this when front has already been integrated, => remove parameter
             try
@@ -32,23 +37,32 @@ namespace s12.Controllers
             }
         }
 
-        [HttpPatch("{user_Email}")]
-       // [Authorize]
-        public async Task<ActionResult<User_Get?>> Patch_User([EmailAddress] string? user_Email, [FromBody] User_Patch user )
+        [Authorize]
+        [HttpPatch()]
+        public async Task<ActionResult<User_Get?>> Patch_User([FromBody] User_Patch user)
         {
             //TODO change this when front has already been integrated, => remove parameter
-            var email = User.FindFirst(ClaimTypes.Email)?.Value;
-            return  await _users_Service.Update_User_Async(user_Email??email, user);
+            var email = User.FindFirst("Email")?.Value;
+            return await _users_Service.Update_User_Async(email, user);
+        }
+
+        [Authorize]
+        [HttpGet("events")]
+        public async Task<List<Event_Get>> My_Events()
+        {
+            var email = User.FindFirst("Email")?.Value;
+            var events = await _events_Service.Get_Events_From_User(email);
+            return events;
         }
 
     }
 
-    public class User_Get 
+    public class User_Get
     {
         public string Name { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string Dni { get; set; } = string.Empty;
-        public DateTime? Date_Of_Birth { get; set; } 
+        public DateTime? Date_Of_Birth { get; set; }
         public bool Is_Verified { get; set; } = false;
         public bool Is_Ong { get; set; } = false;
         public bool Is_Banned { get; set; } = false;
@@ -58,10 +72,10 @@ namespace s12.Controllers
 
     public class User_Patch
     {
-        public string? Name { get; set; } 
+        public string? Name { get; set; }
         //public string Dni { get; set; } = string.Empty;
-        public DateTime? Date_Of_Birth { get; set; } 
-        public string? Gender { get; set; } 
+        public DateTime? Date_Of_Birth { get; set; }
+        public string? Gender { get; set; }
         public Bank_Details? Bank_Details { get; set; }
     }
 }

@@ -26,12 +26,14 @@ namespace s12.Controllers
         }
 
         // POST: Event
+        [Authorize]
         [HttpPost]
-        //[Authorize]
         public ActionResult<IEnumerable<string>> Post(Event_Post new_Event)
         {
+            var email = User.FindFirst("Email").Value;
+            
             var e = new Event_Get();
-
+            e.Event_Owner_Email = email;
             e.Created_Date = DateOnly.FromDateTime(DateTime.Now);
             e.Created_By_User = "GetTheUserFromSession";
             e.Event_Id = _events_Service.Events.OrderBy(x => x.Event_Id).Last().Event_Id + 1;
