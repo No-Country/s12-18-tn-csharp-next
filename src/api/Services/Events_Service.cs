@@ -1,27 +1,41 @@
 ﻿using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Validations;
 using s12.Controllers;
 using s12.DataService.Data;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.Eventing.Reader;
+using System.Net.Mail;
 
 namespace s12.Services
 {
-    public class Events_Service
+    public interface IEvents_Service
+    {
+        Task<List<Event_Get>> Get_Events_From_User(string owner_Email);
+    }
+
+    public class Events_Service : IEvents_Service
     {
 
 
         //TODO  refactor for entity 
         public IList<Event_Get> Events { get; set; }
 
-        public Events_Service([FromServices] MyDbContext myDbContext)
+        public Events_Service(IConfiguration configuration/*[FromServices] MyDbContext myDbContext*/)
         {
+            #region Delete this, only for  mocked
+            var cs = configuration.GetConnectionString("SQLServerConnection");
+            var optionsBuilder = new DbContextOptionsBuilder<MyDbContext>();
+            optionsBuilder.UseSqlServer(cs);
+            var myDbContext = new MyDbContext(optionsBuilder.Options); 
+            #endregion
             Events = Generate_Events(myDbContext);
         }
 
         //TODO Refactor to service
-        private IList<Event_Get> Generate_Events( MyDbContext myDbContext)
+        private IList<Event_Get> Generate_Events(MyDbContext myDbContext)
         {
             List<Event_Get> eventos = new List<Event_Get>();
             //Event with complaint
@@ -142,6 +156,26 @@ namespace s12.Services
             }
 
             return eventos;
+        }
+
+        public Task<List<Event_Get>> Get_Events_From_User(string owner_Email)
+        {
+            //if is null empty or not a valid email
+            if (owner_Email.IsNullOrEmpty() is false)
+            {
+                try
+                {
+                    var email = new MailAddress(owner_Email);
+                    var res = this.Events.Where(x => x.Event_Owner_Email == owner_Email).ToList();
+                    return Task.FromResult(res);
+                }
+                catch (Exception e)
+                {
+
+                    throw new ArgumentException(nameof(owner_Email),e);
+                }
+            }
+            throw new ArgumentNullException(nameof(owner_Email));
         }
     }
 }
