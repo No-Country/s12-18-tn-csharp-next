@@ -1,17 +1,26 @@
 ﻿using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Validations;
 using s12.Controllers;
 using s12.DataService.Data;
+
 using s12.Entities.DbSet;
 using s12.Entities.Dtos.Requests;
 using s12.Entities.Dtos.Responses;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.Eventing.Reader;
+using System.Net.Mail;
 
 namespace s12.Services
 {
-    public class Events_Service
+    public interface IEvents_Service
+    {
+        Task<List<Event_Get>> Get_Events_From_User(string owner_Email);
+    }
+
+    public class Events_Service : IEvents_Service
     {
         private readonly MyDbContext _context;
 
@@ -161,6 +170,25 @@ namespace s12.Services
             return new Create_Complaint_Response(new_Complaint, "Created successfully", true);
             // TODO: DeactiveEvent Service
             // TODO: Update_Event Service
+        }
+
+        public Task<List<Event_Get>> Get_Events_From_User(string owner_Email)
+        {
+            //if is null empty or not a valid email
+            if (owner_Email.IsNullOrEmpty() is false)
+            {
+                try
+                {
+                    var email = new MailAddress(owner_Email);
+                    var res = this.Events.Where(x => x.Event_Owner_Email == owner_Email).ToList();
+                    return Task.FromResult(res);
+                }
+                catch (Exception e)
+                {
+                    throw new ArgumentException(nameof(owner_Email),e);
+                }
+            }
+            throw new ArgumentNullException(nameof(owner_Email));
         }
     }
 }

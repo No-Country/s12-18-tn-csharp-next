@@ -40,6 +40,7 @@ namespace s12.Controllers
 
         // POST: Event
         [HttpPost]
+
         [Authorize(Policy = "StandardRights")]
         public async Task<ActionResult> Create_Event([FromForm] Create_Event_Request request)
         {
@@ -49,7 +50,6 @@ namespace s12.Controllers
 
             if (!result.isSuccessfully)
                 return BadRequest(result.message);
-
             return CreatedAtAction(nameof(Get_Event_By_Id), new { event_Id = result.event_Created.Id }, result.event_Created);
 
         }
