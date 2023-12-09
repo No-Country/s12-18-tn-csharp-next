@@ -39,11 +39,11 @@ namespace s12.Services
         public async Task<List<Donation_Get?>> Get_By_Event_Id(int event_Id, bool? only_Mine = false, string? user_Name = null, bool? asOwner = false, bool? resumed = false, string? filter = null, int? pageSize = null, int? pageNumber = null)
         {
             //event exists??
-            var e = _events_Service.Events.FirstOrDefault(x => x.Event_Id == event_Id);
+            var e = _events_Service.GetEvent(event_Id);
             if (e == null) return null;
 
             var result = new List<Donation_Get?>();
-            var donations = _dbContext.Donations.Where( x => x.Event_Id == event_Id);
+            var donations = _dbContext.Donations.Where(x => x.Event_Id == event_Id);
 
 
 
@@ -53,7 +53,10 @@ namespace s12.Services
                 donations = donations.Where(x => x.Donor_Email == user_Name);
             }
 
-            var isOwner = e.Event_Owner_Email == user_Name;
+
+            // var isOwner = e.Event_Owner_Email == user_Name;
+
+            var isOwner = false;
 
 
 
@@ -96,16 +99,16 @@ namespace s12.Services
         }
 
 
-        public Donation_Get Create(int event_Id, Donation donation)
+        public async Task<Donation_Get> Create(int event_Id, Donation donation)
         {
             //event exists??
             // TODO Blocked, events service missing
-            var the_Event = _events_Service.Events.First(x => x.Event_Id == event_Id);
-            if (the_Event == null) throw new InvalidOperationException("event not found");
+            var result = await _events_Service.GetEvent(event_Id);
+            if (result.isSuccessfully == false) throw new InvalidOperationException("event not found");
 
             //var the_user = _dbContext.Users.FirstOrDefault(x => x.NormalizedEmail.Equals(donation.Donor_Email));
             donation.Donation_Date = DateTime.Now.ToString();
-            donation.Owner_Email = the_Event.Event_Owner_Email;
+            donation.Owner_Email = result.Event.Event_Owner_Email;
 
             //this needs to be specified
             donation.Payment_Id = Random.Shared.Next().ToString();
