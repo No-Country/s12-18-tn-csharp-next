@@ -109,7 +109,7 @@ builder.Services.AddCors(policyBuilder =>
             .AllowAnyHeader())
 );
 
-builder.Services.AddScoped<Events_Service>();
+builder.Services.AddSingleton<Events_Service>();
 builder.Services.AddScoped<Users_Service>();
 builder.Services.AddScoped<Donations_Service>();
 
