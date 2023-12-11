@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/card";
 
 import EventProgress from "@/components/event-progress";
+import Link from "next/link";
 
 interface Media {
   type?: string;
@@ -126,6 +127,7 @@ export function CardLandingDetails({ data }: Props) {
               </div>
             </div>
             {/* ONLY DESIGN */}
+
             <div className="mt-4 hidden lg:block">
               <h2>Sponsor</h2>
               <Card className="mt-2 dark:border-none">
@@ -140,6 +142,23 @@ export function CardLandingDetails({ data }: Props) {
           </div>
         </section>
       </div>
+      <section className="container">
+        <h1 className="mb-2">Complaints</h1>
+        {data.complaints?.map((complaint) => (
+          <Link href={`/complaints/${complaint?.complaint_Id}`} target="_blank">
+            <Card>
+              <CardHeader>
+                <CardTitle>{complaint.title}</CardTitle>
+                <p>{complaint.reporter_Name}</p>
+                <span>{complaint.reporter_Id}</span>
+              </CardHeader>
+              <CardContent>
+                <CardDescription>{complaint.description}</CardDescription>
+              </CardContent>
+            </Card>
+          </Link>
+        ))}
+      </section>
       <section className="container mt-2 flex flex-col gap-2">
         <h1>Participants</h1>
         <section className="flex flex-wrap gap-5">
