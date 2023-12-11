@@ -87,7 +87,7 @@ const ComplaintsPage = ({ complaintsData }: ComplaintsViewProps) => {
 
   return (
     <div className="w-screen px-5 md:px-[20%] h-[50%]">
-      <h1 className="text-center mt-3">Complaints</h1>
+      <h1 className="text-center mt-3">Reclamos</h1>
       <div className="my-5">
         <section className="">
           {fetchedData.length === 0 ? (
