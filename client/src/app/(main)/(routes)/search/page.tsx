@@ -24,7 +24,7 @@ const page = () => {
               <EventList events={data} />
             </div>
             <div>
-              <p className="mb-5">Events nearby:</p>
+              <p className="mb-5">Eventos cercanos</p>
               <div className="h-[100px] w-full rounded-md bg-slate-600"></div>
             </div>
           </div>

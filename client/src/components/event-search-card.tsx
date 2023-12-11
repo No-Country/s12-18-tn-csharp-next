@@ -6,6 +6,7 @@ import { Separator } from "./ui/separator";
 import { Share } from "lucide-react";
 import { Button } from "./ui";
 import { cn } from "@/lib";
+import { useToast } from "@/components/ui/use-toast";
 
 interface Props {
   id: string;
@@ -24,6 +25,20 @@ const EventSearchCard = ({
   date,
   author,
 }: Props) => {
+  const { toast } = useToast();
+
+  const handleCopy = () => {
+    // TODO: update with env variable
+    const link = `http://localhost:3000/event/${id}`;
+
+    navigator.clipboard.writeText(link);
+
+    toast({
+      title: "¡El enlace se ha copiado al portapapeles!",
+      description: link,
+    });
+  };
+
   return (
     <div>
       <div className="mt-3 py-2">
@@ -47,7 +62,11 @@ const EventSearchCard = ({
           </div>
         </Link>
         <div className="flex w-full justify-end">
-          <Button variant="ghost" className={cn("mt-1 px-3 py-1")}>
+          <Button
+            onClick={handleCopy}
+            variant="ghost"
+            className={cn("mt-1 px-3 py-1")}
+          >
             <Share size={16} />
           </Button>
         </div>

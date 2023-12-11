@@ -13,16 +13,16 @@ import {
 const EventSort = () => {
   return (
     <Select defaultValue="newest">
-      <SelectTrigger className="max-w-[140px]">
+      <SelectTrigger className="max-w-[180px]">
         <div className="truncate">
-          <span>Sort by:</span> <SelectValue className="" />
+          <span>Ordernar por:</span> <SelectValue className="" />
         </div>
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectLabel>Sort by</SelectLabel>
-          <SelectItem value="newest">Newest</SelectItem>
-          <SelectItem value="oldest">Oldest</SelectItem>
+          <SelectLabel>Ordernar por</SelectLabel>
+          <SelectItem value="newest">Nuevo</SelectItem>
+          <SelectItem value="oldest">Viejo</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>
