@@ -56,12 +56,12 @@ interface CardPropsLandingProps {
 
 export function CardPropsLanging({ cardData }: CardPropsLandingProps) {
   return (
-    <section className="mb-5 grid grid-cols-1 gap-6 md:grid-cols-3 lg:grid-cols-4">
+    <section className="mb-5 grid grid-cols-1 gap-10 md:grid-cols-3 lg:grid-cols-4">
       {cardData.map((card) => (
         <Link href={`event/${card.event_Id}`} key={card.event_Id}>
           <Card
             // key={card.event_Id}
-            className="flex flex-row-reverse justify-between dark:border-none  md:h-96 md:flex-col md:justify-start"
+            className="flex flex-row-reverse justify-between dark:border-none   md:h-96 md:flex-col md:justify-start"
           >
             <img
               // src={card.media === null ? "None" : card.media[0].url}

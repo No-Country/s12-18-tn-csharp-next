@@ -5,8 +5,5 @@ export const getEventApi = eventApi.injectEndpoints({
     getEvents: builder.query({
       query: () => "/",
     })
-    // getEventById: builder.query({
-    //   query: (id) => `/${id}`,
-    // }),
   }),
 });
