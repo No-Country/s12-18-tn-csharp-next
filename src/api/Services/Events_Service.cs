@@ -17,7 +17,7 @@ namespace s12.Services
 {
     public interface IEvents_Service
     {
-        Task<List<Event_Get>> Get_Events_From_User(string owner_Email);
+      //  Task<List<Event_Get>> Get_Events_From_User(string owner_Email);
     }
 
     public class Events_Service : IEvents_Service
@@ -33,17 +33,19 @@ namespace s12.Services
         {
             try
             {
-                var query = await _context.Events.ToListAsync();
+                IQueryable<Event> query =  _context.Events
+                    .Include(x => x.Complaints);
+                    //ToListAsync();
 
                 if (pageSize.HasValue && pageNumber.HasValue)
                 {
                     query = query
                         .Skip((pageNumber.Value * pageSize.Value))
-                        .Take(pageSize.Value)
-                        .ToList();
+                        .Take(pageSize.Value).AsQueryable();
+                       // .ToList();
                 }
 
-                return new Get_Events_Response(query, "Query Successful", true);
+                return new Get_Events_Response(await query.ToListAsync(), "Query Successful", true);
             }
             catch (Exception e)
             {
@@ -55,7 +57,7 @@ namespace s12.Services
         {
             try
             {
-                var Event = await _context.Events.FirstOrDefaultAsync(x => x.Id == event_Id);
+                var Event = await _context.Events.FirstOrDefaultAsync(x => x.Event_Id == event_Id);
                 if (Event is null)
                     return new Get_Event_Response(null, "Event not found", false);
 
@@ -82,8 +84,8 @@ namespace s12.Services
                     Geo = request.Geo,
                     Is_Validated = request.Is_Validated,
                     Event_Owner_Email = user_Email,
-                    Goal = request.Goal,
-                    Media_Collection = request.Media_Collection is not null ? request.Media_Collection.Select(x => new Media() { Type = x.ContentType, Url = $"somePlaceOnserver/{x.FileName}" }).ToList() : new List<Media>(),
+                    Collect_Goal = request.Goal,
+                    Media = request.Media_Collection is not null ? request.Media_Collection.Select(x => new Media() { Type = x.ContentType, Url = $"somePlaceOnserver/{x.FileName}" }).ToList() : new List<Media>(),
                     User_Id = user_Id,
                     Complaints = new List<Complaint>()
                 };
@@ -101,7 +103,7 @@ namespace s12.Services
         {
             try
             {
-                var Event = await _context.Events.FirstOrDefaultAsync(x => x.Id == event_Id);
+                var Event = await _context.Events.FirstOrDefaultAsync(x => x.Event_Id == event_Id);
                 if (Event is null)
                     return new Get_Complaints_Response(null, "Event not found", false);
                 var Complaints = await _context.Complaints.Where(c => c.Event_Id == event_Id).ToListAsync();
@@ -118,10 +120,10 @@ namespace s12.Services
         {
             try
             {
-                var Event = await _context.Events.FirstOrDefaultAsync(x => x.Id == event_id);
+                var Event = await _context.Events.FirstOrDefaultAsync(x => x.Event_Id == event_id);
                 if (Event is not null && Event.Has_Complaints)
                 {
-                    var complaint = Event.Complaints.FirstOrDefault(c => c.Id == complaint_id);
+                    var complaint = Event.Complaints.FirstOrDefault(c => c.Complaint_Id == complaint_id);
 
                     return complaint is null ? new Get_Complaint_Response(null, "Complaint not found", false) : new Get_Complaint_Response(complaint, "Query Successful", true);
                 }
@@ -135,7 +137,7 @@ namespace s12.Services
 
         public async Task<Create_Complaint_Response> Create_Complaint(int event_Id, Create_Complaint_Request request)
         {
-            var Event = await _context.Events.FirstOrDefaultAsync(x => x.Id == event_Id);
+            var Event = await _context.Events.FirstOrDefaultAsync(x => x.Event_Id == event_Id);
             if (Event is null) return new Create_Complaint_Response(null, "Event not found", false);
             if (Event.Complaints is null)
                 Event.Complaints = new List<Complaint>();
@@ -143,10 +145,10 @@ namespace s12.Services
             {
                 Title = request.Title,
                 Description = request.Description,
-                Event_Id = Event.Id,
+                Event_Id = Event.Event_Id,
                 Reporter_Id = request.Reporter_Id ?? "Anonymous",
                 Reporter_Name = request.Reporter_Name ?? "Anonymous",
-                Media_Collection = request.Media_Collection is not null ? request.Media_Collection.Select(file => new Media
+                Media = request.Media_Collection is not null ? request.Media_Collection.Select(file => new Media
                 {
                     Type = file.ContentType,
                     Url = $"somePlaceOnserver/{file.FileName}"
@@ -172,7 +174,7 @@ namespace s12.Services
             // TODO: Update_Event Service
         }
 
-        public Task<List<Event_Get>> Get_Events_From_User(string owner_Email)
+        public Task<Get_Events_Response> Get_Events_From_User(string owner_Email)
         {
             //if is null empty or not a valid email
             if (owner_Email.IsNullOrEmpty() is false)
@@ -180,8 +182,9 @@ namespace s12.Services
                 try
                 {
                     var email = new MailAddress(owner_Email);
-                    var res = this.Events.Where(x => x.Event_Owner_Email == owner_Email).ToList();
-                    return Task.FromResult(res);
+                    var res = _context.Events.Where(x => x.Event_Owner_Email == owner_Email).ToList();
+                    
+                    return Task.FromResult( new Get_Events_Response ( res, String.Empty,true ));
                 }
                 catch (Exception e)
                 {

@@ -39,8 +39,8 @@ namespace s12.Services
         public async Task<List<Donation_Get?>> Get_By_Event_Id(int event_Id, bool? only_Mine = false, string? user_Name = null, bool? asOwner = false, bool? resumed = false, string? filter = null, int? pageSize = null, int? pageNumber = null)
         {
             //event exists??
-            var e = _events_Service.GetEvent(event_Id);
-            if (e == null) return null;
+            var e = await _events_Service.GetEvent(event_Id);
+            if (e.isSuccessfully is false) return null;
 
             var result = new List<Donation_Get?>();
             var donations = _dbContext.Donations.Where(x => x.Event_Id == event_Id);

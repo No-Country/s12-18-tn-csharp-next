@@ -157,11 +157,11 @@ namespace s12.Migrations
 
             modelBuilder.Entity("s12.Entities.DbSet.Complaint", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("Complaint_Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Complaint_Id"));
 
                     b.Property<DateTime>("Complaint_Date")
                         .HasColumnType("datetime2");
@@ -170,10 +170,10 @@ namespace s12.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("EventId")
+                    b.Property<int>("Event_Id")
                         .HasColumnType("int");
 
-                    b.Property<int>("Event_Id")
+                    b.Property<int?>("Event_Id1")
                         .HasColumnType("int");
 
                     b.Property<string>("Reporter_Id")
@@ -188,9 +188,9 @@ namespace s12.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("Complaint_Id");
 
-                    b.HasIndex("EventId");
+                    b.HasIndex("Event_Id1");
 
                     b.ToTable("Complaints");
                 });
@@ -238,11 +238,21 @@ namespace s12.Migrations
 
             modelBuilder.Entity("s12.Entities.DbSet.Event", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("Event_Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Event_Id"));
+
+                    b.Property<int>("Collect_Goal")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Collected")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Created_By_User")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Created_Date")
                         .HasColumnType("datetime2");
@@ -251,21 +261,18 @@ namespace s12.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Donors_Count")
+                        .HasColumnType("int");
+
                     b.Property<string>("Event_Owner_Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Goal")
-                        .HasColumnType("int");
 
                     b.Property<bool>("Has_Complaints")
                         .HasColumnType("bit");
 
                     b.Property<bool>("Is_Validated")
                         .HasColumnType("bit");
-
-                    b.Property<decimal>("Money_Collected")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -275,7 +282,7 @@ namespace s12.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("Event_Id");
 
                     b.ToTable("Events");
                 });
@@ -427,11 +434,11 @@ namespace s12.Migrations
                 {
                     b.HasOne("s12.Entities.DbSet.Event", null)
                         .WithMany("Complaints")
-                        .HasForeignKey("EventId");
+                        .HasForeignKey("Event_Id1");
 
-                    b.OwnsMany("s12.Entities.DbSet.Media", "Media_Collection", b1 =>
+                    b.OwnsMany("s12.Entities.DbSet.Media", "Media", b1 =>
                         {
-                            b1.Property<int>("ComplaintId")
+                            b1.Property<int>("Complaint_Id")
                                 .HasColumnType("int");
 
                             b1.Property<int>("Id")
@@ -446,24 +453,24 @@ namespace s12.Migrations
                                 .IsRequired()
                                 .HasColumnType("nvarchar(max)");
 
-                            b1.HasKey("ComplaintId", "Id");
+                            b1.HasKey("Complaint_Id", "Id");
 
                             b1.ToTable("Complaints");
 
-                            b1.ToJson("Media_Collection");
+                            b1.ToJson("Media");
 
                             b1.WithOwner()
-                                .HasForeignKey("ComplaintId");
+                                .HasForeignKey("Complaint_Id");
                         });
 
-                    b.Navigation("Media_Collection");
+                    b.Navigation("Media");
                 });
 
             modelBuilder.Entity("s12.Entities.DbSet.Event", b =>
                 {
-                    b.OwnsMany("s12.Entities.DbSet.Media", "Media_Collection", b1 =>
+                    b.OwnsMany("s12.Entities.DbSet.Media", "Media", b1 =>
                         {
-                            b1.Property<int>("EventId")
+                            b1.Property<int>("Event_Id")
                                 .HasColumnType("int");
 
                             b1.Property<int>("Id")
@@ -478,19 +485,19 @@ namespace s12.Migrations
                                 .IsRequired()
                                 .HasColumnType("nvarchar(max)");
 
-                            b1.HasKey("EventId", "Id");
+                            b1.HasKey("Event_Id", "Id");
 
                             b1.ToTable("Events");
 
-                            b1.ToJson("Media_Collection");
+                            b1.ToJson("Media");
 
                             b1.WithOwner()
-                                .HasForeignKey("EventId");
+                                .HasForeignKey("Event_Id");
                         });
 
                     b.OwnsOne("s12.Entities.DbSet.Geo", "Geo", b1 =>
                         {
-                            b1.Property<int>("EventId")
+                            b1.Property<int>("Event_Id")
                                 .HasColumnType("int");
 
                             b1.Property<string>("City")
@@ -511,20 +518,20 @@ namespace s12.Migrations
                                 .IsRequired()
                                 .HasColumnType("nvarchar(max)");
 
-                            b1.HasKey("EventId");
+                            b1.HasKey("Event_Id");
 
                             b1.ToTable("Events");
 
                             b1.ToJson("Geo");
 
                             b1.WithOwner()
-                                .HasForeignKey("EventId");
+                                .HasForeignKey("Event_Id");
                         });
 
                     b.Navigation("Geo")
                         .IsRequired();
 
-                    b.Navigation("Media_Collection");
+                    b.Navigation("Media");
                 });
 
             modelBuilder.Entity("s12.Entities.DbSet.User", b =>

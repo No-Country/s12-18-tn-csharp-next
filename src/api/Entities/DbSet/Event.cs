@@ -2,19 +2,21 @@ namespace s12.Entities.DbSet;
 
 public class Event
 {
-    public int Id { get; set; }
+    public int Event_Id { get; set; }
     public DateTime Created_Date { get; set; } = DateTime.UtcNow;
     public string User_Id { get; set; }
+    public string Created_By_User { get; set; }
     public bool Is_Validated { get; set; } = false;
     public string Description { get; set; } = string.Empty;
     public string Title { get; set; } = string.Empty;
     public Geo Geo { get; set; }
     public string Event_Owner_Email { get; set; } = string.Empty;
-    public ICollection<Media> Media_Collection { get; set; } = new List<Media>();
+    public ICollection<Media> Media { get; set; } = new List<Media>();
     public bool Has_Complaints { get; set; } = false;
     public List<Complaint> Complaints { get; set; }
-    public int Goal { get; set; }
-    public decimal Money_Collected { get; set; } = 0;
+    public int Collect_Goal { get; set; }
+    public decimal Collected { get; set; } = 0;
+    public int Donors_Count { get; set; }
 }
 
 public class Geo

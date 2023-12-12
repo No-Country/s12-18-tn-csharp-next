@@ -24,22 +24,33 @@ public class MyDbContext : IdentityDbContext<User>
             });
 
         builder
+           .Entity<Event>()
+           .Property(m => m.Event_Id)
+           .UseIdentityColumn();
+        
+        builder
             .Entity<Event>()
             .OwnsOne(e => e.Geo, builder =>
             {
                 builder.ToJson();
             })
-            .OwnsMany(e => e.Media_Collection, builder =>
+            .OwnsMany(e => e.Media, builder =>
             {
                 builder.ToJson();
-            });
+            }).HasKey(c => c.Event_Id); ;
 
 
         builder
             .Entity<Complaint>()
-            .OwnsMany(e => e.Media_Collection, builder =>
+            .OwnsMany(e => e.Media, builder =>
             {
                 builder.ToJson();
-            });
+            })
+            .HasKey( c => c.Complaint_Id);
+
+        builder
+            .Entity<Complaint>()
+            .Property(c => c.Complaint_Id)
+            .UseIdentityColumn();
     }
 }

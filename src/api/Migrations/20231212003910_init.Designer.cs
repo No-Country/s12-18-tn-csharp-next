@@ -12,15 +12,15 @@ using s12.DataService.Data;
 namespace s12.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20231202211243_Added Events and Events_Complaints")]
-    partial class AddedEventsandEvents_Complaints
+    [Migration("20231212003910_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.0")
+                .HasAnnotation("ProductVersion", "7.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -156,6 +156,138 @@ namespace s12.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("s12.Entities.DbSet.Complaint", b =>
+                {
+                    b.Property<int>("Complaint_Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Complaint_Id"));
+
+                    b.Property<DateTime>("Complaint_Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Event_Id")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Event_Id1")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Reporter_Id")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Reporter_Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Complaint_Id");
+
+                    b.HasIndex("Event_Id1");
+
+                    b.ToTable("Complaints");
+                });
+
+            modelBuilder.Entity("s12.Entities.DbSet.Donation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Donation_Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Donation_Date")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Donation_Message")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Donor_Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Donor_Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Event_Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Owner_Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Payment_Id")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Donations");
+                });
+
+            modelBuilder.Entity("s12.Entities.DbSet.Event", b =>
+                {
+                    b.Property<int>("Event_Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Event_Id"));
+
+                    b.Property<int>("Collect_Goal")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Collected")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Created_By_User")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Created_Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Donors_Count")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Event_Owner_Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Has_Complaints")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Is_Validated")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("User_Id")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Event_Id");
+
+                    b.ToTable("Events");
                 });
 
             modelBuilder.Entity("s12.Entities.DbSet.User", b =>
@@ -301,6 +433,110 @@ namespace s12.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("s12.Entities.DbSet.Complaint", b =>
+                {
+                    b.HasOne("s12.Entities.DbSet.Event", null)
+                        .WithMany("Complaints")
+                        .HasForeignKey("Event_Id1");
+
+                    b.OwnsMany("s12.Entities.DbSet.Media", "Media", b1 =>
+                        {
+                            b1.Property<int>("Complaint_Id")
+                                .HasColumnType("int");
+
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int");
+
+                            b1.Property<string>("Type")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Url")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("Complaint_Id", "Id");
+
+                            b1.ToTable("Complaints");
+
+                            b1.ToJson("Media");
+
+                            b1.WithOwner()
+                                .HasForeignKey("Complaint_Id");
+                        });
+
+                    b.Navigation("Media");
+                });
+
+            modelBuilder.Entity("s12.Entities.DbSet.Event", b =>
+                {
+                    b.OwnsMany("s12.Entities.DbSet.Media", "Media", b1 =>
+                        {
+                            b1.Property<int>("Event_Id")
+                                .HasColumnType("int");
+
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int");
+
+                            b1.Property<string>("Type")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Url")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("Event_Id", "Id");
+
+                            b1.ToTable("Events");
+
+                            b1.ToJson("Media");
+
+                            b1.WithOwner()
+                                .HasForeignKey("Event_Id");
+                        });
+
+                    b.OwnsOne("s12.Entities.DbSet.Geo", "Geo", b1 =>
+                        {
+                            b1.Property<int>("Event_Id")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("City")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Country")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<double>("Lat")
+                                .HasColumnType("float");
+
+                            b1.Property<double>("Long")
+                                .HasColumnType("float");
+
+                            b1.Property<string>("Provice")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("Event_Id");
+
+                            b1.ToTable("Events");
+
+                            b1.ToJson("Geo");
+
+                            b1.WithOwner()
+                                .HasForeignKey("Event_Id");
+                        });
+
+                    b.Navigation("Geo")
+                        .IsRequired();
+
+                    b.Navigation("Media");
+                });
+
             modelBuilder.Entity("s12.Entities.DbSet.User", b =>
                 {
                     b.OwnsOne("s12.Entities.DbSet.Bank_Details", "Bank_Details", b1 =>
@@ -330,6 +566,11 @@ namespace s12.Migrations
                         });
 
                     b.Navigation("Bank_Details");
+                });
+
+            modelBuilder.Entity("s12.Entities.DbSet.Event", b =>
+                {
+                    b.Navigation("Complaints");
                 });
 #pragma warning restore 612, 618
         }

@@ -50,7 +50,7 @@ namespace s12.Controllers
 
             if (!result.isSuccessfully)
                 return BadRequest(result.message);
-            return CreatedAtAction(nameof(Get_Event_By_Id), new { event_Id = result.event_Created.Id }, result.event_Created);
+            return CreatedAtAction(nameof(Get_Event_By_Id), new { event_Id = result.event_Created.Event_Id }, result.event_Created);
 
         }
 
