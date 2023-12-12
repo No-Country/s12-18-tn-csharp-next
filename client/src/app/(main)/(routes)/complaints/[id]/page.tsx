@@ -36,82 +36,72 @@ interface DateInfo {
   }
 
 const ComplaintsPage = ({ complaintsData }: ComplaintsViewProps) => {
-
-  // Obtengo el id de los parámetros de la URL
-  const { id } = useParams();
-  //console.log(id);
-
-
-  const [fetchedData, setFetchedData] = useState<Complaint[]>([]);
-
-  //console.log(localStorage);
-
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // Verifico que id no sea undefined o null
-        if (id) {
-          const response = await fetch(`https://s12csharpnext.somee.com/Events/${id}/complaints`);
-          
-          if (response.ok) {
-            const data = await response.json();
-            setFetchedData(data);
+    const { id } = useParams();
+    const [fetchedData, setFetchedData] = useState<Complaint[] | null>(null); // Inicializado como null
+  
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          if (id) {
+            const response = await fetch(`https://s12csharpnext.somee.com/Events/${id}/complaints`);
+            
+            if (response.ok) {
+              const data = await response.json();
+              setFetchedData(data);
+            } else {
+              console.error("Failed to fetch data");
+            }
           } else {
-            console.error("Failed to fetch data");
+            console.error("Invalid id parameter");
           }
-        } else {
-          console.error("Invalid id parameter");
+        } catch (error) {
+          console.error("Error fetching data:", error);
         }
-      } catch (error) {
-        console.error("Error fetching data:", error);
+      };
+    
+      fetchData();
+    }, [id]); // Agregado id como dependencia del efecto
+  
+    const formatDate = (dateString: string) => {
+      if (!dateString) {
+        return "Fecha inválida";
       }
+    
+      const date = new Date(dateString);
+      const options = { year: "numeric", month: "long", day: "numeric" };
+      const formattedDate = date.toLocaleDateString();
+      return formattedDate;
     };
   
-    fetchData();
-  }, []); 
-
-  console.log(fetchedData);
-
-  // Función para dar formato a la fecha
-  const formatDate = (dateString: string) => {
-    if (!dateString) {
-      return "Fecha inválida";
-    }
-  
-    const date = new Date(dateString);
-    const options = { year: "numeric", month: "long", day: "numeric" };
-    const formattedDate = date.toLocaleDateString();
-    return formattedDate;
-  };
-
-  return (
-    <div className="w-screen px-5 md:px-[20%] h-[50%]">
-      <h1 className="text-center mt-3">Reclamos</h1>
-      <div className="my-5">
-        <section className="">
-          {fetchedData.length === 0 ? (
-            <Card className="h-56 border-black flex justify-center items-center">
-              <p className="font-semibold text-lg">No hay reclamos en este evento.</p>
-            </Card>
-          ) : (
-            fetchedData.map((complaint) => (
-              <Card key={complaint.complaint_Id} className="border-black">
-                <CardHeader>
-                  <CardTitle className="text-lg font-bold hover:underline">{complaint.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p><b>Reporter:</b> {complaint.reporter_Name}</p>
-                  <p><b>Description:</b> {complaint.description}</p>
-                  <p><b>Date:</b> {(formatDate as any)(complaint.complaint_Date)}</p>
-                </CardContent>
+    return (
+      <div className="w-screen px-5 md:px-[20%] h-[50%]">
+        <h1 className="text-center mt-3">Reclamos</h1>
+        <div className="my-5">
+          <section className="">
+            {fetchedData === null ? (
+              <p className="text-center text-lg font-semibold mt-24">Esperando datos...</p>
+            ) : fetchedData.length === 0 ? (
+              <Card className="h-56 border-black flex justify-center items-center">
+                <p className="font-semibold text-lg">No hay reclamos en este evento.</p>
               </Card>
-            ))
-          )}
-        </section>
+            ) : (
+              fetchedData.map((complaint) => (
+                <Card key={complaint.complaint_Id} className="border-black">
+                  <CardHeader>
+                    <CardTitle className="text-lg font-bold hover:underline">{complaint.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p><b>Nombre del reclamante:</b> {complaint.reporter_Name}.</p>
+                    <p><b>Descripción del reclamo:</b> {complaint.description}</p>
+                    <p><b>Fecha del reclamo:</b> {(formatDate as any)(complaint.complaint_Date)}.</p>
+                  </CardContent>
+                </Card>
+              ))
+            )}
+          </section>
+        </div>
       </div>
-    </div>
-  );
-};
-
-export default ComplaintsPage;
+    );
+  };
+  
+  export default ComplaintsPage;
