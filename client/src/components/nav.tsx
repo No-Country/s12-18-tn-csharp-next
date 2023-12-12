@@ -20,7 +20,8 @@ import { cn } from "@/lib";
 export const Nav = () => {
   const router = useRouter();
 
-  const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [showControls, setShowControls] = useState(false);
   const { user: currentUser } = useAppSelector(selectAuth);
 
   const { handleRemoveUser } = useAuthActions();
@@ -42,6 +43,10 @@ export const Nav = () => {
       setModalIsOpen(false);
     }
   }, [isBigScreen]);
+
+  useEffect(() => {
+    setShowControls(true);
+  }, []);
 
   return (
     <>
@@ -79,19 +84,25 @@ export const Nav = () => {
               !isAuth ? "gap-10" : "gap-6",
             )}
           >
-            {!isAuth ? (
-              <ul className="flex items-center gap-10">
-                <li>
-                  <Link href="/sign-in">Ingreso</Link>
-                </li>
-                <li>
-                  <Link href="/sign-up">
-                    <Button>Registro</Button>
-                  </Link>
-                </li>
-              </ul>
-            ) : (
-              <>{isBigScreen && <ProfileDropdown logout={handleLogout} />}</>
+            {showControls && (
+              <>
+                {!isAuth ? (
+                  <ul className="flex items-center gap-10">
+                    <li>
+                      <Link href="/sign-in">Ingreso</Link>
+                    </li>
+                    <li>
+                      <Link href="/sign-up">
+                        <Button>Registro</Button>
+                      </Link>
+                    </li>
+                  </ul>
+                ) : (
+                  <>
+                    {isBigScreen && <ProfileDropdown logout={handleLogout} />}
+                  </>
+                )}
+              </>
             )}
             <ModeToggle />
           </div>
