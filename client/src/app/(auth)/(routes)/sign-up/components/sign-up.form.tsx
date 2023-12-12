@@ -29,6 +29,11 @@ import { signUpSchema } from "@/app/(auth)/(routes)/sign-up/schemas";
 import { useSignUp } from "@/app/(auth)/(routes)/sign-up/hooks";
 //import { GenericFormField } from "@/app/(auth)/components";
 
+/**
+ * Formulario para el regsitro de usuario.
+ * 
+ * @returns { JSX.Element } Formulario de registro.
+ */
 export const SignUpForm: FC = (): JSX.Element => {
     /**
      * Hook del formulario de registro en la aplicación.
@@ -42,7 +47,10 @@ export const SignUpForm: FC = (): JSX.Element => {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(handleAuth)} className="flex flex-col gap-y-5">
+            <form
+                className="flex flex-col gap-y-5"
+                onSubmit={form.handleSubmit(handleAuth)}
+            >
                 <h1 className="text-4xl text-center"> Registrate </h1>
                 <FormField
                     control={form.control}
@@ -69,6 +77,7 @@ export const SignUpForm: FC = (): JSX.Element => {
                             <FormControl>
                                 <Input
                                     placeholder="Ingresa tu E-mail"
+                                    type="email"
                                     {...field}
                                 />
                             </FormControl>
@@ -85,6 +94,7 @@ export const SignUpForm: FC = (): JSX.Element => {
                             <FormControl>
                                 <Input
                                     placeholder="Ingresa tu Contraseña"
+                                    type="password"
                                     {...field}
                                 />
                             </FormControl>
@@ -133,14 +143,19 @@ export const SignUpForm: FC = (): JSX.Element => {
                                         </Button>
                                     </FormControl>
                                 </PopoverTrigger>
-                                <PopoverContent className="w-auto p-0" align="start">
+                                <PopoverContent
+                                    className="w-auto p-0"
+                                    align="start"
+                                >
                                     <Calendar
                                         mode="single"
                                         selected={field.value}
                                         onSelect={field.onChange}
                                         defaultMonth={validDate}
                                         disabled={(date) =>
-                                            date > new Date() || date < new Date("1900-01-01") || date > validDate
+                                            date > new Date() ||
+                                            date < new Date("1900-01-01") ||
+                                            date > validDate
                                         }
                                         initialFocus
                                     />
@@ -158,9 +173,9 @@ export const SignUpForm: FC = (): JSX.Element => {
                             <FormLabel> Género : </FormLabel>
                             <FormControl>
                                 <RadioGroup
+                                    className="flex flex-col space-y-1"
                                     onValueChange={field.onChange}
                                     defaultValue={field.value}
-                                    className="flex flex-col space-y-1"
                                 >
                                     <FormItem className="flex items-center space-x-3 space-y-0">
                                         <FormControl>
@@ -190,7 +205,16 @@ export const SignUpForm: FC = (): JSX.Element => {
                         </FormItem>
                     )}
                 />
-                <Button className="mt-5 bg-black text-white hover:border hover:border-black dark:hover:border-white dark:bg-white dark:text-black hover:bg-white hover:text-black dark:hover:bg-black dark:hover:text-white" type="submit"> Registrate </Button>
+                <Button
+                    className="
+                        mt-5 bg-black text-white hover:border hover:border-black dark:hover:border-white
+                        dark:bg-white dark:text-black hover:bg-white hover:text-black dark:hover:bg-black
+                        dark:hover:text-white
+                    "
+                    type="submit"
+                >
+                    Registrate
+                </Button>
             </form>
         </Form>
     );

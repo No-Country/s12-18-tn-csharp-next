@@ -12,6 +12,7 @@ import {
     FormField,
     FormItem,
     FormLabel,
+    FormMessage
 } from "@/components/ui";
 import { signInSchema } from "@/app/(auth)/(routes)/sign-in/schemas";
 import { signUpDefaultValues, type SignInSchema } from "@/app/(auth)/(routes)/sign-in/models";
@@ -30,7 +31,10 @@ export const SignInForm: FC = (): JSX.Element => {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(handleAuth)} className="flex flex-col gap-y-5">
+            <form
+                className="flex flex-col gap-y-5"
+                onSubmit={form.handleSubmit(handleAuth)}
+            >
                 <h1 className="text-4xl text-center"> Iniciar Sesión </h1>
                 <FormField
                     control={form.control}
@@ -41,11 +45,13 @@ export const SignInForm: FC = (): JSX.Element => {
                             <FormControl>
                                 <Input
                                     placeholder="Ingresa tu E-mail"
+                                    type="email"
                                     {...field}
                                     value={field.value}
                                     onChange={field.onChange}
                                 />
                             </FormControl>
+                            <FormMessage />
                         </FormItem>
                     )}
                 />
@@ -58,15 +64,26 @@ export const SignInForm: FC = (): JSX.Element => {
                             <FormControl>
                                 <Input
                                     placeholder="Ingresa tu Contraseña"
+                                    type="password"
                                     {...field}
                                     value={field.value}
                                     onChange={field.onChange}
                                 />
                             </FormControl>
+                            <FormMessage />
                         </FormItem>
                     )}
                 />
-                <Button className="mt-5 bg-black text-white hover:border hover:border-black dark:bg-white dark:text-black hover:bg-white hover:text-black dark:hover:border-white dark:hover:bg-black dark:hover:text-white" type="submit"> Iniciar Sesión </Button>
+                <Button
+                    className="
+                        mt-5 bg-black text-white hover:border hover:border-black dark:bg-white dark:text-black
+                        hover:bg-white hover:text-black dark:hover:border-white dark:hover:bg-black
+                        dark:hover:text-white
+                    "
+                    type="submit"
+                >
+                    Iniciar Sesión
+                </Button>
             </form>
         </Form>
     );
