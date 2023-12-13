@@ -99,12 +99,14 @@ namespace s12.Services
         }
 
 
-        public async Task<Donation_Get> Create(int event_Id, Donation donation)
+        public async Task<Donation_Get> CreateAsync(int event_Id, Donation_Post donation_Post, string? Donor_Email, string? actual_User_Name)
         {
             //event exists??
             // TODO Blocked, events service missing
             var result = await _events_Service.GetEvent(event_Id);
-            if (result.isSuccessfully == false) throw new InvalidOperationException("event not found");
+            if (result.isSuccessfully is false) throw new InvalidOperationException("event not found");
+
+            var donation = donation_Post.ToDonation(event_Id, Donor_Email, actual_User_Name);
 
             //var the_user = _dbContext.Users.FirstOrDefault(x => x.NormalizedEmail.Equals(donation.Donor_Email));
             donation.Donation_Date = DateTime.Now.ToString();
@@ -113,7 +115,7 @@ namespace s12.Services
             //this needs to be specified
             donation.Payment_Id = Random.Shared.Next().ToString();
             _dbContext.Donations.Add(donation);
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
             return donation.ToDonation_Get();
         }
 

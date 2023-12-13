@@ -112,9 +112,10 @@ builder.Services.AddCors(policyBuilder =>
 builder.Services.AddScoped<Events_Service>();
 builder.Services.AddScoped<Users_Service>();
 builder.Services.AddScoped<Donations_Service>();
-
+builder.Services.AddScoped<Local_MediaStorage_Service>();
 
 var app = builder.Build();
+app.UseStaticFiles();
 app.UseCors();
 
 // Configure the HTTP request pipeline.

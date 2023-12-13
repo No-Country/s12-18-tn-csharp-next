@@ -39,7 +39,7 @@ public static class SeedManager
             Description = "Ayuda a las víctimas del reciente terremoto en Nepal contribuyendo a nuestro fondo de ayuda.",
             Collect_Goal = 100000,
             Collected = 0,
-            Media = new Media[]
+            Media = new List<Media>
             {
                 new Media { Type = Media_Type.Image.ToString(), Url = "https://example.com/nepal_terremoto.jpg" },
                 new Media { Type = Media_Type.Video.ToString(), Url = "https://example.com/nepal_terremoto_video.mp4" }
@@ -62,7 +62,7 @@ public static class SeedManager
                         Reporter_Name = "UsuarioReportero",
                         Title = "Problema con la Recaudación de Fondos",
                         Description = "Me gustaría informar sobre un problema relacionado con la recaudación de fondos para el evento de ayuda por terremoto en Nepal.",
-                        Media = new Media[]
+                        Media = new List<Media>
                         {
                             new Media { Type = Media_Type.Image.ToString(), Url = "https://example.com/complaint_image.jpg" },
                             new Media { Type = Media_Type.Document.ToString(), Url = "https://example.com/complaint_document.pdf" }
@@ -82,7 +82,7 @@ public static class SeedManager
             Description = "Apoya nuestros esfuerzos para proporcionar ayuda de emergencia a las regiones afectadas por las inundaciones en Bangladesh.",
             Collect_Goal = 75000,
             Collected = 0,
-            Media = new Media[]
+            Media = new  List<Media>
             {
                 new Media { Type = Media_Type.Image.ToString(), Url = "https://example.com/bangladesh_inundacion.jpg" },
                 new Media { Type = Media_Type.Document.ToString(), Url = "https://example.com/bangladesh_plan_ayuda.pdf" }
@@ -108,7 +108,7 @@ public static class SeedManager
             Description = "Ayúdanos a proporcionar ayuda a quienes se han visto afectados por los incendios forestales en California.",
             Collect_Goal = 120000,
             Collected = 0,
-            Media = new Media[]
+            Media = new List<Media>
             {
                 new Media { Type = Media_Type.Image.ToString(), Url = "https://example.com/california_incendio.jpg" },
                 new Media { Type = Media_Type.Video.ToString(), Url = "https://example.com/california_incendio_video.mp4" }

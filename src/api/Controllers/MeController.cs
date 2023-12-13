@@ -21,7 +21,7 @@ namespace s12.Controllers
         }
 
         [HttpGet]
-        //[Authorize]
+        [Authorize]
         public async Task<ActionResult<User_Get>> Get([EmailAddress] string? user_Email)
         {
             //TODO change this when front has already been integrated, => remove parameter

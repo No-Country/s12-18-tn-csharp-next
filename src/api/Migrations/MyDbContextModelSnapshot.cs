@@ -445,6 +445,10 @@ namespace s12.Migrations
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("int");
 
+                            b1.Property<string>("OriginalFileName")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
                             b1.Property<string>("Type")
                                 .IsRequired()
                                 .HasColumnType("nvarchar(max)");
@@ -476,6 +480,10 @@ namespace s12.Migrations
                             b1.Property<int>("Id")
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("int");
+
+                            b1.Property<string>("OriginalFileName")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("Type")
                                 .IsRequired()

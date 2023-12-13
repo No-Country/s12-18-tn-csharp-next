@@ -40,13 +40,13 @@ namespace s12.Controllers
 
         // POST: Event
         [HttpPost]
-
         [Authorize(Policy = "StandardRights")]
-        public async Task<ActionResult> Create_Event([FromForm] Create_Event_Request request)
+        public async Task<ActionResult> Create_Event([FromBody] Create_Event_Request request, [FromForm] IFormFile[] media)
         {
             var user_Email = User.FindFirst("Email")?.Value;
             var user_Id = User.FindFirst("Id")?.Value;
-            var result = await _events_Service.CreateEvent(request, user_Id, user_Email);
+            var user_Name = User.FindFirst("Name")?.Value;
+            var result = await _events_Service.CreateEvent(request, user_Id, user_Email,user_Name);
 
             if (!result.isSuccessfully)
                 return BadRequest(result.message);
@@ -54,19 +54,44 @@ namespace s12.Controllers
 
         }
 
-        // [HttpPut("{event_Id}/Media")]
-        // //[Authorize]
-        // public ActionResult<IEnumerable<Media[]>> Post_Media(int event_Id, [FromForm] IFormFile[] media)
-        // {
-        //     var e = _events_Service.Events.FirstOrDefault(x => x.Event_Id == event_Id);
-        //     if (e is null) return BadRequest();
+        /// <summary>
+        /// Add media to an event
+        /// </summary>
+        /// <param name="event_Id"></param>
+        /// <param name="media"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpPost("{event_Id}/Media")]
+        public async Task<ActionResult<IEnumerable<Media[]>>> Post_Media(int event_Id, [FromForm] IFormFile[] media)
+        {
+            //TODO move to service
+            #region This needs to be part of Service
+            var e = await _events_Service.GetEvent(event_Id);
 
-        //     var _media = media.Select(x => new Media() { Type = x.ContentType, Url = $"somePlaceOnserver/{x.FileName}" });
-        //     if (e.Media is null) e.Media = new Media[0];
-        //     e.Media = e.Media.Concat(_media).ToArray();
+            if (e.isSuccessfully is false) return BadRequest(new { error = e.message });
 
-        //     return CreatedAtAction(nameof(Get), new { event_Id = e.Event_Id }, e.Media);
-        // }
+            //do you own the event?
+            if (e.Event.Event_Owner_Email != User.FindFirst("Email").Value)
+                return BadRequest(new { error = "you dont own this event" }); 
+            #endregion
+
+            //store the media
+            var streams = media
+                .Select(x => new MediaStream() 
+                    { Type = x.ContentType,
+                    FileName = x.FileName,
+                    Stream =x.OpenReadStream()  })
+                .ToArray();
+
+            var res = await _events_Service.AddMediaToEventAsync(event_Id,streams);
+            if(res.isSuccessfully is false)
+            {
+                return BadRequest(res); //not only bad request, could be 500
+            }
+
+           var result = Created(nameof(Get_Event_By_Id), new { event_Id});
+            return CreatedAtAction("Get_Event_By_Id", new { event_Id },e);
+        }
     }
 
     //TODO move this classes to common

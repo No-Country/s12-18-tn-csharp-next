@@ -11,7 +11,7 @@ public class Event
     public string Title { get; set; } = string.Empty;
     public Geo Geo { get; set; }
     public string Event_Owner_Email { get; set; } = string.Empty;
-    public ICollection<Media> Media { get; set; } = new List<Media>();
+    public List<Media> Media { get; set; } = new List<Media>();
     public bool Has_Complaints { get; set; } = false;
     public List<Complaint> Complaints { get; set; }
     public int Collect_Goal { get; set; }
@@ -31,8 +31,16 @@ public class Geo
 // TODO: Move this to common
 public class Media
 {
+    public string OriginalFileName { get; set; }
     public string Type { get; set; }
     public string Url { get; set; }
+}
+
+public class MediaStream
+{
+    public string Type { get; set; }
+    public string FileName { get; set; }
+    public Stream Stream { get;set; }
 }
 
 public enum Media_Type

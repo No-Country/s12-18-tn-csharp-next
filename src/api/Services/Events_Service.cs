@@ -9,6 +9,7 @@ using s12.DataService.Data;
 using s12.Entities.DbSet;
 using s12.Entities.Dtos.Requests;
 using s12.Entities.Dtos.Responses;
+using s12.Migrations;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.Eventing.Reader;
 using System.Net.Mail;
@@ -17,32 +18,34 @@ namespace s12.Services
 {
     public interface IEvents_Service
     {
-      //  Task<List<Event_Get>> Get_Events_From_User(string owner_Email);
+        //  Task<List<Event_Get>> Get_Events_From_User(string owner_Email);
     }
 
     public class Events_Service : IEvents_Service
     {
         private readonly MyDbContext _context;
+        private readonly Local_MediaStorage_Service _local_MediaStorage_Service;
 
-        public Events_Service(MyDbContext context)
+        public Events_Service(MyDbContext context, Local_MediaStorage_Service local_MediaStorage_Service)
         {
             _context = context;
+            _local_MediaStorage_Service = local_MediaStorage_Service;
         }
 
         public async Task<Get_Events_Response> GetEvents(int? pageSize, int? pageNumber)
         {
             try
             {
-                IQueryable<Event> query =  _context.Events
+                IQueryable<Event> query = _context.Events
                     .Include(x => x.Complaints);
-                    //ToListAsync();
+                //ToListAsync();
 
                 if (pageSize.HasValue && pageNumber.HasValue)
                 {
                     query = query
                         .Skip((pageNumber.Value * pageSize.Value))
                         .Take(pageSize.Value).AsQueryable();
-                       // .ToList();
+                    // .ToList();
                 }
 
                 return new Get_Events_Response(await query.ToListAsync(), "Query Successful", true);
@@ -57,7 +60,7 @@ namespace s12.Services
         {
             try
             {
-                var Event = await _context.Events.FirstOrDefaultAsync(x => x.Event_Id == event_Id);
+                var Event = await _context.Events.Include( x => x.Complaints).FirstOrDefaultAsync(x => x.Event_Id == event_Id);
                 if (Event is null)
                     return new Get_Event_Response(null, "Event not found", false);
 
@@ -70,22 +73,20 @@ namespace s12.Services
         }
 
         // TODO: Refactor To Create_Event_Response
-        public async Task<Create_Event_Response> CreateEvent(Create_Event_Request request, string? user_Id, string? user_Email)
+        public async Task<Create_Event_Response> CreateEvent(Create_Event_Request request, string? user_Id, string? user_Email, string? user_Name)
         {
             try
             {
-                // TODO: Error Handling
-
-                // TODO: Upload_Media Service
                 var new_Event = new Event()
                 {
                     Title = request.Title,
                     Description = request.Description,
+                    Created_By_User = user_Name??String.Empty,
                     Geo = request.Geo,
-                    Is_Validated = request.Is_Validated,
+                    // Is_Validated = request.Is_Validated,
                     Event_Owner_Email = user_Email,
-                    Collect_Goal = request.Goal,
-                    Media = request.Media_Collection is not null ? request.Media_Collection.Select(x => new Media() { Type = x.ContentType, Url = $"somePlaceOnserver/{x.FileName}" }).ToList() : new List<Media>(),
+                    Collect_Goal = request.Collect_Goal,
+                    // Media = request.Media_Collection is not null ? request.Media_Collection.Select(x => new Media() { Type = x.ContentType, Url = $"somePlaceOnserver/{x.FileName}" }).ToList() : new List<Media>(),
                     User_Id = user_Id,
                     Complaints = new List<Complaint>()
                 };
@@ -97,6 +98,55 @@ namespace s12.Services
             {
                 return new Create_Event_Response(null, e.Message, false);
             }
+        }
+
+        public async Task<Create_Event_Response> AddMediaToEventAsync(int event_Id, MediaStream[] media)
+        {
+            if (media.Any() is false)  return new Create_Event_Response( null,"empty", false);
+
+            List<Media> theStoredMedia =  await _local_MediaStorage_Service.SaveMediaAsync(media);
+            var theEvent = (await this.GetEvent(event_Id));
+
+            if(theEvent is null) return new Create_Event_Response(null, "event not found", false);
+
+            try
+            {
+                theEvent.Event.Media.AddRange(theStoredMedia);
+                _context.Entry(theEvent.Event).State = EntityState.Modified;
+                var res = await _context.SaveChangesAsync();
+                return new Create_Event_Response(theEvent.Event, "Media Added", true);
+            }
+            catch (Exception das)
+            {
+                //TODO Refactor
+                string  exs = das.Message;
+                var ex = das;
+                while (ex.InnerException != null)
+                {
+                    var inner = das.InnerException;
+                    exs +=" | " +inner.Message;
+                    ex = ex.InnerException;
+                }
+                return new Create_Event_Response(null, exs, false);
+                //throw;
+            }
+        }
+
+        public async Task<Create_Event_Response> DeleteEventMedia(int[] mediaIds)
+        {
+            throw new NotImplementedException();
+            if (mediaIds.Any())
+            {
+                return new Create_Event_Response(null, "deleted", true);
+            }
+            else
+                return new Create_Event_Response(null, "No media Ids", false);
+        }
+
+        //TODO requiere que media tenga un id y un indice
+        public async Task<Create_Event_Response> ChangeMediaOrder(int mediaId, int newIndex)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<Get_Complaints_Response> Get_Complaints_From_Event(int event_Id, int? pageSize, int? pageNumber)
@@ -120,7 +170,7 @@ namespace s12.Services
         {
             try
             {
-                var Event = await _context.Events.FirstOrDefaultAsync(x => x.Event_Id == event_id);
+                var Event = await _context.Events.Include( x => x.Complaints). FirstOrDefaultAsync(x => x.Event_Id == event_id);
                 if (Event is not null && Event.Has_Complaints)
                 {
                     var complaint = Event.Complaints.FirstOrDefault(c => c.Complaint_Id == complaint_id);
@@ -183,12 +233,12 @@ namespace s12.Services
                 {
                     var email = new MailAddress(owner_Email);
                     var res = _context.Events.Where(x => x.Event_Owner_Email == owner_Email).ToList();
-                    
-                    return Task.FromResult( new Get_Events_Response ( res, String.Empty,true ));
+
+                    return Task.FromResult(new Get_Events_Response(res, String.Empty, true));
                 }
                 catch (Exception e)
                 {
-                    throw new ArgumentException(nameof(owner_Email),e);
+                    throw new ArgumentException(nameof(owner_Email), e);
                 }
             }
             throw new ArgumentNullException(nameof(owner_Email));
