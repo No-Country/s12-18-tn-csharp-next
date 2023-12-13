@@ -69,13 +69,6 @@ const EventSearchCard = ({
             author={author}
             handleCopy={handleCopy}
           />
-          <Button
-            onClick={handleCopy}
-            variant="ghost"
-            className={cn("mt-1 px-3 py-1")}
-          >
-            <Share size={16} />
-          </Button>
         </div>
       </div>
       <Separator />
