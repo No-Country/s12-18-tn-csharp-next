@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace s12.Migrations
 {
     /// <inheritdoc />
-    public partial class initialmigration : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -31,6 +31,13 @@ namespace s12.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Dni = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DateOfBirth = table.Column<DateTime>(name: "Date_Of_Birth", type: "datetime2", nullable: false),
+                    IsVerified = table.Column<bool>(name: "Is_Verified", type: "bit", nullable: false),
+                    IsOng = table.Column<bool>(name: "Is_Ong", type: "bit", nullable: false),
+                    IsDeleted = table.Column<bool>(name: "Is_Deleted", type: "bit", nullable: false),
+                    IsBanned = table.Column<bool>(name: "Is_Banned", type: "bit", nullable: false),
+                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -44,11 +51,57 @@ namespace s12.Migrations
                     TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false),
+                    BankDetails = table.Column<string>(name: "Bank_Details", type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Donations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EventId = table.Column<int>(name: "Event_Id", type: "int", nullable: false),
+                    OwnerEmail = table.Column<string>(name: "Owner_Email", type: "nvarchar(max)", nullable: false),
+                    DonorName = table.Column<string>(name: "Donor_Name", type: "nvarchar(max)", nullable: false),
+                    DonorEmail = table.Column<string>(name: "Donor_Email", type: "nvarchar(max)", nullable: false),
+                    DonationAmount = table.Column<decimal>(name: "Donation_Amount", type: "decimal(18,2)", nullable: false),
+                    DonationDate = table.Column<string>(name: "Donation_Date", type: "nvarchar(max)", nullable: false),
+                    PaymentId = table.Column<string>(name: "Payment_Id", type: "nvarchar(max)", nullable: true),
+                    DonationMessage = table.Column<string>(name: "Donation_Message", type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Donations", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Events",
+                columns: table => new
+                {
+                    EventId = table.Column<int>(name: "Event_Id", type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CreatedDate = table.Column<DateTime>(name: "Created_Date", type: "datetime2", nullable: false),
+                    UserId = table.Column<string>(name: "User_Id", type: "nvarchar(max)", nullable: false),
+                    CreatedByUser = table.Column<string>(name: "Created_By_User", type: "nvarchar(max)", nullable: false),
+                    IsValidated = table.Column<bool>(name: "Is_Validated", type: "bit", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EventOwnerEmail = table.Column<string>(name: "Event_Owner_Email", type: "nvarchar(max)", nullable: false),
+                    HasComplaints = table.Column<bool>(name: "Has_Complaints", type: "bit", nullable: false),
+                    CollectGoal = table.Column<int>(name: "Collect_Goal", type: "int", nullable: false),
+                    Collected = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    DonorsCount = table.Column<int>(name: "Donors_Count", type: "int", nullable: false),
+                    Geo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Media = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Events", x => x.EventId);
                 });
 
             migrationBuilder.CreateTable(
@@ -157,6 +210,31 @@ namespace s12.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Complaints",
+                columns: table => new
+                {
+                    ComplaintId = table.Column<int>(name: "Complaint_Id", type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ComplaintDate = table.Column<DateTime>(name: "Complaint_Date", type: "datetime2", nullable: false),
+                    EventId = table.Column<int>(name: "Event_Id", type: "int", nullable: false),
+                    ReporterId = table.Column<string>(name: "Reporter_Id", type: "nvarchar(max)", nullable: false),
+                    ReporterName = table.Column<string>(name: "Reporter_Name", type: "nvarchar(max)", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EventId1 = table.Column<int>(name: "Event_Id1", type: "int", nullable: true),
+                    Media = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Complaints", x => x.ComplaintId);
+                    table.ForeignKey(
+                        name: "FK_Complaints_Events_Event_Id1",
+                        column: x => x.EventId1,
+                        principalTable: "Events",
+                        principalColumn: "Event_Id");
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -195,6 +273,11 @@ namespace s12.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Complaints_Event_Id1",
+                table: "Complaints",
+                column: "Event_Id1");
         }
 
         /// <inheritdoc />
@@ -216,10 +299,19 @@ namespace s12.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Complaints");
+
+            migrationBuilder.DropTable(
+                name: "Donations");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Events");
         }
     }
 }

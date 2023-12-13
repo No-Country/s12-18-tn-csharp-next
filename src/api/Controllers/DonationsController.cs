@@ -27,7 +27,7 @@ namespace s12.Controllers
         /// <param name="event_Id"></param>
         /// <returns></returns>
         [HttpGet("{event_Id}")]
-        public async Task<ActionResult<List<Donation_Get>>> Get(int event_Id, bool? only_Mine, int pageSize = 0, int pageNumber = 0)
+        public async Task<ActionResult<List<Donation_Get>>> Get(int event_Id, bool? only_Mine, int? pageSize = 0, int? pageNumber = 0)
         {
             bool asOwner = true;
             var actual_User_Email = User.FindFirst("Email")?.Value;
@@ -39,22 +39,23 @@ namespace s12.Controllers
 
         [Authorize]
         [HttpPost("{event_Id}")]
-        public ActionResult<Donation_Get> Post(int event_Id,[FromBody] Donation_Post donation)
+        public async Task<ActionResult<Donation_Get>> Post(int event_Id,[FromBody] Donation_Post donation)
         {
             var actual_User_Email = User.FindFirst("Email")?.Value;
             var actual_User_Name = User.FindFirst("Name")?.Value;
-            //TODO refactor
-            Donation post = new Donation
+            try
             {
-                Donation_Amount = donation.Donation_Amount,
-                Donation_Message = donation.Donation_Message,
-                Donor_Email = actual_User_Email,
-                Event_Id = event_Id,
-                Donor_Name = actual_User_Name
-            };
-
-            _donations_Service.Create(event_Id, post);
-            return Ok();
+                var res= await _donations_Service.CreateAsync(event_Id, donation, actual_User_Email,actual_User_Name);
+                return   Created(nameof(Get),res);
+            }
+            catch (InvalidOperationException e)
+            {
+                return BadRequest( new { error = e.Message });
+            }
+            catch ( Exception e)
+            {
+                return Problem(e.Message);
+            }
         }
     }
 }
@@ -147,16 +148,16 @@ public static class DonationsExtensions
     }
 
 
-    public static Donation ToDonation(this Donation_Post donation)
+    public static Donation ToDonation(this Donation_Post donation, int event_Id, string? Donor_Email, string? actual_User_Name)
     {
         var entity = new Donation
         {
-        //    Donor_Name = donation.Donor_Name,
+            Donor_Name = actual_User_Name ?? string.Empty,
+            Donor_Email = Donor_Email ?? string.Empty,
+
             Donation_Amount = donation.Donation_Amount,
-         //   Donation_Date = donation.Donation_Date,
             Donation_Message = donation.Donation_Message,
-       //     Donor_Email = donation.Donor_Email,
-           // Event_Id = donation.Event_Id,
+            Event_Id = event_Id,
         };
         return entity;
     }

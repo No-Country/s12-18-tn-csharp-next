@@ -21,7 +21,7 @@ namespace s12.Controllers
         }
 
         [HttpGet]
-        //[Authorize]
+        [Authorize]
         public async Task<ActionResult<User_Get>> Get([EmailAddress] string? user_Email)
         {
             //TODO change this when front has already been integrated, => remove parameter
@@ -48,11 +48,11 @@ namespace s12.Controllers
 
         [Authorize]
         [HttpGet("events")]
-        public async Task<List<Event_Get>> My_Events()
+        public async Task<List<Event>> My_Events()
         {
             var email = User.FindFirst("Email")?.Value;
             var events = await _events_Service.Get_Events_From_User(email);
-            return events;
+            return events.Events.ToList();
         }
 
     }

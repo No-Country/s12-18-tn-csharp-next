@@ -5,6 +5,11 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Validations;
 using s12.Controllers;
 using s12.DataService.Data;
+
+using s12.Entities.DbSet;
+using s12.Entities.Dtos.Requests;
+using s12.Entities.Dtos.Responses;
+using s12.Migrations;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.Eventing.Reader;
 using System.Net.Mail;
@@ -13,152 +18,213 @@ namespace s12.Services
 {
     public interface IEvents_Service
     {
-        Task<List<Event_Get>> Get_Events_From_User(string owner_Email);
+        //  Task<List<Event_Get>> Get_Events_From_User(string owner_Email);
     }
 
     public class Events_Service : IEvents_Service
     {
+        private readonly MyDbContext _context;
+        private readonly Local_MediaStorage_Service _local_MediaStorage_Service;
 
-
-        //TODO  refactor for entity 
-        public IList<Event_Get> Events { get; set; }
-
-        public Events_Service(IConfiguration configuration/*[FromServices] MyDbContext myDbContext*/)
+        public Events_Service(MyDbContext context, Local_MediaStorage_Service local_MediaStorage_Service)
         {
-            #region Delete this, only for  mocked
-            var cs = configuration.GetConnectionString("SQLServerConnection");
-            var optionsBuilder = new DbContextOptionsBuilder<MyDbContext>();
-            optionsBuilder.UseSqlServer(cs);
-            var myDbContext = new MyDbContext(optionsBuilder.Options); 
-            #endregion
-            Events = Generate_Events(myDbContext);
+            _context = context;
+            _local_MediaStorage_Service = local_MediaStorage_Service;
         }
 
-        //TODO Refactor to service
-        private IList<Event_Get> Generate_Events(MyDbContext myDbContext)
+        public async Task<Get_Events_Response> GetEvents(int? pageSize, int? pageNumber)
         {
-            List<Event_Get> eventos = new List<Event_Get>();
-            //Event with complaint
-            eventos.Add(new Event_Get
+            try
             {
-                Event_Id = 1,
-                Event_Owner_Email = "OrganizacionCaritativa1@mail.org",
-                Created_Date = DateOnly.FromDateTime(DateTime.Now),
-                Created_By_User = "OrganizacionCaritativa1",
-                Is_Validated = true,
-                Title = "Fondo de Ayuda por Terremoto en Nepal",
-                Description = "Ayuda a las víctimas del reciente terremoto en Nepal contribuyendo a nuestro fondo de ayuda.",
-                Collect_Goal = 100000,
-                Collected = 0,
-                Media = new Media[]
+                IQueryable<Event> query = _context.Events
+                    .Include(x => x.Complaints);
+                //ToListAsync();
+
+                if (pageSize.HasValue && pageNumber.HasValue)
                 {
-                new Media { Type = Media_Type.Image.ToString(), Url = "https://example.com/nepal_terremoto.jpg" },
-                new Media { Type = Media_Type.Video.ToString(), Url = "https://example.com/nepal_terremoto_video.mp4" }
-                },
-                Geo = new Geo
-                {
-                    Country = "Nepal",
-                    Provice = "Bagmati",
-                    City = "Kathmandu",
-                    Lat = 27.7172,
-                    Long = 85.3240
-                },
-                Complaints = new List<Complaint>
-                {
-                    new Complaint
-                    {
-                        Complaint_Id = 1,
-                        Complaint_Date =DateOnly.FromDateTime( DateTime.Now.Date),
-                        Reporter_Id = 1001,
-                        Reporter_Name = "UsuarioReportero",
-                        Title = "Problema con la Recaudación de Fondos",
-                        Description = "Me gustaría informar sobre un problema relacionado con la recaudación de fondos para el evento de ayuda por terremoto en Nepal.",
-                        Media = new Media[]
-                        {
-                            new Media { Type = Media_Type.Image.ToString(), Url = "https://example.com/complaint_image.jpg" },
-                            new Media { Type = Media_Type.Document.ToString(), Url = "https://example.com/complaint_document.pdf" }
-                        }
-                    }
+                    query = query
+                        .Skip((pageNumber.Value * pageSize.Value))
+                        .Take(pageSize.Value).AsQueryable();
+                    // .ToList();
                 }
-            });
 
-            eventos.Add(new Event_Get
-            {
-                Event_Id = 2,
-                Event_Owner_Email = "OrganizacionCaritativa2@mail.org",
-                Created_Date = DateOnly.FromDateTime(DateTime.Now),
-                Created_By_User = "OrganizacionCaritativa2",
-                Is_Validated = true,
-                Title = "Ayuda de Emergencia por Inundaciones en Bangladesh",
-                Description = "Apoya nuestros esfuerzos para proporcionar ayuda de emergencia a las regiones afectadas por las inundaciones en Bangladesh.",
-                Collect_Goal = 75000,
-                Collected = 0,
-                Media = new Media[]
-                {
-                new Media { Type = Media_Type.Image.ToString(), Url = "https://example.com/bangladesh_inundacion.jpg" },
-                new Media { Type = Media_Type.Document.ToString(), Url = "https://example.com/bangladesh_plan_ayuda.pdf" }
-                },
-                Geo = new Geo
-                {
-                    Country = "Bangladesh",
-                    Provice = "Dhaka",
-                    City = "Dhaka",
-                    Lat = 23.8103,
-                    Long = 90.4125
-                }
-            });
-
-            eventos.Add(new Event_Get
-            {
-                Event_Id = 3,
-                Event_Owner_Email = "OrganizacionCaritativa3@mail.org",
-                Created_Date = DateOnly.FromDateTime(DateTime.Now),
-                Created_By_User = "OrganizacionCaritativa3",
-                Is_Validated = true,
-                Title = "Ayuda por Incendios Forestales en California",
-                Description = "Ayúdanos a proporcionar ayuda a quienes se han visto afectados por los incendios forestales en California.",
-                Collect_Goal = 120000,
-                Collected = 0,
-                Media = new Media[]
-                {
-                new Media { Type = Media_Type.Image.ToString(), Url = "https://example.com/california_incendio.jpg" },
-                new Media { Type = Media_Type.Video.ToString(), Url = "https://example.com/california_incendio_video.mp4" }
-                },
-                Geo = new Geo
-                {
-                    Country = "Estados Unidos",
-                    Provice = "California",
-                    City = "Los Ángeles",
-                    Lat = (long)34.0522,
-                    Long = -118.2437
-                },
-
-            });
-
-
-            //TODO this should come from donations_service
-            //get donors  count and amount
-            var ids = eventos.Select(x => x.Event_Id);
-            var donations = myDbContext.Donations.Where(x => ids.Contains(x.Event_Id));
-
-            var calculated = donations.GroupBy(x => x.Event_Id).Select(x => new
-            {
-                EventId = x.Key,
-                Collected = x.Sum(x => x.Donation_Amount),
-                Donors = x.Count()
-            });
-
-            foreach (var item in calculated)
-            {
-                var even = eventos.First(x => x.Event_Id == item.EventId);
-                even.Collected = item.Collected;
-                even.Donors_Count = item.Donors;
+                return new Get_Events_Response(await query.ToListAsync(), "Query Successful", true);
             }
-
-            return eventos;
+            catch (Exception e)
+            {
+                return new Get_Events_Response(null, e.Message, false);
+            }
         }
 
-        public Task<List<Event_Get>> Get_Events_From_User(string owner_Email)
+        public async Task<Get_Event_Response> GetEvent(int event_Id)
+        {
+            try
+            {
+                var Event = await _context.Events.Include( x => x.Complaints).FirstOrDefaultAsync(x => x.Event_Id == event_Id);
+                if (Event is null)
+                    return new Get_Event_Response(null, "Event not found", false);
+
+                return new Get_Event_Response(Event, "Query Successful", true);
+            }
+            catch (Exception e)
+            {
+                return new Get_Event_Response(null, e.Message, false);
+            }
+        }
+
+        // TODO: Refactor To Create_Event_Response
+        public async Task<Create_Event_Response> CreateEvent(Create_Event_Request request, string? user_Id, string? user_Email, string? user_Name)
+        {
+            try
+            {
+                var new_Event = new Event()
+                {
+                    Title = request.Title,
+                    Description = request.Description,
+                    Created_By_User = user_Name??String.Empty,
+                    Geo = request.Geo,
+                    // Is_Validated = request.Is_Validated,
+                    Event_Owner_Email = user_Email,
+                    Collect_Goal = request.Collect_Goal,
+                    // Media = request.Media_Collection is not null ? request.Media_Collection.Select(x => new Media() { Type = x.ContentType, Url = $"somePlaceOnserver/{x.FileName}" }).ToList() : new List<Media>(),
+                    User_Id = user_Id,
+                    Complaints = new List<Complaint>()
+                };
+                await _context.Events.AddAsync(new_Event);
+                await _context.SaveChangesAsync();
+                return new Create_Event_Response(new_Event, "Created successfully", true);
+            }
+            catch (Exception e)
+            {
+                return new Create_Event_Response(null, e.Message, false);
+            }
+        }
+
+        public async Task<Create_Event_Response> AddMediaToEventAsync(int event_Id, MediaStream[] media)
+        {
+            if (media.Any() is false)  return new Create_Event_Response( null,"empty", false);
+
+            List<Media> theStoredMedia =  await _local_MediaStorage_Service.SaveMediaAsync(media);
+            var theEvent = (await this.GetEvent(event_Id));
+
+            if(theEvent is null) return new Create_Event_Response(null, "event not found", false);
+
+            try
+            {
+                theEvent.Event.Media.AddRange(theStoredMedia);
+                _context.Entry(theEvent.Event).State = EntityState.Modified;
+                var res = await _context.SaveChangesAsync();
+                return new Create_Event_Response(theEvent.Event, "Media Added", true);
+            }
+            catch (Exception das)
+            {
+                //TODO Refactor
+                string  exs = das.Message;
+                var ex = das;
+                while (ex.InnerException != null)
+                {
+                    var inner = das.InnerException;
+                    exs +=" | " +inner.Message;
+                    ex = ex.InnerException;
+                }
+                return new Create_Event_Response(null, exs, false);
+                //throw;
+            }
+        }
+
+        public async Task<Create_Event_Response> DeleteEventMedia(int[] mediaIds)
+        {
+            throw new NotImplementedException();
+            if (mediaIds.Any())
+            {
+                return new Create_Event_Response(null, "deleted", true);
+            }
+            else
+                return new Create_Event_Response(null, "No media Ids", false);
+        }
+
+        //TODO requiere que media tenga un id y un indice
+        public async Task<Create_Event_Response> ChangeMediaOrder(int mediaId, int newIndex)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<Get_Complaints_Response> Get_Complaints_From_Event(int event_Id, int? pageSize, int? pageNumber)
+        {
+            try
+            {
+                var Event = await _context.Events.FirstOrDefaultAsync(x => x.Event_Id == event_Id);
+                if (Event is null)
+                    return new Get_Complaints_Response(null, "Event not found", false);
+                var Complaints = await _context.Complaints.Where(c => c.Event_Id == event_Id).ToListAsync();
+
+                return new Get_Complaints_Response(Complaints, "Query Successful", true);
+            }
+            catch (Exception e)
+            {
+                return new Get_Complaints_Response(null, e.Message, false);
+            }
+        }
+
+        public async Task<Get_Complaint_Response> Get_Single_Complaint_From_Event(int event_id, int complaint_id)
+        {
+            try
+            {
+                var Event = await _context.Events.Include( x => x.Complaints). FirstOrDefaultAsync(x => x.Event_Id == event_id);
+                if (Event is not null && Event.Has_Complaints)
+                {
+                    var complaint = Event.Complaints.FirstOrDefault(c => c.Complaint_Id == complaint_id);
+
+                    return complaint is null ? new Get_Complaint_Response(null, "Complaint not found", false) : new Get_Complaint_Response(complaint, "Query Successful", true);
+                }
+                return new Get_Complaint_Response(null, "Event not found", false);
+            }
+            catch (Exception e)
+            {
+                return new Get_Complaint_Response(null, e.Message, false);
+            }
+        }
+
+        public async Task<Create_Complaint_Response> Create_Complaint(int event_Id, Create_Complaint_Request request)
+        {
+            var Event = await _context.Events.FirstOrDefaultAsync(x => x.Event_Id == event_Id);
+            if (Event is null) return new Create_Complaint_Response(null, "Event not found", false);
+            if (Event.Complaints is null)
+                Event.Complaints = new List<Complaint>();
+            var new_Complaint = new Complaint
+            {
+                Title = request.Title,
+                Description = request.Description,
+                Event_Id = Event.Event_Id,
+                Reporter_Id = request.Reporter_Id ?? "Anonymous",
+                Reporter_Name = request.Reporter_Name ?? "Anonymous",
+                Media = request.Media_Collection is not null ? request.Media_Collection.Select(file => new Media
+                {
+                    Type = file.ContentType,
+                    Url = $"somePlaceOnserver/{file.FileName}"
+                }).ToList() : new List<Media>()
+            };
+            Event.Complaints.Add(new_Complaint);
+            Event.Has_Complaints = true;
+            await _context.Complaints.AddAsync(new_Complaint);
+            //  if (request.Media_Collection is not null)
+            // {
+            //     foreach (var item in new_Complaint.Media_Collection)
+            //     {
+            //         c.Media.Add(new Media()
+            //         {
+            //             Type = item.ContentType,
+            //             Url = $"somePlaceOnserver/{item.FileName}"
+            //         });
+            //     }
+            // }
+            await _context.SaveChangesAsync();
+            return new Create_Complaint_Response(new_Complaint, "Created successfully", true);
+            // TODO: DeactiveEvent Service
+            // TODO: Update_Event Service
+        }
+
+        public Task<Get_Events_Response> Get_Events_From_User(string owner_Email)
         {
             //if is null empty or not a valid email
             if (owner_Email.IsNullOrEmpty() is false)
@@ -166,12 +232,13 @@ namespace s12.Services
                 try
                 {
                     var email = new MailAddress(owner_Email);
-                    var res = this.Events.Where(x => x.Event_Owner_Email == owner_Email).ToList();
-                    return Task.FromResult(res);
+                    var res = _context.Events.Where(x => x.Event_Owner_Email == owner_Email).ToList();
+
+                    return Task.FromResult(new Get_Events_Response(res, String.Empty, true));
                 }
                 catch (Exception e)
                 {
-                    throw new ArgumentException(nameof(owner_Email),e);
+                    throw new ArgumentException(nameof(owner_Email), e);
                 }
             }
             throw new ArgumentNullException(nameof(owner_Email));

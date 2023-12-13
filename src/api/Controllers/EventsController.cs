@@ -2,6 +2,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using s12.Entities.DbSet;
+using s12.Entities.Dtos.Requests;
+using s12.Entities.Dtos.Responses;
 using s12.Services;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -15,47 +18,79 @@ namespace s12.Controllers
         private Events_Service _events_Service;
         public EventsController(Events_Service events_Service) => _events_Service = events_Service;
 
-        // GET: <EventsController>
-        [HttpGet] public IEnumerable<Event_Get> Get(int pageSize = 0, int pageNumber = 0) => _events_Service.Events;
+
+        [HttpGet]
+        async public Task<ActionResult<IEnumerable<Event>>> Get_Events(int pageSize = 10, int pageNumber = 0)
+        {
+            var result = await _events_Service.GetEvents(pageSize, pageNumber);
+            if (!result.isSuccessfully)
+                return BadRequest(result.message);
+
+            return Ok(result.Events);
+        }
 
         [HttpGet("{event_Id}")]
-        public ActionResult<IEnumerable<Event_Get>> Get(int event_Id)
+        public async Task<ActionResult<Get_Event_Response>> Get_Event_By_Id(int event_Id)
         {
-            var e = _events_Service.Events.FirstOrDefault(x => x.Event_Id == event_Id);
-            return e is null ? NotFound() : Ok(e);
+            var result = await _events_Service.GetEvent(event_Id);
+            if (!result.isSuccessfully)
+                return NotFound();
+            return Ok(result.Event);
         }
 
         // POST: Event
-        [Authorize]
         [HttpPost]
-        public ActionResult<IEnumerable<string>> Post(Event_Post new_Event)
+        [Authorize(Policy = "StandardRights")]
+        public async Task<ActionResult> Create_Event([FromBody] Create_Event_Request request, [FromForm] IFormFile[] media)
         {
-            var email = User.FindFirst("Email").Value;
-            
-            var e = new Event_Get();
-            e.Event_Owner_Email = email;
-            e.Created_Date = DateOnly.FromDateTime(DateTime.Now);
-            e.Created_By_User = "GetTheUserFromSession";
-            e.Event_Id = _events_Service.Events.OrderBy(x => x.Event_Id).Last().Event_Id + 1;
-            e.Geo = new_Event.Geo;
+            var user_Email = User.FindFirst("Email")?.Value;
+            var user_Id = User.FindFirst("Id")?.Value;
+            var user_Name = User.FindFirst("Name")?.Value;
+            var result = await _events_Service.CreateEvent(request, user_Id, user_Email,user_Name);
 
-            _events_Service.Events.Add(e);
+            if (!result.isSuccessfully)
+                return BadRequest(result.message);
+            return CreatedAtAction(nameof(Get_Event_By_Id), new { event_Id = result.event_Created.Event_Id }, result.event_Created);
 
-            return CreatedAtAction(nameof(Get), new { event_Id = e.Event_Id }, e);
         }
 
-        [HttpPut("{event_Id}/Media")]
-        //[Authorize]
-        public ActionResult<IEnumerable<Media[]>> Post_Media(int event_Id, [FromForm] IFormFile[] media)
+        /// <summary>
+        /// Add media to an event
+        /// </summary>
+        /// <param name="event_Id"></param>
+        /// <param name="media"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpPost("{event_Id}/Media")]
+        public async Task<ActionResult<IEnumerable<Media[]>>> Post_Media(int event_Id, [FromForm] IFormFile[] media)
         {
-            var e = _events_Service.Events.FirstOrDefault(x => x.Event_Id == event_Id);
-            if (e is null) return BadRequest();
+            //TODO move to service
+            #region This needs to be part of Service
+            var e = await _events_Service.GetEvent(event_Id);
 
-            var _media = media.Select(x => new Media() { Type = x.ContentType, Url = $"somePlaceOnserver/{x.FileName}" });
-            if (e.Media is null) e.Media = new Media[0];
-            e.Media = e.Media.Concat(_media).ToArray();
+            if (e.isSuccessfully is false) return BadRequest(new { error = e.message });
 
-            return CreatedAtAction(nameof(Get), new { event_Id = e.Event_Id }, e.Media);
+            //do you own the event?
+            if (e.Event.Event_Owner_Email != User.FindFirst("Email").Value)
+                return BadRequest(new { error = "you dont own this event" }); 
+            #endregion
+
+            //store the media
+            var streams = media
+                .Select(x => new MediaStream() 
+                    { Type = x.ContentType,
+                    FileName = x.FileName,
+                    Stream =x.OpenReadStream()  })
+                .ToArray();
+
+            var res = await _events_Service.AddMediaToEventAsync(event_Id,streams);
+            if(res.isSuccessfully is false)
+            {
+                return BadRequest(res); //not only bad request, could be 500
+            }
+
+           var result = Created(nameof(Get_Event_By_Id), new { event_Id});
+            return CreatedAtAction("Get_Event_By_Id", new { event_Id },e);
         }
     }
 
@@ -71,7 +106,7 @@ namespace s12.Controllers
         public string Description { get; set; }
         public decimal Collect_Goal { get; set; }
         public decimal Collected { get; set; }
-        public int Donors_Count { get;set; }
+        public int Donors_Count { get; set; }
         public Media[] Media { get; set; }
         public Geo Geo { get; set; }
 
@@ -89,26 +124,7 @@ namespace s12.Controllers
         public Geo Geo { get; set; }
     }
 
-    public class Media
-    {
-        public string Type { get; set; }
-        public string Url { get; set; }
-    }
 
-    public enum Media_Type
-    {
-        Image,
-        Video,
-        Audio,
-        Document,
-    }
 
-    public class Geo
-    {
-        public string Country { get; set; }
-        public string Provice { get; set; }
-        public string City { get; set; }
-        public double Lat { get; set; }
-        public double Long { get; set; }
-    }
+
 }
