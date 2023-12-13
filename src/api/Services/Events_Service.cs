@@ -32,13 +32,25 @@ namespace s12.Services
             _local_MediaStorage_Service = local_MediaStorage_Service;
         }
 
-        public async Task<Get_Events_Response> GetEvents(int? pageSize, int? pageNumber)
+        public async Task<Get_Events_Response> GetEvents(int? pageSize, int? pageNumber, string? searchTerm, string? orderBy = "DSC")
         {
             try
             {
                 IQueryable<Event> query = _context.Events
                     .Include(x => x.Complaints);
-                //ToListAsync();
+
+                if (searchTerm is not null)
+                {
+                    query = query.Where(x => x.Title.Contains(searchTerm) || x.Description.Contains(searchTerm));
+                }
+
+                if (orderBy is null) orderBy = "DSC";
+                var order = orderBy.ToUpper();
+                string[] orderOptions = { "ASC", "DSC" };
+                
+                if (orderOptions.Contains(order) is false) orderBy = "DSC";
+
+                query = (orderBy == "ASC") ? query.OrderBy(x => x.Created_Date) : query.OrderByDescending(x => x.Created_Date);
 
                 if (pageSize.HasValue && pageNumber.HasValue)
                 {
@@ -60,7 +72,7 @@ namespace s12.Services
         {
             try
             {
-                var Event = await _context.Events.Include( x => x.Complaints).FirstOrDefaultAsync(x => x.Event_Id == event_Id);
+                var Event = await _context.Events.Include(x => x.Complaints).FirstOrDefaultAsync(x => x.Event_Id == event_Id);
                 if (Event is null)
                     return new Get_Event_Response(null, "Event not found", false);
 
@@ -81,7 +93,7 @@ namespace s12.Services
                 {
                     Title = request.Title,
                     Description = request.Description,
-                    Created_By_User = user_Name??String.Empty,
+                    Created_By_User = user_Name ?? String.Empty,
                     Geo = request.Geo,
                     // Is_Validated = request.Is_Validated,
                     Event_Owner_Email = user_Email,
@@ -102,12 +114,12 @@ namespace s12.Services
 
         public async Task<Create_Event_Response> AddMediaToEventAsync(int event_Id, MediaStream[] media)
         {
-            if (media.Any() is false)  return new Create_Event_Response( null,"empty", false);
+            if (media.Any() is false) return new Create_Event_Response(null, "empty", false);
 
-            List<Media> theStoredMedia =  await _local_MediaStorage_Service.SaveMediaAsync(media);
+            List<Media> theStoredMedia = await _local_MediaStorage_Service.SaveMediaAsync(media);
             var theEvent = (await this.GetEvent(event_Id));
 
-            if(theEvent is null) return new Create_Event_Response(null, "event not found", false);
+            if (theEvent is null) return new Create_Event_Response(null, "event not found", false);
 
             try
             {
@@ -119,12 +131,12 @@ namespace s12.Services
             catch (Exception das)
             {
                 //TODO Refactor
-                string  exs = das.Message;
+                string exs = das.Message;
                 var ex = das;
                 while (ex.InnerException != null)
                 {
                     var inner = das.InnerException;
-                    exs +=" | " +inner.Message;
+                    exs += " | " + inner.Message;
                     ex = ex.InnerException;
                 }
                 return new Create_Event_Response(null, exs, false);
@@ -170,7 +182,7 @@ namespace s12.Services
         {
             try
             {
-                var Event = await _context.Events.Include( x => x.Complaints). FirstOrDefaultAsync(x => x.Event_Id == event_id);
+                var Event = await _context.Events.Include(x => x.Complaints).FirstOrDefaultAsync(x => x.Event_Id == event_id);
                 if (Event is not null && Event.Has_Complaints)
                 {
                     var complaint = Event.Complaints.FirstOrDefault(c => c.Complaint_Id == complaint_id);

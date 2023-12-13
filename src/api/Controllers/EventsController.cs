@@ -20,9 +20,9 @@ namespace s12.Controllers
 
 
         [HttpGet]
-        async public Task<ActionResult<IEnumerable<Event>>> Get_Events(int pageSize = 10, int pageNumber = 0)
+        async public Task<ActionResult<IEnumerable<Event>>> Get_Events(int pageSize = 10, int pageNumber = 0, string? searchTerm=null, string? orderBy ="DSC")
         {
-            var result = await _events_Service.GetEvents(pageSize, pageNumber);
+            var result = await _events_Service.GetEvents(pageSize, pageNumber,searchTerm,orderBy);
             if (!result.isSuccessfully)
                 return BadRequest(result.message);
 
