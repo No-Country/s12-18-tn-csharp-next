@@ -2,7 +2,6 @@ import { eventApi } from "@/app/(main)/services/event-api-service";
 
 import { HTTP_METHODS } from "@/models";
 
-
 interface EventData {
   title: string;
   description: string;
@@ -16,17 +15,6 @@ interface EventData {
     long: number;
   };
 }
-
-// const getTokenFromLocalStorage = () => {
-//   const authDataString = localStorage.getItem('auth');
-//   if (authDataString) {
-//     const authData = JSON.parse(authDataString);
-//     return authData.token;
-//   }
-//   return null;
-// };
-
-// const token = getTokenFromLocalStorage()
 
 export const postEventApi = eventApi.injectEndpoints({
   endpoints: (builder) => ({

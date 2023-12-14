@@ -9,6 +9,7 @@ import { Share } from "lucide-react";
 import { Button } from "./ui";
 import { cn } from "@/lib";
 import { useToast } from "@/components/ui/use-toast";
+import EventShareButton from "./event-share-button";
 
 interface Props {
   id: string;
@@ -29,10 +30,10 @@ const EventSearchCard = ({
 }: Props) => {
   const { toast } = useToast();
 
-  const handleCopy = () => {
-    // TODO: update with env variable
-    const link = `http://localhost:3000/event/${id}`;
+  // TODO: update with env variable
+  const link = `http://localhost:3000/event/${id}`;
 
+  const handleCopy = () => {
     navigator.clipboard.writeText(link);
 
     toast({
@@ -64,13 +65,12 @@ const EventSearchCard = ({
           </div>
         </Link>
         <div className="flex w-full justify-end">
-          <Button
-            onClick={handleCopy}
-            variant="ghost"
-            className={cn("mt-1 px-3 py-1")}
-          >
-            <Share size={16} />
-          </Button>
+          <EventShareButton
+            title={title}
+            link={link}
+            author={author}
+            handleCopy={handleCopy}
+          />
         </div>
       </div>
       <Separator />
