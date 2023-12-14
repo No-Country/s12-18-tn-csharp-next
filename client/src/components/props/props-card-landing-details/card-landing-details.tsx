@@ -145,7 +145,7 @@ export function CardLandingDetails({ data }: Props) {
       <section className="container">
         <h1 className="mb-2">Complaints</h1>
         {data.complaints?.map((complaint) => (
-          <Link href={`/complaints/${complaint?.complaint_Id}`} target="_blank">
+          <Link href={`/complaints/${complaint?.complaint_Id}`}>
             <Card>
               <CardHeader>
                 <CardTitle>{complaint.title}</CardTitle>
