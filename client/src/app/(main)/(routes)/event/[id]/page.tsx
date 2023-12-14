@@ -1,7 +1,6 @@
 "use client";
-import React from "react";
-import { useGetEventByIdQuery } from "@/components/sections/card-event-detail/hooks/use-get-events-detail-api";
 
+import { useGetEventByIdQuery } from "@/components/sections/card-event-detail/hooks/use-get-events-detail-api";
 import { CardLandingDetails } from "@/components/props/props-card-landing-details/card-landing-details";
 
 interface Props {
