@@ -23,9 +23,14 @@ export const EmptyUser: AuthUser = {
 };
 
 /**
+ * Modelo de la información del usuario autenticado.
+ */
+export type User = Omit<SignUpSchema, "password" | "email">;
+
+/**
  * Modelo de un usuario autenticado.
  */
 export interface AuthUser {
     token: string;
-    user: Omit<SignUpSchema, "password" | "email">;
+    user: User;
 }
