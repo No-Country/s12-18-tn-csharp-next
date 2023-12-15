@@ -47,7 +47,7 @@ namespace s12.Services
                 if (orderBy is null) orderBy = "DSC";
                 var order = orderBy.ToUpper();
                 string[] orderOptions = { "ASC", "DSC" };
-                
+
                 if (orderOptions.Contains(order) is false) orderBy = "DSC";
 
                 query = (orderBy == "ASC") ? query.OrderBy(x => x.Created_Date) : query.OrderByDescending(x => x.Created_Date);
@@ -208,6 +208,7 @@ namespace s12.Services
                 Title = request.Title,
                 Description = request.Description,
                 Event_Id = Event.Event_Id,
+                Complaint_Date = DateTime.UtcNow.AddHours(-3),
                 Reporter_Id = request.Reporter_Id ?? "Anonymous",
                 Reporter_Name = request.Reporter_Name ?? "Anonymous",
                 Media = request.Media_Collection is not null ? request.Media_Collection.Select(file => new Media
