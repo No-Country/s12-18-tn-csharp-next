@@ -22,7 +22,7 @@ public class Event
 public class Geo
 {
     public string Country { get; set; }
-    public string Provice { get; set; }
+    public string Province { get; set; }
     public string City { get; set; }
     public double Lat { get; set; }
     public double Long { get; set; }
@@ -40,7 +40,7 @@ public class MediaStream
 {
     public string Type { get; set; }
     public string FileName { get; set; }
-    public Stream Stream { get;set; }
+    public Stream Stream { get; set; }
 }
 
 public enum Media_Type
