@@ -255,16 +255,8 @@ export function CardLandingDetails({ data }: Props) {
             />
             <h2 className="mt-6 font-bold">Details</h2>
             <p className="mt-4">
-              {/* {content} */}
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. A earum
-              asperiores rem, eaque delectus deleniti ducimus voluptate
-              provident labore deserunt laboriosam quasi explicabo ratione non
-              quas autem ipsum quos beatae cumque unde minima distinctio impedit
-              totam? Eos perspiciatis reiciendis pariatur delectus temporibus
-              neque repellendus laudantium dolores eaque libero amet sunt
-              praesentium, illo nemo eum minus? Quia repellendus aliquam hic nam
-              assumenda nobis. Nesciunt eaque sequi dolore rerum veritatis minus
-              corporis magnam, quod consectetur
+              {data?.description}
+              
             </p>
           </div>
           <div className="order-first mt-6 md:mt-0 lg:order-last lg:mt-0">

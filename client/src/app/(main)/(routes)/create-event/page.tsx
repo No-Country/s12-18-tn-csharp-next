@@ -23,16 +23,34 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 
 const schema = z.object({
-  title: z.string(),
-  description: z.string(),
-  collect_Goal: z.number(),
-  collected: z.number(),
+  title: z.string().refine((data) => data.trim().length > 0, {
+    message: "El título es requerido.",
+  }),
+  description: z.string().refine((data) => data.trim().length > 0, {
+    message: "La descripción es requerida.",
+  }),
+  collect_Goal: z.number().refine((data) => data >= 0, {
+    message: "La meta de recolección debe ser un número positivo o cero.",
+  }),
+  collected: z.number().refine((data) => data >= 0, {
+    message: "La cantidad recolectada debe ser un número positivo o cero.",
+  }),
   geo: z.object({
-    country: z.string().min(3),
-    provice: z.string().min(3),
-    city: z.string(),
-    lat: z.number(),
-    long: z.number(),
+    country: z.string().min(3, {
+      message: "El nombre del país debe tener al menos 3 caracteres.",
+    }),
+    provice: z.string().min(3, {
+      message: "El nombre de la provincia debe tener al menos 3 caracteres.",
+    }),
+    city: z.string().refine((data) => data.trim().length > 0, {
+      message: "El nombre de la ciudad es requerido.",
+    }),
+    lat: z.number({
+      invalid_type_error: "La latitud debe ser un número.",
+    }),
+    long: z.number({
+      invalid_type_error: "La longitud debe ser un número.",
+    }),
   }),
 });
 
