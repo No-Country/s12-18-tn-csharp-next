@@ -16,6 +16,7 @@ import { selectAuth } from "@/app/(auth)/store";
 import { useAppSelector } from "@/hooks";
 import ProfileDropdown from "./profile-dropdown";
 import { cn } from "@/lib";
+import NavSearchInput from "./nav-search-input";
 
 export const Nav = () => {
   const router = useRouter();
@@ -69,14 +70,15 @@ export const Nav = () => {
                 </span>
               </Link>
             </div>
-            <div className="flex w-full items-center space-x-2 md:max-w-sm">
+            <NavSearchInput />
+            {/* <div className="flex w-full items-center space-x-2 md:max-w-sm">
               <Input type="text" placeholder="Búsqueda" />
               <Link href="/search">
                 <Button type="submit" className={cn("px-2.5")}>
                   <Search size={20} />
                 </Button>
               </Link>
-            </div>
+            </div> */}
           </div>
           <div
             className={cn(

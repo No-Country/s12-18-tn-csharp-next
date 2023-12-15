@@ -10,7 +10,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const EventSort = () => {
+interface Props {
+  keyword: string;
+}
+
+const EventSort = ({ keyword }: Props) => {
+  const link = keyword.length > 0 ? `?keyword=${keyword}` : "?";
+
   return (
     <Select defaultValue="newest">
       <SelectTrigger className="max-w-[180px]">
@@ -22,7 +28,7 @@ const EventSort = () => {
         <SelectGroup>
           <SelectLabel>Ordernar por</SelectLabel>
           <SelectItem value="newest">Nuevo</SelectItem>
-          <SelectItem value="oldest">Viejo</SelectItem>
+          <SelectItem value="oldest">Antiguo</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>

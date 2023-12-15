@@ -2,21 +2,26 @@
 
 import React from "react";
 
+import { useSearchParams } from "next/navigation";
+
 import EventFilter from "@/components/event-filter";
 import EventList from "@/components/event-list";
 import { useGetEventsQuery } from "@/components/sections/card-section-lading-page/hooks";
 
 const page = () => {
-  const { data, isLoading } = useGetEventsQuery(null, {});
+  const searchParams = useSearchParams();
+  const keyword = searchParams.get("keyword");
 
-  console.log(data);
+  console.log(keyword);
+
+  const { data, isLoading } = useGetEventsQuery(null, {});
 
   return (
     <section>
       <div className="container-search py-6">
         <h1 className="mb-5">Eventos buscados</h1>
         <div className="mb-5">
-          <EventFilter />
+          <EventFilter keyword={keyword || ""} />
         </div>
         {!isLoading && (
           <div className="flex flex-col-reverse gap-3 lg:grid lg:grid-cols-3">
