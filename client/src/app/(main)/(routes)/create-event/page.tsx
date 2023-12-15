@@ -50,7 +50,6 @@ interface FormData {
   };
 }
 export default function page() {
-
   const router = useRouter();
 
   const [createEvent, { data }] = useCreateEventMutation();
@@ -59,17 +58,16 @@ export default function page() {
   const form = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: {
-      title: "Fiesta de la Vendimia en Mendoza",
-      description:
-        "Sumérgete en la cultura del vino en la Fiesta de la Vendimia, rodeado de viñedos y paisajes impresionantes.",
-      collect_Goal: 15000,
-      collected: 6000,
+      title: "",
+      description: "",
+      collect_Goal: 0,
+      collected: 0,
       geo: {
-        country: "Argentina",
-        provice: "Mendoza",
-        city: "Mendoza",
-        lat: -32.8895,
-        long: -68.8458,
+        country: "",
+        provice: "",
+        city: "",
+        lat: 0,
+        long: 0,
       },
     },
   });
