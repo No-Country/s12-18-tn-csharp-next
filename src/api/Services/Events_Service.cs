@@ -47,7 +47,7 @@ namespace s12.Services
                 if (orderBy is null) orderBy = "DSC";
                 var order = orderBy.ToUpper();
                 string[] orderOptions = { "ASC", "DSC" };
-                
+
                 if (orderOptions.Contains(order) is false) orderBy = "DSC";
 
                 query = (orderBy == "ASC") ? query.OrderBy(x => x.Created_Date) : query.OrderByDescending(x => x.Created_Date);
@@ -199,37 +199,51 @@ namespace s12.Services
 
         public async Task<Create_Complaint_Response> Create_Complaint(int event_Id, Create_Complaint_Request request)
         {
-            var Event = await _context.Events.FirstOrDefaultAsync(x => x.Event_Id == event_Id);
+            var Event = await _context.Events
+                .Include(x => x.Complaints)
+                .FirstOrDefaultAsync(x => x.Event_Id == event_Id);
+
             if (Event is null) return new Create_Complaint_Response(null, "Event not found", false);
-            if (Event.Complaints is null)
-                Event.Complaints = new List<Complaint>();
+            if (Event.Complaints is null) Event.Complaints = new List<Complaint>();
+
             var new_Complaint = new Complaint
             {
                 Title = request.Title,
                 Description = request.Description,
+                Complaint_Date = DateTime.UtcNow,
                 Event_Id = Event.Event_Id,
                 Reporter_Id = request.Reporter_Id ?? "Anonymous",
                 Reporter_Name = request.Reporter_Name ?? "Anonymous",
-                Media = request.Media_Collection is not null ? request.Media_Collection.Select(file => new Media
-                {
-                    Type = file.ContentType,
-                    Url = $"somePlaceOnserver/{file.FileName}"
-                }).ToList() : new List<Media>()
             };
+
+            if (request.Media_Collection is not null)
+            {
+                try
+                {
+                    var streams = request.Media_Collection
+                         .Select(x => new MediaStream()
+                         {
+                             Type = x.ContentType,
+                             FileName = x.FileName,
+                             Stream = x.OpenReadStream()
+                         })
+                         .ToArray();
+
+                    new_Complaint.Media = new List<Media>();
+
+                    var mediaStored = await _local_MediaStorage_Service.SaveMediaAsync(streams);
+                    mediaStored.ForEach(x => new_Complaint.Media.Add(x));
+                }
+                catch (Exception e)
+                {
+                    //log e;
+                    throw;
+                }
+            }
+
             Event.Complaints.Add(new_Complaint);
             Event.Has_Complaints = true;
-            await _context.Complaints.AddAsync(new_Complaint);
-            //  if (request.Media_Collection is not null)
-            // {
-            //     foreach (var item in new_Complaint.Media_Collection)
-            //     {
-            //         c.Media.Add(new Media()
-            //         {
-            //             Type = item.ContentType,
-            //             Url = $"somePlaceOnserver/{item.FileName}"
-            //         });
-            //     }
-            // }
+            _context.Entry(Event).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return new Create_Complaint_Response(new_Complaint, "Created successfully", true);
             // TODO: DeactiveEvent Service
