@@ -1,3 +1,3 @@
-import { eventApi } from "../services/event-api-service";
+import { eventApi } from "../services/";
 
 export const eventMiddleware = eventApi.middleware

@@ -46,7 +46,7 @@ export function EventCard({
           <CardTitle className="text-lg font-bold hover:underline">
             {title}
           </CardTitle>
-          <CardDescription>Organized by: {description}</CardDescription>
+          <CardDescription>descripción: {description}</CardDescription>
         </CardHeader>
 
         <CardContent className="flex flex-col p-2">

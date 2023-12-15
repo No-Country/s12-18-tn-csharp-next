@@ -1,7 +1,5 @@
 "use client";
 import React from "react";
-// import { selectAuth } from "@/app/(auth)/store";
-// import { useAppSelector } from "@/hooks";
 import { useRouter } from "next/navigation";
 
 import { useCreateEventMutation } from "@/components/sections/card-section-post-page/hooks";
@@ -52,9 +50,7 @@ interface FormData {
   };
 }
 export default function page() {
-  // const auth = useAppSelector(selectAuth);
 
-  // console.log(auth);
   const router = useRouter();
 
   const [createEvent, { data }] = useCreateEventMutation();
@@ -63,17 +59,17 @@ export default function page() {
   const form = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: {
-      title: "Excursión a Machu Picchu",
+      title: "Fiesta de la Vendimia en Mendoza",
       description:
-        "Descubre la majestuosidad de Machu Picchu en esta emocionante excursión.",
-      collect_Goal: 12000,
-      collected: 5000,
+        "Sumérgete en la cultura del vino en la Fiesta de la Vendimia, rodeado de viñedos y paisajes impresionantes.",
+      collect_Goal: 15000,
+      collected: 6000,
       geo: {
-        country: "Perú",
-        provice: "Cusco",
-        city: "Aguas Calientes",
-        lat: -13.1631,
-        long: -72.545,
+        country: "Argentina",
+        provice: "Mendoza",
+        city: "Mendoza",
+        lat: -32.8895,
+        long: -68.8458,
       },
     },
   });
@@ -86,7 +82,7 @@ export default function page() {
       refetchEvents();
       router.push("/");
     } catch (error) {
-      console.log(error)
+      console.log(error);
       toast({
         title: "Error:",
         description: (
