@@ -39,7 +39,19 @@ namespace s12.Controllers
         [HttpPost("{event_id}/complaints")]
         public async Task<ActionResult<IEnumerable<Complaint>>> Create_Event_Complaint(int event_id, [FromForm] Create_Complaint_Request request)
         {
-            var result = await _events_Service.Create_Complaint(event_id, request);
+            Create_Complaint_Request req = request;
+            if (User.Identity.IsAuthenticated)
+            {
+                var userName = User.FindFirst("Name").Value;
+                var userId = User.FindFirst("Id").Value;
+                req = new Create_Complaint_Request(request.Title,  request.Description, userId, userName, request.Media_Collection);
+            }
+            else
+            {
+                req = new Create_Complaint_Request(request.Title, request.Description, null, request.Reporter_Name, request.Media_Collection);
+            }
+            
+            var result = await _events_Service.Create_Complaint(event_id, req);
 
             if (!result.isSuccessfully)
                 return BadRequest(result.message);
