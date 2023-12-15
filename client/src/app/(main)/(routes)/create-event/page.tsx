@@ -82,12 +82,12 @@ export default function page() {
       refetchEvents();
       router.push("/");
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       toast({
         title: "Error:",
         description: (
           <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-            <code className="text-white">{JSON.stringify(error, null, 1)}</code>
+            <code className="text-white">No se pudo enviar</code>
           </pre>
         ),
       });
