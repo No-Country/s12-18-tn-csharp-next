@@ -12,6 +12,7 @@ import { validDate } from "@/app/(auth)/(routes)/sign-up/models";
 import { userInfoSchema } from "@/app/(main)/(routes)/me/schemas";
 import { UserInfoModel } from "@/app/(main)/(routes)/me/models";
 import { userInfoAdapter } from "@/app/(main)/(routes)/me/adapters";
+import { useUpdateUserMutation } from "@/app/(main)/(routes)/me/hooks";
 import { useAppSelector } from "@/hooks";
 import { cn } from "@/lib";
 import {
@@ -50,13 +51,15 @@ export const UserForm: FC = (): JSX.Element => {
         defaultValues: userInfoAdapter(auth.user)
     });
 
+    /**
+     * Función para manejar la edición de información del usuario.
+     */
     const handleEditing = () => {
         setIsEditing((currentValue) => !currentValue);
     };
 
     const handleUserInfo = (values: any) => {
-        console.log(values);
-        
+        console.log(values);    
     };
 
     return (
@@ -65,7 +68,6 @@ export const UserForm: FC = (): JSX.Element => {
                 className="flex flex-col gap-y-5 "
                 onSubmit={form.handleSubmit(handleUserInfo)}
             >
-                <h1 className="text-4xl text-center sm:col-start-1 sm:col-end-2"> Perfil </h1>
                 <FormField
                     control={form.control}
                     disabled={!isEditing}
@@ -210,7 +212,7 @@ export const UserForm: FC = (): JSX.Element => {
                     className="
                         mt-5 bg-black text-white hover:border hover:border-black dark:hover:border-white
                         dark:bg-white dark:text-black hover:bg-white hover:text-black dark:hover:bg-black
-                        dark:hover:text-white
+                        dark:hover:text-white w-full
                     "
                     type="button"
                     onClick={handleEditing}
