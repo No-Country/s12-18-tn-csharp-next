@@ -28,17 +28,15 @@ const page = () => {
         <div className="mb-5">
           <EventFilter keyword={keyword || ""} />
         </div>
-        {!isLoading && (
-          <div className="flex flex-col-reverse gap-3 lg:grid lg:grid-cols-3">
-            <div className="col-span-2">
-              <EventList events={data} />
-            </div>
-            <div>
-              <p className="mb-5">Eventos cercanos</p>
-              <Skeleton className="h-[100px] w-full rounded-md bg-slate-600" />
-            </div>
+        <div className="flex flex-col-reverse gap-3 lg:grid lg:grid-cols-3">
+          <div className="col-span-2">
+            <EventList events={data} isLoading={isLoading} />
           </div>
-        )}
+          <div>
+            <p className="mb-5">Eventos cercanos</p>
+            <Skeleton className="h-[100px] w-full rounded-md bg-slate-600" />
+          </div>
+        </div>
       </div>
     </section>
   );
