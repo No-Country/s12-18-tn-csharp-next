@@ -1,3 +1,3 @@
 import { getEventApi } from "../services";
 
-export const { useGetEventsQuery } = getEventApi;
+export const { useGetEventsQuery, useGetFilteredEventsQuery } = getEventApi;

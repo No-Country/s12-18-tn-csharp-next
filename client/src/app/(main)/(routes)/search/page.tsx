@@ -6,15 +6,20 @@ import { useSearchParams } from "next/navigation";
 
 import EventFilter from "@/components/event-filter";
 import EventList from "@/components/event-list";
-import { useGetEventsQuery } from "@/components/sections/card-section-lading-page/hooks";
+import { useGetFilteredEventsQuery } from "@/components/sections/card-section-lading-page/hooks";
+import { Skeleton } from "@/components/ui";
 
 const page = () => {
   const searchParams = useSearchParams();
   const keyword = searchParams.get("keyword");
+  const orderBy = searchParams.get("orderBy");
 
-  console.log(keyword);
+  const queryParams = new URLSearchParams();
 
-  const { data, isLoading } = useGetEventsQuery(null, {});
+  if (keyword) queryParams.set("searchTerm", keyword);
+  if (orderBy) queryParams.set("orderBy", orderBy === "newest" ? "DSC" : "ASC");
+
+  const { data, isLoading } = useGetFilteredEventsQuery(queryParams.toString());
 
   return (
     <section>
@@ -30,7 +35,7 @@ const page = () => {
             </div>
             <div>
               <p className="mb-5">Eventos cercanos</p>
-              <div className="h-[100px] w-full rounded-md bg-slate-600"></div>
+              <Skeleton className="h-[100px] w-full rounded-md bg-slate-600" />
             </div>
           </div>
         )}

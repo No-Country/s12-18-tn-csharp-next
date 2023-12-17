@@ -1,4 +1,7 @@
-import * as React from "react";
+"use client";
+
+import React from "react";
+import { useRouter } from "next/navigation";
 
 import {
   Select,
@@ -15,10 +18,15 @@ interface Props {
 }
 
 const EventSort = ({ keyword }: Props) => {
-  const link = keyword.length > 0 ? `?keyword=${keyword}` : "?";
+  const router = useRouter();
+
+  const link = keyword.length > 0 ? `/search?keyword=${keyword}&` : "/search?";
 
   return (
-    <Select defaultValue="newest">
+    <Select
+      defaultValue="newest"
+      onValueChange={(value) => router.push(`${link}orderBy=${value}`)}
+    >
       <SelectTrigger className="max-w-[180px]">
         <div className="truncate">
           <span>Ordernar por:</span> <SelectValue className="" />
@@ -27,7 +35,9 @@ const EventSort = ({ keyword }: Props) => {
       <SelectContent>
         <SelectGroup>
           <SelectLabel>Ordernar por</SelectLabel>
-          <SelectItem value="newest">Nuevo</SelectItem>
+          <SelectItem value="newest" onClick={() => console.log("hola")}>
+            Nuevo
+          </SelectItem>
           <SelectItem value="oldest">Antiguo</SelectItem>
         </SelectGroup>
       </SelectContent>

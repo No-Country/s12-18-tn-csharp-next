@@ -5,6 +5,7 @@ interface Props {
   events: any[];
 }
 
+// TODO: update imgUrl
 const EventList = ({ events }: Props) => {
   return (
     <>
