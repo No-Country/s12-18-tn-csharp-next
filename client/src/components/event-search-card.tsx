@@ -47,7 +47,7 @@ const EventSearchCard = ({
           </div>
         </Link>
         <div className="flex w-full justify-end">
-          <EventShareButton id={id} title={title} author={author} />
+          <EventShareButton id={id} title={title} author={author} size={16} />
         </div>
       </div>
       <Separator />

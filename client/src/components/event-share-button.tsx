@@ -24,9 +24,10 @@ interface Props {
   id: number;
   title: string;
   author: string;
+  size?: number;
 }
 
-const EventShareButton = ({ id, title, author }: Props) => {
+const EventShareButton = ({ id, title, author, size }: Props) => {
   const { toast } = useToast();
 
   // TODO: update with env variable
@@ -47,7 +48,7 @@ const EventShareButton = ({ id, title, author }: Props) => {
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="ghost" className={cn("mt-1 px-3 py-1")}>
-          <Share size={16} />
+          <Share size={size || 24} />
         </Button>
       </DialogTrigger>
       <DialogContent className="bg-white dark:bg-black sm:max-w-[425px]">
