@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -20,14 +21,28 @@ import {
 import { cn } from "@/lib";
 
 interface Props {
+  id: number;
   title: string;
   author: string;
-  link: string;
-  handleCopy: () => void;
 }
 
-const EventShareButton = ({ title, author, link, handleCopy }: Props) => {
+const EventShareButton = ({ id, title, author }: Props) => {
+  const { toast } = useToast();
+
+  // TODO: update with env variable
+  const link = `http://localhost:3000/event/${id}`;
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(link);
+
+    toast({
+      title: "¡El enlace se ha copiado al portapapeles!",
+      description: link,
+    });
+  };
+
   const text = `Colaborá con ${author} y contribuí a la causa: ${title}`;
+
   return (
     <Dialog>
       <DialogTrigger asChild>
