@@ -15,6 +15,7 @@ import {
 
 import EventProgress from "@/components/event-progress";
 import Link from "next/link";
+import EventShareButton from "@/components/event-share-button";
 
 interface Media {
   type?: string;
@@ -59,6 +60,7 @@ interface Props {
 }
 
 export function CardLandingDetails({ data }: Props) {
+  console.log(data);
   return (
     <section>
       <div className="border-b border-t border-[#e6e8e9] dark:border-none dark:bg-black">
@@ -295,8 +297,14 @@ export function CardLandingDetails({ data }: Props) {
             contribute to this cause?
           </p>
           <div className="flex items-center gap-6">
-            <Heart className="cursor-pointer" />
-            <Button>Share</Button>
+            {/* <Heart className="cursor-pointer" /> */}
+            <EventShareButton
+              id={data.event_Id || 0}
+              title={data.title || ""}
+              author={data.created_By_User || ""}
+              size={24}
+            />
+            {/* <Button>Share</Button> */}
             <Button>Donate</Button>
           </div>
         </section>

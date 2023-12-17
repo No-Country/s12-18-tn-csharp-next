@@ -3,14 +3,10 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { Separator } from "./ui/separator";
-import { Share } from "lucide-react";
-import { Button } from "./ui";
-import { cn } from "@/lib";
-import { useToast } from "@/components/ui/use-toast";
 import EventShareButton from "./event-share-button";
 
 interface Props {
-  id: string;
+  id: number;
   title: string;
   description: string;
   imgUrl: string;
@@ -26,20 +22,7 @@ const EventSearchCard = ({
   date,
   author,
 }: Props) => {
-  const { toast } = useToast();
-
-  // TODO: update with env variable
-  const link = `http://localhost:3000/event/${id}`;
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(link);
-
-    toast({
-      title: "¡El enlace se ha copiado al portapapeles!",
-      description: link,
-    });
-  };
-
+  console.log(id);
   return (
     <div>
       <div className="mt-3 py-2">
@@ -63,12 +46,7 @@ const EventSearchCard = ({
           </div>
         </Link>
         <div className="flex w-full justify-end">
-          <EventShareButton
-            title={title}
-            link={link}
-            author={author}
-            handleCopy={handleCopy}
-          />
+          <EventShareButton id={id} title={title} author={author} size={16} />
         </div>
       </div>
       <Separator />
