@@ -4,7 +4,6 @@ import type { Metadata } from "next";
 import { Providers } from "@/providers";
 import { Nav } from "@/components/nav";
 import { Footer } from "@/components/footer";
-import { Toaster } from "@/components/ui/toaster";
 
 import "./globals.css";
 
@@ -16,7 +15,7 @@ export const metadata: Metadata = {
 /**
  * Layout principal de la aplicación.
  *
- * @param param0 - Props por defecto de un componente.
+ * @param { PropsWithChildren } param0 - Props por defecto de un componente con children.
  *
  * @returns { JSX.Element } Layout principal de la aplicación.
  */
@@ -27,7 +26,6 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body>
         <Providers>
-          <Toaster />
           <div className="flex w-full flex-col">
             <Nav />
             <div className="min-h-screen">{children}</div>

@@ -22,10 +22,6 @@ export const postEventApi = eventApi.injectEndpoints({
       query: (eventData) => ({
         url: "/",
         method: HTTP_METHODS.POST,
-        // headers: {
-        //   Authorization: `Bearer ${token}`,
-        //   "Content-Type": "application/json",
-        // },
         body: eventData,
       }),
     }),

@@ -1,7 +1,5 @@
 "use client";
 import React from "react";
-// import { selectAuth } from "@/app/(auth)/store";
-// import { useAppSelector } from "@/hooks";
 import { useRouter } from "next/navigation";
 
 import { useCreateEventMutation } from "@/components/sections/card-section-post-page/hooks";
@@ -10,6 +8,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { useGetEventsQuery } from "@/components/sections/card-section-lading-page/hooks/";
+import { toast } from "@/components/ui/use-toast";
 
 import {
   Button,
@@ -51,9 +50,6 @@ interface FormData {
   };
 }
 export default function page() {
-  // const auth = useAppSelector(selectAuth);
-
-  // console.log(auth);
   const router = useRouter();
 
   const [createEvent, { data }] = useCreateEventMutation();
@@ -62,17 +58,16 @@ export default function page() {
   const form = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: {
-      title: "Festival de Jazz en Nueva Orleans",
-      description:
-        "Disfruta de un increíble festival de jazz en la ciudad de Nueva Orleans.",
-      collect_Goal: 8000,
-      collected: 2500,
+      title: "",
+      description: "",
+      collect_Goal: 0,
+      collected: 0,
       geo: {
-        country: "Estados Unidos",
-        provice: "Luisiana",
-        city: "Nueva Orleans",
-        lat: 29.9511,
-        long: -90.0715,
+        country: "",
+        provice: "",
+        city: "",
+        lat: 0,
+        long: 0,
       },
     },
   });
@@ -85,7 +80,15 @@ export default function page() {
       refetchEvents();
       router.push("/");
     } catch (error) {
-      console.error("Error al crear el evento:", error);
+      // console.log(error);
+      toast({
+        title: "Error:",
+        description: (
+          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+            <code className="text-white">No se pudo enviar</code>
+          </pre>
+        ),
+      });
     }
   };
 
@@ -96,7 +99,7 @@ export default function page() {
   }, [data]);
 
   return (
-    <section className="container mx-auto mt-2 mb-2 w-full rounded-lg bg-white p-8 shadow-md md:w-2/3 lg:w-1/2 xl:w-1/3">
+    <section className="container mx-auto mb-2 mt-2 w-full rounded-lg bg-white p-8 shadow-md md:w-2/3 lg:w-1/2 xl:w-1/3">
       <h1 className="mb-6 text-2xl font-bold">Crear evento</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -295,10 +298,7 @@ export default function page() {
           />
 
           {/* Botón de Enviar */}
-          <Button
-            type="submit"
-            className=" w-full px-4 py-2 text-white"
-          >
+          <Button type="submit" className=" w-full px-4 py-2 text-white">
             Enviar
           </Button>
         </form>

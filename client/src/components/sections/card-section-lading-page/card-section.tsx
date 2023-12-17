@@ -70,7 +70,7 @@ export function CardSection() {
       <section>
         <article className="mb-5 mt-5 flex items-center justify-between">
           <div className="flex items-center gap-5">
-            <h2>Next on-line events</h2>
+            <h2>Próximos eventos en línea</h2>
           </div>
           <Link href="/search" className="hidden sm:block">
             Ver todos los eventos

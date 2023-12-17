@@ -1,5 +1,5 @@
 import { authReducer, authApiReducer } from "@/app/(auth)/store";
-import { eventReducer } from "@/app/(main)/reducers";
+import { eventReducer, donationReducer} from "@/app/(main)/reducers";
 
 /**
  * Raíz de los reducers de la aplicación.
@@ -7,5 +7,6 @@ import { eventReducer } from "@/app/(main)/reducers";
 export const rootReducers = {
     ...authReducer,
     ...authApiReducer,
-    ...eventReducer
+    ...eventReducer,
+    ...donationReducer
 };
