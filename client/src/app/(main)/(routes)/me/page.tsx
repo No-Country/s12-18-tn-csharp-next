@@ -1,7 +1,7 @@
 import type { FC, JSX } from "react";
 
 import { FormLayout } from "@/components/layouts";
-import { UserForm, BankDetailsForm } from "@/app/(main)/(routes)/me/components";
+import { UserForm, BankDetailsForm, MeEvents } from "@/app/(main)/(routes)/me/components";
 
 /**
  * Página del usuario en sesión, donde esta toda su información.
@@ -19,6 +19,7 @@ const MyProfilePage: FC = (): JSX.Element => {
       <FormLayout uniqueForm={false}>
         <BankDetailsForm />
       </FormLayout>
+      <MeEvents />
     </div>
   );
 };
