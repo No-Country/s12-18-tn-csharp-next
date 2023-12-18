@@ -1,6 +1,7 @@
 import type { FC, JSX } from "react";
 
-import { UserForm } from "@/app/(main)/(routes)/me/components";
+import { FormLayout } from "@/components/layouts";
+import { UserForm, BankDetailsForm, MeEvents } from "@/app/(main)/(routes)/me/components";
 
 /**
  * Página del usuario en sesión, donde esta toda su información.
@@ -11,7 +12,14 @@ const MyProfilePage: FC = (): JSX.Element => {
 
   return (
     <div className="container py-6">
-      <UserForm />
+      <h1 className="text-4xl text-center"> Mi Perfil </h1>
+      <FormLayout uniqueForm={false}>
+        <UserForm />
+      </FormLayout>
+      <FormLayout uniqueForm={false}>
+        <BankDetailsForm />
+      </FormLayout>
+      <MeEvents />
     </div>
   );
 };

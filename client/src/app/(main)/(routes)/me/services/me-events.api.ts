@@ -9,7 +9,7 @@ export const MeEventsApi = MeApi.injectEndpoints({
         /**
          * Petición de los eventos de ususario.
          */
-        events: builder.query({
+        events: builder.query<null, void>({
             query: () => ME_API_ROUTES.EVENTS
         })
     })
