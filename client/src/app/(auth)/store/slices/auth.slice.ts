@@ -49,6 +49,6 @@ export const authSlice = createSlice({
  * 
  * @param { RootState } state - Estado principal de la store.
  * 
- * @returns { any } Estado de autenticación dentro de la store.
+ * @returns { AuthUser } Estado de autenticación dentro de la store.
  */
 export const selectAuth = (state: RootState): AuthUser => state.auth;

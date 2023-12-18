@@ -21,7 +21,12 @@ import { EmptyBankDetails } from "@/app/(main)/(routes)/me/models";
 import { bankDetailsSchema } from "@/app/(main)/(routes)/me/schemas";
 import { useBankDetails } from "@/app/(main)/(routes)/me/hooks";
 
-export const BankDetailsForm: FC = ():JSX.Element => {
+/**
+ * Componente del formulario para modificar la información bancaria del usuario.
+ * 
+ * @returns { JSX.Element } Formulario para modificar la información bancaria del usuario.
+ */
+export const BankDetailsForm: FC = (): JSX.Element => {
     /**
      * Formulario de los datos bancarios del usuario.
      */

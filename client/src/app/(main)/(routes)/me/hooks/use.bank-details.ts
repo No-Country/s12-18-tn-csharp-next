@@ -32,7 +32,7 @@ export const useBankDetails = () => {
      */
     const handleBankDetails: SubmitHandler<BankDetailsModel> = async (
         values: BankDetailsModel
-    ) => {
+    ): Promise<any> => {
         await updateUser({ bankDetails: values });
     };
 
