@@ -1,6 +1,7 @@
 import type { FC, JSX } from "react";
 
-import { FormLayout, UserForm } from "@/app/(main)/(routes)/me/components";
+import { FormLayout } from "@/components/layouts";
+import { UserForm } from "@/app/(main)/(routes)/me/components";
 
 /**
  * Página del usuario en sesión, donde esta toda su información.

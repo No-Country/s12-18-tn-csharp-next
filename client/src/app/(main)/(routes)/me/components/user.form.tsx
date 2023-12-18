@@ -1,19 +1,17 @@
 "use client";
 
-import { useState, type FC, type JSX } from "react";
+import type { FC, JSX } from "react";
 import { useForm } from "react-hook-form";
-import { redirect } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 
-import { selectAuth } from "@/app/(auth)/store";
+import { useUserInfo } from "@/app/(main)/(routes)/me/hooks";
 import { validDate } from "@/app/(auth)/(routes)/sign-up/models";
 import { userInfoSchema } from "@/app/(main)/(routes)/me/schemas";
 import { UserInfoModel } from "@/app/(main)/(routes)/me/models";
 import { userInfoAdapter } from "@/app/(main)/(routes)/me/adapters";
-import { useUpdateUserMutation } from "@/app/(main)/(routes)/me/hooks";
-import { useAppSelector } from "@/hooks";
+import { useAuth } from "@/hooks";
 import { cn } from "@/lib";
 import {
     Form,
@@ -32,45 +30,45 @@ import {
     Calendar
 } from "@/components/ui";
 
+/**
+ * Componente del formulario de la información del usuario.
+ * 
+ * @returns { JSX.Element } Formulario de la información del usuario.
+ */
 export const UserForm: FC = (): JSX.Element => {
-    // Estado para saber si se esta editando el usuario.
-    const [isEditing, setIsEditing] = useState<boolean>(false);
-
     /**
      * Información del usuario autenticado.
      */
-    const auth = useAppSelector(selectAuth);
+    const { auth } = useAuth();
 
-    if (!auth.token) return redirect("/sign-up");
+    /**
+     * Valores por defecto del formulario de información del usuario.
+     */
+    const defaultValues = userInfoAdapter(auth.user);
 
     /**
      * Formulario de la información del usuario.
      */
     const form = useForm<UserInfoModel>({
         resolver: zodResolver(userInfoSchema),
-        defaultValues: userInfoAdapter(auth.user)
+        defaultValues
     });
 
-    /**
-     * Función para manejar la edición de información del usuario.
-     */
-    const handleEditing = () => {
-        setIsEditing((currentValue) => !currentValue);
-    };
-
-    const handleUserInfo = (values: any) => {
-        console.log(values);    
-    };
+    // Funcionalidades del hook para manipular las funcionalidades de la información del usuario.
+    const { handlers, status } = useUserInfo({
+        currentUser: auth,
+        defaultValues
+    });
 
     return (
         <Form {...form}>
             <form
-                className="flex flex-col gap-y-5 "
-                onSubmit={form.handleSubmit(handleUserInfo)}
+                className="flex flex-col gap-y-5"
+                onSubmit={form.handleSubmit(handlers.handleUserInfo)}
             >
                 <FormField
                     control={form.control}
-                    disabled={!isEditing}
+                    disabled={!status.isEditing}
                     name="name"
                     render={({field}) => (
                         <FormItem>
@@ -87,24 +85,7 @@ export const UserForm: FC = (): JSX.Element => {
                 />
                 <FormField
                     control={form.control}
-                    disabled={!isEditing}
-                    name="dni"
-                    render={({field}) => (
-                        <FormItem>
-                            <FormLabel> DNI : </FormLabel>
-                            <FormControl>
-                                <Input
-                                    placeholder="Ingresa tu DNI"
-                                    {...field}
-                                />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    disabled={!isEditing}
+                    disabled={!status.isEditing}
                     name="dateOfBirth"
                     render={({field}) => (
                         <FormItem className="flex flex-col">
@@ -114,11 +95,11 @@ export const UserForm: FC = (): JSX.Element => {
                                     <FormControl>
                                         <Button
                                             variant={"outline"}
-                                            disabled={!isEditing}
+                                            disabled={!status.isEditing}
                                             className={cn(
                                                 "w-full pl-3 text-left font-normal",
                                                 !field.value && "text-muted-foreground",
-                                                !isEditing && "hover:cursor-no-drop pointer-events-auto disabled:pointer-events-auto"
+                                                !status.isEditing && "hover:cursor-no-drop pointer-events-auto disabled:pointer-events-auto"
                                             )}
                                         >
                                             {field.value ? (
@@ -154,7 +135,7 @@ export const UserForm: FC = (): JSX.Element => {
                 />
                 <FormField
                     control={form.control}
-                    disabled={!isEditing}
+                    disabled={!status.isEditing}
                     name="gender"
                     render={({ field }) => (
                         <FormItem className="space-y-3">
@@ -162,7 +143,7 @@ export const UserForm: FC = (): JSX.Element => {
                             <FormControl>
                                 <RadioGroup
                                     className="flex flex-col space-y-1"
-                                    disabled={!isEditing}
+                                    disabled={!status.isEditing}
                                     onValueChange={field.onChange}
                                     defaultValue={field.value}
                                 >
@@ -194,7 +175,7 @@ export const UserForm: FC = (): JSX.Element => {
                         </FormItem>
                     )}
                 />
-                {isEditing && (
+                {status.isEditing && (
                     <Button
                         className="
                             mt-5 bg-black text-white hover:border hover:border-black dark:hover:border-white
@@ -207,7 +188,7 @@ export const UserForm: FC = (): JSX.Element => {
                     </Button>
                 )}
             </form>
-            {!isEditing && (
+            {!status.isEditing && (
                 <Button
                     className="
                         mt-5 bg-black text-white hover:border hover:border-black dark:hover:border-white
@@ -215,7 +196,7 @@ export const UserForm: FC = (): JSX.Element => {
                         dark:hover:text-white w-full
                     "
                     type="button"
-                    onClick={handleEditing}
+                    onClick={handlers.handleEditing}
                 >
                     Editar
                 </Button>
