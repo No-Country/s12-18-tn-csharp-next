@@ -2,6 +2,7 @@ import type { FC, JSX } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
+import { EmptyBankDetails } from "@/app/(main)/(routes)/me/models";
 import {
     Form,
     FormLabel,
@@ -24,7 +25,7 @@ export const BankDetailsForm: FC = ():JSX.Element => {
      */
     const form = useForm({
         resolver: zodResolver(),
-        defaultValues
+        defaultValues: EmptyBankDetails
     });
 
     return (
@@ -44,6 +45,7 @@ export const BankDetailsForm: FC = ():JSX.Element => {
                             <FormControl>
                                 <Input
                                     placeholder="Ingresa tu Número de cuenta"
+                                    type="number"
                                     {...field}
                                 />
                             </FormControl>

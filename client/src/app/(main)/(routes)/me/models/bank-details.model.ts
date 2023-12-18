@@ -18,3 +18,12 @@ export enum BankDetailsErrorModel {
     BANK_NAME_REQUIRED = "El nombre del banco es requerido.",
     INVALID_BANK_NAME = "El nombre del banco es invalido."
 }
+
+/**
+ * Modelo de los datos bancarios vacios del usuario.
+ */
+export const EmptyBankDetails: BankDetailsModel = {
+    accountNumber: "" as unknown as number,
+    type: "",
+    bank: ""
+};
