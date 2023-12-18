@@ -1,6 +1,6 @@
 import type { AuthUser } from "@/app/(auth)/models";
-import { useAppDispatch } from "@/hooks";
 import { setUser, removeUser } from "@/app/(auth)/store";
+import { useAppDispatch } from "@/hooks";
 
 /**
  * Hook para la logica del manejo de las acciones de autenticación en los estados globales de la aplicación.
