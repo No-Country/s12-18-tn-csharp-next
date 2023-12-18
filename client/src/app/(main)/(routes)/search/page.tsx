@@ -19,7 +19,12 @@ const page = () => {
   if (keyword) queryParams.set("searchTerm", keyword);
   if (orderBy) queryParams.set("orderBy", orderBy === "newest" ? "DSC" : "ASC");
 
-  const { data, isLoading } = useGetFilteredEventsQuery(queryParams.toString());
+  console.log(queryParams.toString());
+
+  const { data, isLoading } = useGetFilteredEventsQuery(
+    queryParams.toString(),
+    { refetchOnMountOrArgChange: true },
+  );
 
   return (
     <section>

@@ -8,13 +8,6 @@ const EventSearchCardSkeleton = () => {
     <div>
       <div className="mt-3 py-2">
         <div className="mb-10 flex gap-3">
-          {/* <Image
-            src="https://source.unsplash.com/random/600x300/?animal"
-            alt="event image"
-            width={222}
-            height={125}
-            className="self-start rounded-md object-contain"
-          /> */}
           <Skeleton className="h-[111px] w-[222px] self-start rounded-md bg-slate-600 object-contain" />
 
           <div className="flex-1 overflow-hidden">

@@ -1,6 +1,10 @@
 import React from "react";
+import Link from "next/link";
+
 import EventSearchCard from "./event-search-card";
 import EventSearchCardSkeleton from "./event-search-card-skeleton";
+
+import { Button } from "./ui";
 
 interface Props {
   events: any[];
@@ -13,17 +17,26 @@ const EventList = ({ events, isLoading }: Props) => {
     <>
       {!isLoading ? (
         <>
-          {events.map((event) => (
-            <EventSearchCard
-              key={event.event_Id}
-              id={event.event_Id}
-              title={event.title}
-              description={event.description}
-              imgUrl="example"
-              date={event.created_Date}
-              author={event.created_By_User}
-            />
-          ))}
+          {events.length === 0 && (
+            <div className="flex flex-col justify-center">
+              <p className="text-center">¡Ningún evento fue encontrado!</p>
+              <Link className="text-center" href="/search">
+                <Button className="mt-2">Limpiar búsqueda</Button>
+              </Link>
+            </div>
+          )}
+          {events.length > 0 &&
+            events.map((event) => (
+              <EventSearchCard
+                key={event.event_Id}
+                id={event.event_Id}
+                title={event.title}
+                description={event.description}
+                imgUrl="example"
+                date={event.created_Date}
+                author={event.created_By_User}
+              />
+            ))}
         </>
       ) : (
         <>
