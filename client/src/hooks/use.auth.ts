@@ -13,7 +13,7 @@ export const useAuth = () => {
     const auth = useAppSelector(selectAuth);
 
     // Redirijimos a la sección de autenticación si el usuario no esta autenticado.
-    if (auth.token) return redirect("/sign-in");
+    if (!auth.token) return redirect("/sign-in");
 
     return { auth };
 };
