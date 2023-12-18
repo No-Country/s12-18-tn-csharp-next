@@ -117,7 +117,7 @@ export default function page() {
   }, [data]);
 
   return (
-    <section className="container mx-auto mb-2 mt-2 w-full rounded-lg  p-8 shadow-md md:w-2/3 lg:w-1/2 xl:w-1/3">
+    <section className="container mx-auto mb-2 mt-2 w-full rounded-lg p-8 shadow-md md:w-2/3 lg:w-1/2 xl:w-1/3">
       <h1 className="mb-6 text-2xl font-bold">Crear evento</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
