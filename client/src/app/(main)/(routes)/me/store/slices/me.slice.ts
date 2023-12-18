@@ -13,7 +13,7 @@ const bankDetails = getLocalStorageItem(BankDetailsLocalStorageModel.BANK_DETAIL
 /**
  * Slice del estado de datos bancarios.
  */
-export const authSlice = createSlice({
+export const bankDetailsSlice = createSlice({
     // Nombre del estado.
     name: BankDetailsLocalStorageModel.BANK_DETAILS,
     // Estado inicial.

@@ -1,8 +1,8 @@
-import { authSlice } from "../slices";
+import { bankDetailsSlice } from "../slices";
 
 /**
  * Reducer de la sección de la información bancaria del usuario.
  */
 export const bankDetailsReducer = {
-    [authSlice.name]: authSlice.reducer
+    [bankDetailsSlice.name]: bankDetailsSlice.reducer
 };

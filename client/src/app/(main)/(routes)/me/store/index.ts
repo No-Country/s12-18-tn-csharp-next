@@ -1,2 +1,3 @@
 export * from "./slices";
-export * from "./middlewares";
+export * from "./reducers";
+export * from "./actions";
