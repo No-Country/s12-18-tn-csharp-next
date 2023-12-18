@@ -1,7 +1,8 @@
 import type { ThunkMiddleware } from "@reduxjs/toolkit";
 import type { CurriedGetDefaultMiddleware } from "@reduxjs/toolkit/dist/getDefaultMiddleware";
 
-import { authApiMiddleware, handlerDataInLocalStorage } from "@/app/(auth)/store";
+import { handlerDataInLocalStorage } from "../middlewares";
+import { authApiMiddleware } from "@/app/(auth)/store";
 import { eventMiddleware, donationMiddleware } from "@/app/(main)/middlewares";
 
 /**

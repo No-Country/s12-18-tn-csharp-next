@@ -1,7 +1,8 @@
 import type { Middleware, PayloadAction } from "@reduxjs/toolkit";
 
-import { removeLocalStorageItem, setLocalStorageItem } from "@/utils";
+import { MeStoreActionsModel } from "@/app/(main)/(routes)/me/models";
 import { AuthStoreActionsModel } from "@/app/(auth)/models";
+import { removeLocalStorageItem, setLocalStorageItem } from "@/utils";
 
 /**
  * Middleware para manejar la información de los estados localmente.
@@ -52,5 +53,21 @@ export const handlerDataInLocalStorage: Middleware =
         !state.auth.token
     )
         // Removemos a ese usuario de Local Storage.
+        removeLocalStorageItem(keyStateAction);
+
+    // Verificamos si la acción es para configurar la información bancaria del usuario en la aplicación.
+    if (
+        actionState === MeStoreActionsModel.SET_BANK_DETAILS &&
+        !!state.bankDetails.accountNumber
+    )
+        // Guardamos la información bancaria en Local Storage.
+        setLocalStorageItem(keyStateAction, { ...state.bankDetails });
+
+    // Verificamos si la acción es para remover los datos bancarios de la aplicación.
+    if (
+        actionState === MeStoreActionsModel.REMOVE_BANK_DETAILS &&
+        !state.auth.token
+    )
+        // Removemos la información bancaria de Local Storage.
         removeLocalStorageItem(keyStateAction);
 }
