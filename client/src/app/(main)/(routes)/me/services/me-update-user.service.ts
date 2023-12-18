@@ -1,6 +1,10 @@
 import { MeApi } from "@/app/(main)/(routes)/me/services";
 import type { UpdatedUserInfo } from "@/app/(main)/(routes)/me/models";
-import { userInfoAdapter, updateUserInfo } from "@/app/(main)/(routes)/me/adapters";
+import {
+    userInfoAdapter,
+    updateUserInfo,
+    sendUpdateBankDetailsUser
+} from "@/app/(main)/(routes)/me/adapters";
 import { HTTP_METHODS } from "@/models";
 
 /**
@@ -15,7 +19,9 @@ export const MeUpdateUserService = MeApi.injectEndpoints({
             query: (body) => ({
                 url: "/",
                 method: HTTP_METHODS.PATCH,
-                body //
+                body: body.bankDetails?.accountNumber
+                    ? sendUpdateBankDetailsUser(body)
+                    : body
             }),
             transformResponse: (response): Partial<UpdatedUserInfo> => {
                 // Verificamos si en la respuesta vienen datos bancarios.
