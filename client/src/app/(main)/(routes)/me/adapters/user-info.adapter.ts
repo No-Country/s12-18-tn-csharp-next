@@ -3,7 +3,7 @@ import { UserInfoModel } from "@/app/(main)/(routes)/me/models";
 /**
  * Función para adaptar la información del usuario.
  * 
- * @param { AuthUser } user - Usuario autenticado.
+ * @param { any } user - Usuario autenticado.
  * 
  * @returns { UserInfoModel } Información del usuario adaptada.
  */

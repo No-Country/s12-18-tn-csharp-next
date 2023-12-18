@@ -2,7 +2,6 @@ import type { FC, JSX } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { EmptyBankDetails } from "@/app/(main)/(routes)/me/models";
 import {
     Form,
     FormLabel,
@@ -18,21 +17,27 @@ import {
     Input,
     Button
 } from "@/components/ui";
+import { EmptyBankDetails } from "@/app/(main)/(routes)/me/models";
+import { bankDetailsSchema } from "@/app/(main)/(routes)/me/schemas";
+import { useBankDetails } from "@/app/(main)/(routes)/me/hooks";
 
 export const BankDetailsForm: FC = ():JSX.Element => {
     /**
      * Formulario de los datos bancarios del usuario.
      */
     const form = useForm({
-        resolver: zodResolver(),
+        resolver: zodResolver(bankDetailsSchema),
         defaultValues: EmptyBankDetails
     });
+
+    // Funcionalidades del hook para manipular las funcionalidades de la información bancaria del usuario.
+    const { handlers, status } = useBankDetails();
 
     return (
         <Form {...form}>
             <form
                 className="flex flex-col gap-y-5"
-                onSubmit={form.handleSubmit(handlers.handleUserInfo)}
+                onSubmit={form.handleSubmit(handlers.handleBankDetails)}
             >
                 <h2 className="text-4xl text-center"> Datos Bancarios </h2>
                 <FormField

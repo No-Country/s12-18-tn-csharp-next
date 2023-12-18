@@ -1,6 +1,6 @@
 import { MeApi } from "@/app/(main)/(routes)/me/services";
-import type { UserInfoModel } from "@/app/(main)/(routes)/me/models";
-import { userInfoAdapter } from "@/app/(main)/(routes)/me/adapters";
+import type { UpdatedUserInfo } from "@/app/(main)/(routes)/me/models";
+import { userInfoAdapter, updateUserInfo } from "@/app/(main)/(routes)/me/adapters";
 import { HTTP_METHODS } from "@/models";
 
 /**
@@ -11,13 +11,21 @@ export const MeUpdateUserService = MeApi.injectEndpoints({
         /**
          * Petición para actualizar el usuario.
          */
-        updateUser: builder.mutation<UserInfoModel, UserInfoModel>({
+        updateUser: builder.mutation<Partial<UpdatedUserInfo>, Partial<UpdatedUserInfo>>({
             query: (body) => ({
                 url: "/",
                 method: HTTP_METHODS.PATCH,
-                body
+                body //
             }),
-            transformResponse: (response): UserInfoModel => userInfoAdapter(response)
+            transformResponse: (response): Partial<UpdatedUserInfo> => {
+                // Verificamos si en la respuesta vienen datos bancarios.
+                if (!(response as Partial<UpdatedUserInfo>).bankDetails?.accountNumber)
+                    // Devolvemos la información actualizada del usuario.
+                    return userInfoAdapter(response);
+                else
+                    // Devolvemos los datos bancarios en caso que existan.
+                    return updateUserInfo((response as Partial<UpdatedUserInfo>).bankDetails);
+            }
         })
     })
 })
