@@ -1,10 +1,14 @@
 import React from "react";
 import EventSort from "./event-sort";
 
-const EventFilter = () => {
+interface Props {
+  keyword: string;
+}
+
+const EventFilter = ({ keyword }: Props) => {
   return (
     <div className="flex gap-4">
-      <EventSort />
+      <EventSort keyword={keyword} />
     </div>
   );
 };
