@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-import { BankDetailsModel, EmptyBankDetails, UpdatedUserInfo } from "@/app/(main)/(routes)/me/models";
+import { type BankDetailsModel, EmptyBankDetails } from "@/app/(main)/(routes)/me/models";
 import { BankDetailsLocalStorageModel } from "@/app/(main)/(routes)/me/models";
 import { getLocalStorageItem } from "@/utils";
 import type { RootState } from "@/models";
@@ -27,7 +27,7 @@ export const bankDetailsSlice = createSlice({
          * 
          * @returns { Partial<UpdatedUserInfo> } Datos actualizados.
          */
-        setBankDetails: (_state, action: PayloadAction<Partial<UpdatedUserInfo>>) => action.payload,
+        setBankDetails: (_state, action: PayloadAction<BankDetailsModel>) => action.payload,
         /**
          * Función para remover los datos bancarios en el estado.
          * 
