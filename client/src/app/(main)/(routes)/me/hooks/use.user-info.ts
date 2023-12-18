@@ -1,4 +1,4 @@
-import { useState, useEffect, type BaseSyntheticEvent } from "react";
+import { useEffect, type BaseSyntheticEvent } from "react";
 import type { SubmitHandler } from "react-hook-form";
 
 import { useUpdateUserMutation } from "@/app/(main)/(routes)/me/hooks";
@@ -6,6 +6,7 @@ import { UserInfoModel } from "@/app/(main)/(routes)/me/models";
 import { useAuthActions } from "@/app/(auth)/hooks";
 import { AuthUser } from "@/app/(auth)/models";
 import { useToast } from "@/components/ui/use-toast";
+import { useToggle } from "@/hooks";
 
 /**
  * Modelo para las propiedades del hook de la información del usuario.
@@ -26,7 +27,7 @@ export const useUserInfo = ({ currentUser, defaultValues }: UseUserInfoProps) =>
     const { handleSetUser } = useAuthActions();
 
     // Estado para saber si se esta editando el usuario.
-    const [isEditing, setIsEditing] = useState<boolean>(false);
+    const { status, toggleStatus } = useToggle();
 
     // Funcionalidades del hook de la api de manipular la información del usuario.
     const [
@@ -57,13 +58,6 @@ export const useUserInfo = ({ currentUser, defaultValues }: UseUserInfoProps) =>
             handleSetUser(user);
         }
     }, [isSuccess]);
-
-    /**
-     * Función para manejar la edición de información del usuario.
-     */
-    const handleEditing = () => {
-        setIsEditing((currentValue) => !currentValue);
-    };
 
     /**
      * Función para manejar la actualización de la información del usuario.
@@ -101,7 +95,7 @@ export const useUserInfo = ({ currentUser, defaultValues }: UseUserInfoProps) =>
         // Si los valores por defecto se mantienen igual, devolvemos un mensaje al usuario.
         if (isDefault) {
             // Cambiamos el estado de edición.
-            handleEditing();
+            toggleStatus();
 
             // Devolvemos el mensaje al usuario.
             return toast({
@@ -116,11 +110,11 @@ export const useUserInfo = ({ currentUser, defaultValues }: UseUserInfoProps) =>
 
     return {
         handlers: {
-            handleEditing,
+            handleEditing: toggleStatus,
             handleUserInfo
         },
         status: {
-            isEditing,
+            isEditing: status,
             isLoading,
             isSuccess,
             isError,
