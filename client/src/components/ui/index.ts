@@ -11,3 +11,5 @@ export * from "./progress";
 export * from "./toaster";
 export * from "./toast";
 export * from "./popover";
+export * from "./dialog";
+export * from "./textarea";

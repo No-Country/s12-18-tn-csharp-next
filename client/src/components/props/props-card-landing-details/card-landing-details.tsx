@@ -562,74 +562,7 @@ export function CardLandingDetails({ data }: Props) {
             </Dialog>
 
             {/* <Button>Donate</Button> */}
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button>Donacion</Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader>
-                  <DialogTitle>Hacer una donacion</DialogTitle>
-                  <DialogDescription>
-                    Make changes to your profile here. Click save when you're
-                    done.
-                  </DialogDescription>
-                </DialogHeader>
-                <Form {...formDonation}>
-                  <form
-                    onSubmit={formDonation.handleSubmit(onSubmitDonation)}
-                    className="w-full"
-                  >
-                    <FormField
-                      control={formDonation.control}
-                      name="data.donation_Amount"
-                      render={({ field }) => (
-                        <FormItem>
-                          <div className="grid gap-4 py-4">
-                            <div className="grid grid-cols-4 items-center gap-4">
-                              <FormLabel className="text-left">Monto</FormLabel>
-                              <FormControl>
-                                <Input
-                                  type="number"
-                                  placeholder="Monto"
-                                  {...field}
-                                  onChange={(e) =>
-                                    field.onChange(Number(e.target.value))
-                                  }
-                                />
-                              </FormControl>
-                            </div>
-                          </div>
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={formDonation.control}
-                      name="data.donation_Message"
-                      render={({ field }) => (
-                        <FormItem>
-                          <div className="grid gap-4 py-4">
-                            <div className="grid grid-cols-4 items-center gap-4">
-                              <FormLabel className="text-left">
-                                Mensaje
-                              </FormLabel>
-                              <Textarea
-                                placeholder="Mensaje"
-                                {...field}
-                              ></Textarea>
-                            </div>
-                          </div>
-                        </FormItem>
-                      )}
-                    />
-
-                    <DialogFooter>
-                      <Button type="submit">enviar</Button>
-                    </DialogFooter>
-                  </form>
-                </Form>
-              </DialogContent>
-            </Dialog>
+            
           </div>
         </section>
       </div>
