@@ -50,6 +50,7 @@ import {
 import EventProgress from "@/components/event-progress";
 import Link from "next/link";
 import { Textarea } from "@/components/ui/textarea";
+import EventShareButton from "@/components/event-share-button";
 
 interface Media {
   type?: string;
@@ -228,21 +229,6 @@ export function CardLandingDetails({ data }: Props) {
 
   // copy link
   const { toast } = useToast();
-
-  // TODO: update with env variable
-  const link = `http://localhost:3000/event/${idDefault}`;
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(link);
-
-    toast({
-      title: "¡El enlace se ha copiado al portapapeles!",
-      description: link,
-    });
-  };
-
-  // complaints
-  const visibleComplaints = data?.complaints?.slice(0, 4);
 
   return (
     <section key={data?.event_Id}>
@@ -557,39 +543,14 @@ export function CardLandingDetails({ data }: Props) {
             contribute to this cause?
           </p>
           <div className="flex items-center gap-6">
-            <Heart className="cursor-pointer" />
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button>Share</Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-md">
-                <DialogHeader>
-                  <DialogTitle>Share link</DialogTitle>
-                  <DialogDescription>
-                    Anyone who has this link will be able to view this.
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="flex items-center space-x-2">
-                  <div className="grid flex-1 gap-2">
-                    <Label htmlFor="link" className="sr-only">
-                      Link
-                    </Label>
-                    <Input id="link" defaultValue={link} readOnly />
-                  </div>
-                  <Button type="submit" size="sm" className="px-3">
-                    <span className="sr-only">Copy</span>
-                    <Copy className="h-4 w-4" onClick={handleCopy} />
-                  </Button>
-                </div>
-                <DialogFooter className="sm:justify-start">
-                  <DialogClose asChild>
-                    <Button type="button" variant="secondary">
-                      Close
-                    </Button>
-                  </DialogClose>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
+            {/* <Heart className="cursor-pointer" /> */}
+            <EventShareButton
+              id={data?.event_Id || 0}
+              title={data?.title || ""}
+              author={data?.created_By_User || ""}
+              className="flex-1"
+              size={20}
+            />
 
             {/* <Button>Donate</Button> */}
             <Dialog>
