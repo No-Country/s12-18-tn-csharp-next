@@ -49,7 +49,7 @@ import {
 
 import EventProgress from "@/components/event-progress";
 import Link from "next/link";
-import { Textarea } from "@/components/ui/textarea";
+import { DonationDialog } from "@/components/donations";
 
 interface Media {
   type?: string;
@@ -562,7 +562,7 @@ export function CardLandingDetails({ data }: Props) {
             </Dialog>
 
             {/* <Button>Donate</Button> */}
-            
+            <DonationDialog />
           </div>
         </section>
       </div>
