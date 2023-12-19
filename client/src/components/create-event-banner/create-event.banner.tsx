@@ -1,7 +1,7 @@
 import type { FC, JSX } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import ImageBanner from "../../../public/image-banner-home.svg";
+import ImageBanner from "../../../public/create-event.svg";
 
 import { Button } from "@/components/ui/button";
 
