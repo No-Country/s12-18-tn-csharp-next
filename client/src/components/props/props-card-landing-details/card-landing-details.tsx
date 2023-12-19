@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState, ChangeEvent } from "react";
 
 // Components
 import { Heart, MapPin, Calendar, Video, Copy } from "lucide-react";
@@ -95,10 +95,10 @@ interface Props {
 
 interface MediaData {
   event_Id: any;
-  media: string;
+  media: FormData;
 }
 
-interface FormData {
+interface MediaFormData {
   event_Id: any;
   media: string;
 }
@@ -127,16 +127,17 @@ interface DonationData {
   data: DonationPost;
 }
 
-
 export function CardLandingDetails({ data }: Props) {
+  const [files, setFiles] = useState<File[]>([]);
+
   // Post image
-  const [createMedia, { data: Media }] = usePostMediaMutation();
+  const [createMedia, { data: responseMedia }] = usePostMediaMutation();
 
   // Post donation
   const [createDonation, { data: Donation }] = usePostDonationMutation();
 
   const idDefault = data?.event_Id;
-  const form = useForm<FormData>({
+  const form = useForm<MediaFormData>({
     resolver: zodResolver(mediaSchema),
     defaultValues: {
       event_Id: idDefault,
@@ -174,30 +175,54 @@ export function CardLandingDetails({ data }: Props) {
     }
   };
 
-  const onSubmit = async (formData: FormData) => {
+  const handleImage = (
+    e: ChangeEvent,
+    fieldChange: (value: string) => void,
+  ) => {
+    e.preventDefault();
+
+    const fileReader = new FileReader();
+
+    const target = e.target as HTMLInputElement & { files: File[] };
+
+    if (target.files.length > 0) {
+      const file = target.files[0];
+
+      setFiles(Array.from(target.files));
+
+      if (!file.type.includes("image")) return;
+
+      fileReader.onload = async (event) => {
+        const imageDataUrl = event.target?.result?.toString() || "";
+
+        fieldChange(imageDataUrl);
+      };
+
+      fileReader.readAsDataURL(file);
+    }
+  };
+
+  const onSubmit = async (formData: MediaFormData) => {
+    // TODO: check if the image was actually changed or not.
     try {
-      const { event_Id, media } = formData;
+      const { media } = formData;
       const id_default = idDefault;
+
+      const mediaForm = new FormData();
+      mediaForm.append("media", files[0]);
 
       if (media) {
         const mediaData: MediaData = {
           event_Id: id_default,
-          media: media,
+          media: mediaForm,
         };
 
-        // const response = await createMedia(mediaData);
-        console.log("Response:", mediaData);
+        await createMedia(mediaData);
       }
     } catch (error) {
       console.error("Error:", error);
     }
   };
-
-  React.useEffect(() => {
-    if (Media) {
-      console.log("Datos del evento creado:", Media);
-    }
-  }, [Media]);
 
   // Post donations
 
@@ -254,10 +279,7 @@ export function CardLandingDetails({ data }: Props) {
               className="w-full object-contain"
             />
             <h2 className="mt-6 font-bold">Details</h2>
-            <p className="mt-4">
-              {data?.description}
-              
-            </p>
+            <p className="mt-4">{data?.description}</p>
           </div>
           <div className="order-first mt-6 md:mt-0 lg:order-last lg:mt-0">
             <div>
@@ -295,7 +317,7 @@ export function CardLandingDetails({ data }: Props) {
                   Agregar Imagen
                 </Button>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-[425px]">
+              <DialogContent className="dark:bg-black sm:max-w-[425px]">
                 <DialogHeader>
                   <DialogTitle>Añadir Imagen</DialogTitle>
                   <DialogDescription>
@@ -316,7 +338,13 @@ export function CardLandingDetails({ data }: Props) {
                                 <Label htmlFor="">Media</Label>
                               </FormLabel>
                               <FormControl>
-                                <Input type="file" {...field} />
+                                <Input
+                                  type="file"
+                                  accept="image/*"
+                                  onChange={(e) =>
+                                    handleImage(e, field.onChange)
+                                  }
+                                />
                               </FormControl>
                               <FormDescription>
                                 This is your media.
@@ -328,7 +356,9 @@ export function CardLandingDetails({ data }: Props) {
                       </div>
                     </div>
                     <DialogFooter>
-                      <button type="submit">Save changes</button>
+                      <DialogClose asChild>
+                        <button type="submit">Save changes</button>
+                      </DialogClose>
                     </DialogFooter>
                   </form>
                 </Form>

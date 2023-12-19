@@ -2,7 +2,6 @@ import { eventApi } from "@/app/(main)/services/event-api-service";
 
 import { HTTP_METHODS } from "@/models";
 
-
 // interface MediaItem {
 //   originalFileName: string;
 //   type: string;
@@ -11,7 +10,7 @@ import { HTTP_METHODS } from "@/models";
 
 interface MediaData {
   event_Id: number;
-  media: string; // media es un array de MediaItem
+  media: FormData;
 }
 
 export const postMediaApi = eventApi.injectEndpoints({
