@@ -13,6 +13,7 @@ import { UserInfoModel } from "@/app/(main)/(routes)/me/models";
 import { userInfoAdapter } from "@/app/(main)/(routes)/me/adapters";
 import { useAuth } from "@/hooks";
 import { cn } from "@/lib";
+import { LoaderSVG } from "@/components/loader";
 import {
     Form,
     FormField,
@@ -185,6 +186,7 @@ export const UserForm: FC = (): JSX.Element => {
                         type="submit"
                     >
                         Guardar
+                        
                     </Button>
                 )}
             </form>

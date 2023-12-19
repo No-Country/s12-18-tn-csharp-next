@@ -42,6 +42,7 @@ export const useUserInfo = ({ currentUser, defaultValues }: UseUserInfoProps) =>
     ] = useUpdateUserMutation();
 
     useEffect(() => {
+        debugger
         // Verificamos si la petición fue éxitosa.
         if (isSuccess) {
             /**
@@ -56,6 +57,8 @@ export const useUserInfo = ({ currentUser, defaultValues }: UseUserInfoProps) =>
 
             // Funcionalidad para configurar el usuario en el estado de autenticación.
             handleSetUser(user);
+            // Cambiamos el estado de edición del formulario.
+            toggleStatus();
         }
     }, [isSuccess]);
 
@@ -71,8 +74,9 @@ export const useUserInfo = ({ currentUser, defaultValues }: UseUserInfoProps) =>
         values: UserInfoModel,
         e?: BaseSyntheticEvent
     ): Promise<any> => {
+        debugger
         // Prevenimos el evento por defecto.
-        e?.preventDefault();
+        //e?.preventDefault();
 
         /**
          * Modelo de las llaves del modelo por defecto del formulario.
@@ -91,9 +95,10 @@ export const useUserInfo = ({ currentUser, defaultValues }: UseUserInfoProps) =>
                     field as DefaultValuesKey
                 ]
             );
-
+console.log("accionado");
         // Si los valores por defecto se mantienen igual, devolvemos un mensaje al usuario.
         if (isDefault) {
+            debugger
             // Cambiamos el estado de edición.
             toggleStatus();
 

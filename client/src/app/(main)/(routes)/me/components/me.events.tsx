@@ -24,7 +24,7 @@ export const MeEvents: FC = (): JSX.Element => {
     return (
         <section>
             <h2 className="text-4xl"> Mis Eventos </h2>
-            <section>
+            <section className="mt-10">
                 {isError && (
                     <h3 className="text-2xl text-center p-10"> Ocurrio un error. </h3>
                 )}
