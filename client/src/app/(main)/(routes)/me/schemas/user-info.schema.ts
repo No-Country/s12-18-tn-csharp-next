@@ -5,5 +5,6 @@ import { signUpSchema } from "@/app/(auth)/(routes)/sign-up/schemas";
  */
 export const userInfoSchema = signUpSchema.omit({
     email: true,
-    password: true 
+    password: true,
+    dni: true
 })
