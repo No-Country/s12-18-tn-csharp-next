@@ -2,7 +2,10 @@
 
 import type { FC, JSX } from "react";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
+import { donationSchema } from "@/components/donations/schemas";
+import { DonationFormSchema, EmptyDonation } from "@/components/donations/models";
 import {
     Form,
     FormField,
@@ -16,8 +19,13 @@ import {
 } from "@/components/ui";
 
 export const DonationForm: FC = (): JSX.Element => {
-
-    const form = useForm();
+    /**
+     * Hook del formulario de donaciones en la aplicación.
+     */
+    const form = useForm<DonationFormSchema>({
+        resolver: zodResolver(donationSchema),
+        defaultValues: EmptyDonation
+    });
     
     return (
         <Form {...form}>
@@ -37,9 +45,6 @@ export const DonationForm: FC = (): JSX.Element => {
                                         <Input
                                             type="number"
                                             placeholder="Ingresa un Monto"
-                                            onChange={(e) =>
-                                                field.onChange(Number(e.target.value))
-                                            }
                                             {...field}
                                         />
                                     </FormControl>

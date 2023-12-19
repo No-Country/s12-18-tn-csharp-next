@@ -1,5 +1,6 @@
 import type { FC, JSX } from "react";
 
+import { DonationForm } from "@/components/donations";
 import {
     Dialog,
     DialogTrigger,
@@ -29,7 +30,7 @@ export const DonationDialog: FC = (): JSX.Element => {
                         done.
                     </DialogDescription>
                 </DialogHeader>
-                
+                <DonationForm />
             </DialogContent>
         </Dialog>
     );
