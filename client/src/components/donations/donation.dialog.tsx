@@ -1,5 +1,6 @@
 import type { FC, JSX } from "react";
 
+import { EventIdProps } from "@/components/donations/models";
 import { DonationForm } from "@/components/donations";
 import {
     Dialog,
@@ -16,7 +17,9 @@ import {
  * 
  * @returns { JSX.Element } Componente del dialogo de donación.
  */
-export const DonationDialog: FC = (): JSX.Element => {
+export const DonationDialog: FC<EventIdProps> = ({
+    eventId
+}: EventIdProps): JSX.Element => {
     return (
         <Dialog>
             <DialogTrigger asChild>
@@ -30,7 +33,7 @@ export const DonationDialog: FC = (): JSX.Element => {
                         done.
                     </DialogDescription>
                 </DialogHeader>
-                <DonationForm />
+                <DonationForm eventId={eventId} />
             </DialogContent>
         </Dialog>
     );

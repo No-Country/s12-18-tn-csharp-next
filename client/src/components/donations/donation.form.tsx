@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { donationSchema } from "@/components/donations/schemas";
-import { DonationFormSchema, EmptyDonation } from "@/components/donations/models";
+import { DonationFormSchema, EmptyDonation, type EventIdProps } from "@/components/donations/models";
 import {
     Form,
     FormField,
@@ -23,7 +23,9 @@ import {
  * 
  * @returns { JSX.Element } Componente del formulario de donaciones.
  */
-export const DonationForm: FC = (): JSX.Element => {
+export const DonationForm: FC<EventIdProps> = ({
+    eventId
+}: EventIdProps): JSX.Element => {
     /**
      * Hook del formulario de donaciones en la aplicación.
      */

@@ -135,6 +135,8 @@ export function CardLandingDetails({ data }: Props) {
   // Post donation
   const [createDonation, { data: Donation }] = usePostDonationMutation();
 
+  if (!data.event_Id) return null;
+  
   const idDefault = data?.event_Id;
   const form = useForm<FormData>({
     resolver: zodResolver(mediaSchema),
@@ -562,7 +564,7 @@ export function CardLandingDetails({ data }: Props) {
             </Dialog>
 
             {/* <Button>Donate</Button> */}
-            <DonationDialog />
+            <DonationDialog eventId={data?.event_Id} />
           </div>
         </section>
       </div>
