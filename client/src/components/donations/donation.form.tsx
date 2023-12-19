@@ -18,6 +18,11 @@ import {
     Button
 } from "@/components/ui";
 
+/**
+ * Componente del formulario de donaciones.
+ * 
+ * @returns { JSX.Element } Componente del formulario de donaciones.
+ */
 export const DonationForm: FC = (): JSX.Element => {
     /**
      * Hook del formulario de donaciones en la aplicación.
