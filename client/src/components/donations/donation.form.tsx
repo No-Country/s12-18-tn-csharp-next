@@ -5,7 +5,12 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { donationSchema } from "@/components/donations/schemas";
-import { DonationFormSchema, EmptyDonation, type EventIdProps } from "@/components/donations/models";
+import { useMakeDonation } from "@/components/donations/hooks";
+import {
+    DonationModel,
+    EmptyDonation,
+    type EventIdProps
+} from "@/components/donations/models";
 import {
     Form,
     FormField,
@@ -29,15 +34,18 @@ export const DonationForm: FC<EventIdProps> = ({
     /**
      * Hook del formulario de donaciones en la aplicación.
      */
-    const form = useForm<DonationFormSchema>({
+    const form = useForm<DonationModel>({
         resolver: zodResolver(donationSchema),
         defaultValues: EmptyDonation
     });
+
+    // Funcionalidades del hook para manipular las funcionalidades de realizar una donación.
+    const { handlers, status } = useMakeDonation({ eventId });
     
     return (
         <Form {...form}>
             <form
-                onSubmit={form.handleSubmit(() => {})}
+                onSubmit={form.handleSubmit(handlers.handleMakeDonation)}
                 className="w-full"
             >
                 <FormField

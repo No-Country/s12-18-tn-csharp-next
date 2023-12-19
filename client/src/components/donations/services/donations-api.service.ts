@@ -1,4 +1,4 @@
-import type { DonationFormSchema, EventIdProps } from "@/components/donations/models";
+import type { DonationModel, EventIdProps } from "@/components/donations/models";
 import { donationApi } from "@/components/donations/services";
 import { HTTP_METHODS } from "@/models";
 
@@ -11,7 +11,7 @@ export const donationsApi = donationApi.injectEndpoints({
          * Petición para enviar una donación a un evento específico.
          */
         postDonation: builder
-            .mutation<any, DonationFormSchema & Pick<EventIdProps, "eventId">>(
+            .mutation<any, DonationModel & Pick<EventIdProps, "eventId">>(
                 {
                     query: ({ eventId, ...body }) => ({
                         url: `/${eventId}`,

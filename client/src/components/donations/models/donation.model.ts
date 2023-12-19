@@ -5,12 +5,12 @@ import { donationSchema } from "@/components/donations/schemas";
 /**
  * Modelo del esquema de donaciones.
  */
-export type DonationFormSchema = z.infer<typeof donationSchema>;
+export type DonationModel = z.infer<typeof donationSchema>;
 
 /**
  * Modelo de los valores por defecto de una donación.
  */
-export const EmptyDonation: DonationFormSchema = {
+export const EmptyDonation: DonationModel = {
     amount: "" as unknown as number,
     message: ""
 };
