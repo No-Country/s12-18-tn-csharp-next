@@ -2,12 +2,37 @@
 
 import type { FC, JSX } from "react";
 
+import { CardPropsLanging } from "@/components/props/props-card-lading/card-langing";
+import { GroupCardsSkeleton } from "@/components/skeleton";
 import { useEventsQuery } from "@/app/(main)/(routes)/me/hooks";
 
+/**
+ * Componente de los eventos del usuario autenticado.
+ * 
+ * @returns { JSX.Element } Componente de los eventos del usuario autenticado.
+ */
 export const MeEvents: FC = (): JSX.Element => {
-    const { data: events, error, isLoading } = useEventsQuery();
-    console.log({events});
+    // Funcionalidades del hook de la obtención de los eventos.
+    const {
+        data: events,
+        isError,
+        isLoading,
+        isFetching,
+        isSuccess
+    } = useEventsQuery();
+
     return (
-        <h1>Eventos</h1>
+        <section>
+            <h2 className="text-4xl"> Mis Eventos </h2>
+            <section>
+                {isError && (
+                    <h3 className="text-2xl text-center p-10"> Ocurrio un error. </h3>
+                )}
+                {(isLoading || isFetching) && <GroupCardsSkeleton />}
+                {(isSuccess && events.length > 0)
+                    ? <CardPropsLanging cardData={events} />
+                    : <h3 className="text-2xl text-center p-10"> No haz creado ningún evento. </h3>}
+            </section>
+        </section>
     );
 };

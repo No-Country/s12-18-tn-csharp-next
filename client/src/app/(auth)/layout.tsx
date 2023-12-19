@@ -13,7 +13,7 @@ const AuthLayout: FC<PropsWithChildren> = ({
     children
 }: PropsWithChildren): JSX.Element => {
     return (
-        <FormLayout>
+        <FormLayout uniqueForm={true}>
             { children }
         </FormLayout>
     );

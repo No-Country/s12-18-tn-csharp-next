@@ -3,7 +3,7 @@ import React from "react";
 import Link from "next/link";
 import { EventCard } from "@/components/event-card";
 
-interface Event {
+export interface Event {
   event_Id: number;
   created_Date: string;
   created_By_User: string;

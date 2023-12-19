@@ -13,10 +13,10 @@ const MyProfilePage: FC = (): JSX.Element => {
   return (
     <div className="container py-6">
       <h1 className="text-4xl text-center"> Mi Perfil </h1>
-      <FormLayout uniqueForm={false}>
+      <FormLayout>
         <UserForm />
       </FormLayout>
-      <FormLayout uniqueForm={false}>
+      <FormLayout>
         <BankDetailsForm />
       </FormLayout>
       <MeEvents />

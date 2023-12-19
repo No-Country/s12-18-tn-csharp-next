@@ -1,3 +1,4 @@
+import type { Event } from "@/components/props/props-card-lading/card-langing";
 import { MeApi } from "@/app/(main)/(routes)/me/services";
 import { ME_API_ROUTES } from "@/app/(main)/(routes)/me/models";
 
@@ -9,7 +10,7 @@ export const MeEventsApi = MeApi.injectEndpoints({
         /**
          * Petición de los eventos de ususario.
          */
-        events: builder.query<null, void>({
+        events: builder.query<Event[], void>({
             query: () => ME_API_ROUTES.EVENTS
         })
     })
