@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState, ChangeEvent } from "react";
 
 // Components
 import { Heart, MapPin, Calendar, Video, Copy } from "lucide-react";
@@ -11,7 +11,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-//
 import { usePostMediaMutation } from "../../sections/card-event-post-media/hooks";
 
 import {
@@ -47,6 +46,8 @@ import {
 
 import EventProgress from "@/components/event-progress";
 import Link from "next/link";
+import { Textarea } from "@/components/ui/textarea";
+import EventShareButton from "@/components/event-share-button";
 import { DonationDialog } from "@/components/donations";
 
 interface Media {
@@ -93,10 +94,10 @@ interface Props {
 
 interface MediaData {
   event_Id: any;
-  media: string;
+  media: FormData;
 }
 
-interface FormData {
+interface MediaFormData {
   event_Id: any;
   media: string;
 }
@@ -126,13 +127,17 @@ interface DonationData {
 }
 
 export function CardLandingDetails({ data }: Props) {
+  const { toast } = useToast();
+
+  const [files, setFiles] = useState<File[]>([]);
+
   // Post image
-  const [createMedia, { data: Media }] = usePostMediaMutation();
+  const [createMedia, { data: responseMedia }] = usePostMediaMutation();
 
   if (!data.event_Id) return null;
-  
+
   const idDefault = data?.event_Id;
-  const form = useForm<FormData>({
+  const form = useForm<MediaFormData>({
     resolver: zodResolver(mediaSchema),
     defaultValues: {
       event_Id: idDefault,
@@ -170,49 +175,64 @@ export function CardLandingDetails({ data }: Props) {
     }
   };
 
-  const onSubmit = async (formData: FormData) => {
+  const handleImage = (
+    e: ChangeEvent,
+    fieldChange: (value: string) => void,
+  ) => {
+    e.preventDefault();
+
+    const fileReader = new FileReader();
+
+    const target = e.target as HTMLInputElement & { files: File[] };
+
+    if (target.files.length > 0) {
+      const file = target.files[0];
+
+      setFiles(Array.from(target.files));
+
+      if (!file.type.includes("image")) return;
+
+      fileReader.onload = async (event) => {
+        const imageDataUrl = event.target?.result?.toString() || "";
+
+        fieldChange(imageDataUrl);
+      };
+
+      fileReader.readAsDataURL(file);
+    }
+  };
+
+  const onSubmit = async (formData: MediaFormData) => {
     try {
-      const { event_Id, media } = formData;
+      if (formData.media.length === 0) return;
+      console.log("check");
+
+      const { media } = formData;
       const id_default = idDefault;
+
+      const mediaForm = new FormData();
+      mediaForm.append("media", files[0]);
 
       if (media) {
         const mediaData: MediaData = {
           event_Id: id_default,
-          media: media,
+          media: mediaForm,
         };
 
-        // const response = await createMedia(mediaData);
-        console.log("Response:", mediaData);
+        await createMedia(mediaData);
+
+        form.reset();
+        setFiles([]);
+        toast({
+          title: "¡Éxito!",
+          description: "La imagen se ha agregado de forma correcta.",
+        });
       }
     } catch (error) {
       console.error("Error:", error);
     }
   };
 
-  React.useEffect(() => {
-    if (Media) {
-      console.log("Datos del evento creado:", Media);
-    }
-  }, [Media]);
-
-  // Post donations
-
-  // copy link
-  const { toast } = useToast();
-
-  // TODO: update with env variable
-  const link = `http://localhost:3000/event/${idDefault}`;
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(link);
-
-    toast({
-      title: "¡El enlace se ha copiado al portapapeles!",
-      description: link,
-    });
-  };
-
-  // complaints
   const visibleComplaints = data?.complaints?.slice(0, 4);
 
   return (
@@ -240,9 +260,11 @@ export function CardLandingDetails({ data }: Props) {
           <div className="md:col-span-2 lg:col-span-2">
             <img
               src={
-                data?.media !== null && data?.media[0]?.url
-                  ? `https://humanitarianaidapi.somee.com/${data?.media[0].url}`
-                  : "https://source.unsplash.com/random/600x300/?animal"
+                responseMedia?.event?.media[0].url
+                  ? `https://humanitarianaidapi.somee.com/${responseMedia?.event?.media[0].url}`
+                  : data?.media !== null && data?.media[0]?.url
+                    ? `https://humanitarianaidapi.somee.com/${data?.media[0].url}`
+                    : "https://source.unsplash.com/random/600x300/?animal"
               }
               alt="creator image"
               // height={480}
@@ -250,10 +272,7 @@ export function CardLandingDetails({ data }: Props) {
               className="w-full object-contain"
             />
             <h2 className="mt-6 font-bold">Details</h2>
-            <p className="mt-4">
-              {data?.description}
-              
-            </p>
+            <p className="mt-4">{data?.description}</p>
           </div>
           <div className="order-first mt-6 md:mt-0 lg:order-last lg:mt-0">
             <div>
@@ -291,7 +310,7 @@ export function CardLandingDetails({ data }: Props) {
                   Agregar Imagen
                 </Button>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-[425px]">
+              <DialogContent className="dark:bg-black sm:max-w-[425px]">
                 <DialogHeader>
                   <DialogTitle>Añadir Imagen</DialogTitle>
                   <DialogDescription>
@@ -312,7 +331,13 @@ export function CardLandingDetails({ data }: Props) {
                                 <Label htmlFor="">Media</Label>
                               </FormLabel>
                               <FormControl>
-                                <Input type="file" {...field} />
+                                <Input
+                                  type="file"
+                                  accept="image/*"
+                                  onChange={(e) =>
+                                    handleImage(e, field.onChange)
+                                  }
+                                />
                               </FormControl>
                               <FormDescription>
                                 This is your media.
@@ -324,12 +349,15 @@ export function CardLandingDetails({ data }: Props) {
                       </div>
                     </div>
                     <DialogFooter>
-                      <button type="submit">Save changes</button>
+                      <DialogClose asChild>
+                        <button type="submit">Save changes</button>
+                      </DialogClose>
                     </DialogFooter>
                   </form>
                 </Form>
               </DialogContent>
             </Dialog>
+
             {/* ONLY DESIGN */}
             <div className="mt-4 hidden lg:block">
               <h2>Sponsor</h2>
@@ -523,39 +551,14 @@ export function CardLandingDetails({ data }: Props) {
             contribute to this cause?
           </p>
           <div className="flex items-center gap-6">
-            <Heart className="cursor-pointer" />
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button>Share</Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-md">
-                <DialogHeader>
-                  <DialogTitle>Share link</DialogTitle>
-                  <DialogDescription>
-                    Anyone who has this link will be able to view this.
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="flex items-center space-x-2">
-                  <div className="grid flex-1 gap-2">
-                    <Label htmlFor="link" className="sr-only">
-                      Link
-                    </Label>
-                    <Input id="link" defaultValue={link} readOnly />
-                  </div>
-                  <Button type="submit" size="sm" className="px-3">
-                    <span className="sr-only">Copy</span>
-                    <Copy className="h-4 w-4" onClick={handleCopy} />
-                  </Button>
-                </div>
-                <DialogFooter className="sm:justify-start">
-                  <DialogClose asChild>
-                    <Button type="button" variant="secondary">
-                      Close
-                    </Button>
-                  </DialogClose>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
+            {/* <Heart className="cursor-pointer" /> */}
+            <EventShareButton
+              id={data?.event_Id || 0}
+              title={data?.title || ""}
+              author={data?.created_By_User || ""}
+              className="flex-1"
+              size={20}
+            />
 
             {/* <Button>Donate</Button> */}
             <DonationDialog eventId={data?.event_Id} />
