@@ -39,7 +39,7 @@ namespace s12.Controllers
 
         [Authorize]
         [HttpPost("{event_Id}")]
-        public async Task<ActionResult<Donation_Get>> Post(int event_Id,[FromBody] Donation_Post donation)
+        public async Task<ActionResult<object>> Post(int event_Id,[FromBody] Donation_Post donation)
         {
             var actual_User_Email = User.FindFirst("Email")?.Value;
             var actual_User_Name = User.FindFirst("Name")?.Value;
@@ -57,7 +57,19 @@ namespace s12.Controllers
                 return Problem(e.Message);
             }
         }
+
+        [HttpGet("{event_Id}/ad")]
+        public  ActionResult GetWithBody([FromBody] A get)
+        {
+            return Ok(get);
+        }
     }
+}
+
+public class A
+{
+    public int Id { get; set; }
+    public string Ad { get; set; }
 }
 
 

@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization.Infrastructure;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using s12.DataService.Data;
 using s12.Entities.DbSet;
 using System.Linq;
+using static s12.Services.Epayco_PaymentsService;
 
 namespace s12.Services
 {
@@ -10,10 +13,12 @@ namespace s12.Services
     {
         MyDbContext _dbContext;
         Events_Service _events_Service;
-        public Donations_Service(MyDbContext context, Events_Service events_Service)
+        Epayco_PaymentsService _payments_Service;
+        public Donations_Service(MyDbContext context, Events_Service events_Service, Epayco_PaymentsService payments_Service)
         {
             _dbContext = context;
             _events_Service = events_Service;
+            _payments_Service = payments_Service;
         }
 
         public List<Donation> Get(string? filterParam, int? pageSize, int? pageNumber)
@@ -99,7 +104,7 @@ namespace s12.Services
         }
 
 
-        public async Task<Donation_Get> CreateAsync(int event_Id, Donation_Post donation_Post, string? Donor_Email, string? actual_User_Name)
+        public async Task<object> CreateAsync(int event_Id, Donation_Post donation_Post, string? Donor_Email, string? actual_User_Name)
         {
             //event exists??
             // TODO Blocked, events service missing
@@ -111,12 +116,32 @@ namespace s12.Services
             //var the_user = _dbContext.Users.FirstOrDefault(x => x.NormalizedEmail.Equals(donation.Donor_Email));
             donation.Donation_Date = DateTime.Now.ToString();
             donation.Owner_Email = result.Event.Event_Owner_Email;
+            //create the link
 
-            //this needs to be specified
-            donation.Payment_Id = Random.Shared.Next().ToString();
             _dbContext.Donations.Add(donation);
             await _dbContext.SaveChangesAsync();
-            return donation.ToDonation_Get();
+            var path = "";
+            var model = new PaymentModel
+            {
+                Id = donation.Id,
+                Title = result.Event.Title,
+                Description = result.Event.Description,
+                Amount = donation_Post.Donation_Amount,
+                Email = Donor_Email,
+                RedirectUrl = $"https://s12-18-tn-csharp-next.vercel.app/{path}"
+
+            };
+
+            var link = _payments_Service.CreatePaymentLink(model);
+
+            donation.Payment_Id = link.data.invoceNumber;
+            await _dbContext.SaveChangesAsync();
+
+            return new
+            {
+                Link = link,
+                Donation = donation.ToDonation_Get()
+            };
         }
 
         //public Donation_Get Create(int event_Id, Donation_Post donation)
