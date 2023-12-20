@@ -72,6 +72,8 @@ const ComplaintsPage = ({ complaintsData }: ComplaintsViewProps) => {
       const formattedDate = date.toLocaleDateString();
       return formattedDate;
     };
+
+    console.log(fetchedData)
   
     return (
       <div className="w-screen px-5 md:px-[20%] h-[50%]">
