@@ -11,7 +11,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-//
 import { usePostMediaMutation } from "../../sections/card-event-post-media/hooks";
 
 import {
@@ -204,8 +203,10 @@ export function CardLandingDetails({ data }: Props) {
   };
 
   const onSubmit = async (formData: MediaFormData) => {
-    // TODO: check if the image was actually changed or not.
     try {
+      if (formData.media.length === 0) return;
+      console.log("check");
+
       const { media } = formData;
       const id_default = idDefault;
 
@@ -219,15 +220,18 @@ export function CardLandingDetails({ data }: Props) {
         };
 
         await createMedia(mediaData);
+
+        form.reset();
+        setFiles([]);
+        toast({
+          title: "¡Éxito!",
+          description: "La imagen se ha agregado de forma correcta.",
+        });
       }
     } catch (error) {
       console.error("Error:", error);
     }
   };
-
-  // Post donations
-
-  // copy link
 
   const visibleComplaints = data?.complaints?.slice(0, 4);
 
@@ -256,9 +260,11 @@ export function CardLandingDetails({ data }: Props) {
           <div className="md:col-span-2 lg:col-span-2">
             <img
               src={
-                data?.media !== null && data?.media[0]?.url
-                  ? `https://humanitarianaidapi.somee.com/${data?.media[0].url}`
-                  : "https://source.unsplash.com/random/600x300/?animal"
+                responseMedia?.event?.media[0].url
+                  ? `https://humanitarianaidapi.somee.com/${responseMedia?.event?.media[0].url}`
+                  : data?.media !== null && data?.media[0]?.url
+                    ? `https://humanitarianaidapi.somee.com/${data?.media[0].url}`
+                    : "https://source.unsplash.com/random/600x300/?animal"
               }
               alt="creator image"
               // height={480}
@@ -351,6 +357,7 @@ export function CardLandingDetails({ data }: Props) {
                 </Form>
               </DialogContent>
             </Dialog>
+
             {/* ONLY DESIGN */}
             <div className="mt-4 hidden lg:block">
               <h2>Sponsor</h2>
