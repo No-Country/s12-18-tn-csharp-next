@@ -120,7 +120,7 @@ namespace s12.Services
 
             _dbContext.Donations.Add(donation);
             await _dbContext.SaveChangesAsync();
-            var path = "";
+            var path = $"event/{event_Id}";
             var model = new PaymentModel
             {
                 Id = donation.Id,
