@@ -1,1 +1,0 @@
-export const BASE_API_DONATIONS_PATH = "/Donations"

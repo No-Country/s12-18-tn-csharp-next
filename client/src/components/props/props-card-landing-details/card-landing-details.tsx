@@ -51,6 +51,7 @@ import EventProgress from "@/components/event-progress";
 import Link from "next/link";
 import { Textarea } from "@/components/ui/textarea";
 import EventShareButton from "@/components/event-share-button";
+import { DonationDialog } from "@/components/donations";
 
 interface Media {
   type?: string;
@@ -129,6 +130,8 @@ interface DonationData {
 }
 
 export function CardLandingDetails({ data }: Props) {
+  const { toast } = useToast();
+
   const [files, setFiles] = useState<File[]>([]);
 
   // Post image
@@ -136,6 +139,8 @@ export function CardLandingDetails({ data }: Props) {
 
   // Post donation
   const [createDonation, { data: Donation }] = usePostDonationMutation();
+
+  if (!data.event_Id) return null;
 
   const idDefault = data?.event_Id;
   const form = useForm<MediaFormData>({
@@ -228,7 +233,8 @@ export function CardLandingDetails({ data }: Props) {
   // Post donations
 
   // copy link
-  const { toast } = useToast();
+
+  const visibleComplaints = data?.complaints?.slice(0, 4);
 
   return (
     <section key={data?.event_Id}>
@@ -553,74 +559,7 @@ export function CardLandingDetails({ data }: Props) {
             />
 
             {/* <Button>Donate</Button> */}
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button>Donacion</Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader>
-                  <DialogTitle>Hacer una donacion</DialogTitle>
-                  <DialogDescription>
-                    Make changes to your profile here. Click save when you're
-                    done.
-                  </DialogDescription>
-                </DialogHeader>
-                <Form {...formDonation}>
-                  <form
-                    onSubmit={formDonation.handleSubmit(onSubmitDonation)}
-                    className="w-full"
-                  >
-                    <FormField
-                      control={formDonation.control}
-                      name="data.donation_Amount"
-                      render={({ field }) => (
-                        <FormItem>
-                          <div className="grid gap-4 py-4">
-                            <div className="grid grid-cols-4 items-center gap-4">
-                              <FormLabel className="text-left">Monto</FormLabel>
-                              <FormControl>
-                                <Input
-                                  type="number"
-                                  placeholder="Monto"
-                                  {...field}
-                                  onChange={(e) =>
-                                    field.onChange(Number(e.target.value))
-                                  }
-                                />
-                              </FormControl>
-                            </div>
-                          </div>
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={formDonation.control}
-                      name="data.donation_Message"
-                      render={({ field }) => (
-                        <FormItem>
-                          <div className="grid gap-4 py-4">
-                            <div className="grid grid-cols-4 items-center gap-4">
-                              <FormLabel className="text-left">
-                                Mensaje
-                              </FormLabel>
-                              <Textarea
-                                placeholder="Mensaje"
-                                {...field}
-                              ></Textarea>
-                            </div>
-                          </div>
-                        </FormItem>
-                      )}
-                    />
-
-                    <DialogFooter>
-                      <Button type="submit">enviar</Button>
-                    </DialogFooter>
-                  </form>
-                </Form>
-              </DialogContent>
-            </Dialog>
+            <DonationDialog eventId={data?.event_Id} />
           </div>
         </section>
       </div>

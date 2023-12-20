@@ -19,7 +19,7 @@ import {
     Input,
     Button
 } from "@/components/ui";
-import { EmptyBankDetails } from "@/app/(main)/(routes)/me/models";
+import { BankDetailsModel, EmptyBankDetails } from "@/app/(main)/(routes)/me/models";
 import { bankDetailsSchema } from "@/app/(main)/(routes)/me/schemas";
 import { useBankDetails } from "@/app/(main)/(routes)/me/hooks";
 
@@ -32,7 +32,7 @@ export const BankDetailsForm: FC = (): JSX.Element => {
     /**
      * Formulario de los datos bancarios del usuario.
      */
-    const form = useForm({
+    const form = useForm<BankDetailsModel>({
         resolver: zodResolver(bankDetailsSchema),
         defaultValues: EmptyBankDetails
     });
