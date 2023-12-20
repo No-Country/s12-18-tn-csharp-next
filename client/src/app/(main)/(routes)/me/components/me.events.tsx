@@ -26,12 +26,11 @@ export const MeEvents: FC = (): JSX.Element => {
             <h2 className="text-4xl"> Mis Eventos </h2>
             <section className="mt-10">
                 {isError && (
-                    <h3 className="text-2xl text-center p-10"> Ocurrio un error. </h3>
+                    <h3 className="text-2xl text-center pb-5"> Ocurrio un error. </h3>
                 )}
                 {(isLoading || isFetching) && <GroupCardsSkeleton />}
-                {(isSuccess && events.length > 0)
-                    ? <CardPropsLanging cardData={events} />
-                    : <h3 className="text-2xl text-center p-10"> No haz creado ningún evento. </h3>}
+                {(isSuccess && events.length > 0) && <CardPropsLanging cardData={events} />}
+                {(!isError && isSuccess && events.length > 0) && <h3 className="text-2xl text-center p-10"> No haz creado ningún evento. </h3>}
             </section>
         </section>
     );

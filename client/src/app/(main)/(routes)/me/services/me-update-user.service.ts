@@ -31,7 +31,7 @@ export const MeUpdateUserService = MeApi.injectEndpoints({
                 else
                     // Devolvemos los datos bancarios en caso que existan.
                     return updateUserInfo((response as Partial<UpdatedUserInfo>).bankDetails);
-            }
+            },
         })
     })
 })

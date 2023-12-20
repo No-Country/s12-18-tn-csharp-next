@@ -27,10 +27,9 @@ export const DonationDialog: FC<EventIdProps> = ({
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle> Hacer una donacion </DialogTitle>
+                    <DialogTitle> Hacer una donación </DialogTitle>
                     <DialogDescription>
-                        Make changes to your profile here. Click save when you're
-                        done.
+                        Al realizar esta donación, !Estás apoyando a una buena causa :)¡
                     </DialogDescription>
                 </DialogHeader>
                 <DonationForm eventId={eventId} />

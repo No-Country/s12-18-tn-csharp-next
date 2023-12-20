@@ -3,7 +3,7 @@
  */
 export enum DonationErrorModel {
     MOUNT_REQUIRED = "El monto es requerido.",
-    INVALID_MOUNT = "El monto debe ser un dato numerico.",
+    INVALID_MOUNT = "El monto debe ser un dato númerico.",
     MIN_MOUNT = "El monto mínimo es de 1 dolar.",
     NEGATIVE_MOUNT = "El monto no debe ser negativo.",
     MESSAGE_REQUIRED = "Debes incluir un mensaje a tu donativo.",
