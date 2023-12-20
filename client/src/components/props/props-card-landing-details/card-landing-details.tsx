@@ -2,7 +2,7 @@
 import React, { useState, ChangeEvent } from "react";
 
 // Components
-import { Heart, MapPin, Calendar, Video, Copy } from "lucide-react";
+import {  MapPin, Calendar, Video } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -204,7 +204,7 @@ export function CardLandingDetails({ data }: Props) {
               />
             </div>
             <div>
-              <p>Created by</p>
+              <p>Creado por:</p>
               <p className="font-bold">{data?.created_By_User}</p>
             </div>
           </div>
@@ -215,8 +215,8 @@ export function CardLandingDetails({ data }: Props) {
           <div className="md:col-span-2 lg:col-span-2">
             <img
               src={
-                responseMedia?.event?.media[0].url
-                  ? `https://humanitarianaidapi.somee.com/${responseMedia?.event?.media[0].url}`
+                data?.media[0].url
+                  ? `https://humanitarianaidapi.somee.com/${data?.media[0].url}`
                   : data?.media !== null && data?.media[0]?.url
                     ? `https://humanitarianaidapi.somee.com/${data?.media[0].url}`
                     : "https://source.unsplash.com/random/600x300/?animal"
