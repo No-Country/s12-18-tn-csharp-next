@@ -1,6 +1,7 @@
 import { bankDetailsReducer } from "@/app/(main)/(routes)/me/store";
 import { authReducer, authApiReducer } from "@/app/(auth)/store";
-import { eventReducer, donationReducer} from "@/app/(main)/reducers";
+import { donationApiReducer } from "@/components/donations/store";
+import { eventReducer } from "@/app/(main)/reducers";
 import { meApiReducer } from "@/app/(main)/(routes)/me/store";
 
 /**
@@ -10,7 +11,7 @@ export const rootReducers = {
     ...authReducer,
     ...authApiReducer,
     ...eventReducer,
-    ...donationReducer,
+    ...donationApiReducer,
     ...bankDetailsReducer,
     ...meApiReducer
 };
