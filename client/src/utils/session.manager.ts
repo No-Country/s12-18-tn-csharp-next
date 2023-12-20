@@ -21,4 +21,6 @@ export const getSession = (key: string) => {
         removeLocalStorageItem(key)
         return null;
     };
+
+    return getData;
 };

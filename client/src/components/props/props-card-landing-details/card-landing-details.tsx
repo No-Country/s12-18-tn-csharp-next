@@ -120,11 +120,6 @@ interface DonationPost {
   donation_Message: string;
 }
 
-interface DonationData {
-  event_Id: any;
-  data: DonationPost;
-}
-
 export function CardLandingDetails({ data }: Props) {
   // Post image
   const [createMedia, { data: Media }] = usePostMediaMutation();
@@ -139,36 +134,6 @@ export function CardLandingDetails({ data }: Props) {
       media: "",
     },
   });
-
-  // Donation
-  const formDonation = useForm<DonationData>({
-    // resolver: zodResolver(donationSchema),
-    defaultValues: {
-      event_Id: idDefault,
-      data: {
-        donation_Amount: 0,
-        donation_Message: "",
-      },
-    },
-  });
-
-  const onSubmitDonation = async ({ event_Id, data }: DonationData) => {
-    try {
-      const id_default = idDefault;
-      const donationData: DonationData = {
-        event_Id: id_default,
-        data: {
-          donation_Amount: data.donation_Amount,
-          donation_Message: data.donation_Message,
-        },
-      };
-      console.log(donationData);
-      // Aquí puedes enviar los datos a tu API o realizar otras operaciones.
-    } catch (error) {
-      console.error("Error:", error);
-      // Aquí puedes manejar el error, por ejemplo, mostrar un mensaje al usuario.
-    }
-  };
 
   const onSubmit = async (formData: FormData) => {
     try {
@@ -194,8 +159,6 @@ export function CardLandingDetails({ data }: Props) {
       console.log("Datos del evento creado:", Media);
     }
   }, [Media]);
-
-  // Post donations
 
   // copy link
   const { toast } = useToast();

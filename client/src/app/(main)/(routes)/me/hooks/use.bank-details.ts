@@ -3,12 +3,14 @@ import type { SubmitHandler } from "react-hook-form";
 
 import { useUpdateUserMutation, useBankDetailsActions } from "@/app/(main)/(routes)/me/hooks";
 import { BankDetailsModel } from "@/app/(main)/(routes)/me/models";
+import { useToast } from "@/components/ui/use-toast";
 import { useToggle } from "@/hooks";
 
 /**
  * Hook para manejar la información bancaria del usuario.
  */
 export const useBankDetails = () => {
+    const { toast } = useToast();
     // Estado para saber si se esta editando el usuario.
     const { status, toggleStatus } = useToggle();
 
@@ -33,7 +35,17 @@ export const useBankDetails = () => {
             // Funcionalidad para configurar la información bancaria del usuario en el estado global.
             handleSetBankDetails(data?.bankDetails as BankDetailsModel);
         }
-    }, [isSuccess]);
+        if (error) {
+            // Cambiamos el estado de edición.
+            toggleStatus();
+
+            // Mnadamos un mensaje al usuario.
+            toast({
+                title: "Ocurrio un error al modificar tu información.",
+                description: "No se pudo modificar tu información debido a que ocurrio un error."
+            });
+        }
+    }, [isSuccess, isError]);
 
     /**
      * Función para manejar la actualización de la información bancaria del usuario.

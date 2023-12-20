@@ -1,5 +1,6 @@
 import type { DonationModel, EventIdProps } from "@/components/donations/models";
 import { donationApi } from "@/components/donations/services";
+import { donationAdapter } from "@/components/donations/adapters";
 import { HTTP_METHODS } from "@/models";
 
 /**
@@ -16,7 +17,7 @@ export const donationsApi = donationApi.injectEndpoints({
                     query: ({ eventId, ...body }) => ({
                         url: `/${eventId}`,
                         method: HTTP_METHODS.POST,
-                        body
+                        body: donationAdapter(body)
                     })
                 }
             ),

@@ -30,7 +30,7 @@ export const MeEvents: FC = (): JSX.Element => {
                 )}
                 {(isLoading || isFetching) && <GroupCardsSkeleton />}
                 {(isSuccess && events.length > 0) && <CardPropsLanging cardData={events} />}
-                {(!isError && isSuccess && events.length > 0) && <h3 className="text-2xl text-center p-10"> No haz creado ningún evento. </h3>}
+                {(!isError && isSuccess && events.length < 0) && <h3 className="text-2xl text-center p-10"> No haz creado ningún evento. </h3>}
             </section>
         </section>
     );
