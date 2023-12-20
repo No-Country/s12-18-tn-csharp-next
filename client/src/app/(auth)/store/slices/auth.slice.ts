@@ -4,7 +4,7 @@ import {
 } from "@reduxjs/toolkit";
 
 import type { RootState } from "@/models";
-import { getLocalStorageItem } from "@/utils";
+import { getSession } from "@/utils";
 import {
     AuthLocalStorageModel,
     EmptyUser,
@@ -15,7 +15,7 @@ import {
  * Sesión del usuario persistente.
  */
 const session: AuthUser =
-    getLocalStorageItem(AuthLocalStorageModel.AUTH) || EmptyUser;
+    getSession(AuthLocalStorageModel.AUTH) || EmptyUser;
 
 /**
  * Slice del estado de autenticación.

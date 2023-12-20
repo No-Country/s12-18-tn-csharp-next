@@ -9,7 +9,6 @@ import { UserForm, BankDetailsForm, MeEvents } from "@/app/(main)/(routes)/me/co
  * @returns { JSX.Element } Componente de la página de usuario.
  */
 const MyProfilePage: FC = (): JSX.Element => {
-
   return (
     <div className="container py-6">
       <h1 className="text-4xl text-center"> Mi Perfil </h1>

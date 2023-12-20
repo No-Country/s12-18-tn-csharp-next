@@ -2,7 +2,7 @@ import type { Middleware, PayloadAction } from "@reduxjs/toolkit";
 
 import { MeStoreActionsModel } from "@/app/(main)/(routes)/me/models";
 import { AuthStoreActionsModel } from "@/app/(auth)/models";
-import { removeLocalStorageItem, setLocalStorageItem } from "@/utils";
+import { removeLocalStorageItem, setLocalStorageItem, saveSession } from "@/utils";
 
 /**
  * Middleware para manejar la información de los estados localmente.
@@ -45,7 +45,7 @@ export const handlerDataInLocalStorage: Middleware =
         !!state.auth.token
     )
         // Guardamos a ese usuario en Local Storage.
-        setLocalStorageItem(keyStateAction, { ...state.auth });
+        saveSession(keyStateAction, { ...state.auth });
 
     // Verificamos si la acción es para remover al usuario de la aplicación.
     if (

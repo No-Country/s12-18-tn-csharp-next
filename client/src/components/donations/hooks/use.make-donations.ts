@@ -1,12 +1,13 @@
+import { useEffect } from "react";
 import { SubmitHandler } from "react-hook-form";
 
 import type { EventIdProps, DonationModel } from "@/components/donations/models";
 import { usePostDonationMutation } from "@/components/donations/hooks";
-//import { useToggle } from "@/hooks";
+import { useToast } from "@/components/ui/use-toast";
 
 export const useMakeDonation = ({ eventId }: EventIdProps) => {
-    // Estado para saber si se esta editando el usuario.
-    //const { status, toggleStatus } = useToggle();
+    // Funcionalidades del toaster.
+    const { toast } = useToast();
     // Funcionalidades del hook de la api para realizar donaciones.
     const [
         makeDonation,
@@ -18,6 +19,15 @@ export const useMakeDonation = ({ eventId }: EventIdProps) => {
             error
         }
     ] = usePostDonationMutation();
+
+    useEffect(() => {
+        if (error) {
+            toast({
+                title: "Ocurrio un error en tu donación.",
+                description: "No se pudo enviar tu donativo, por favor revisa tus datos bancarios y tu sesión."
+            })
+        }
+    }, [isError]);
 
     /**
      * Función para manejar la creación de donaciones.

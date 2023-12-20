@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { donationSchema } from "@/components/donations/schemas";
 import { useMakeDonation } from "@/components/donations/hooks";
+import { LoaderSVG } from "@/components/loader";
 import {
     DonationModel,
     EmptyDonation,
@@ -17,6 +18,7 @@ import {
     FormItem,
     FormLabel,
     FormControl,
+    FormMessage,
     DialogFooter,
     Textarea,
     Input,
@@ -44,18 +46,15 @@ export const DonationForm: FC<EventIdProps> = ({
     
     return (
         <Form {...form}>
-            <form
-                onSubmit={form.handleSubmit(handlers.handleMakeDonation)}
-                className="w-full"
-            >
+            <form onSubmit={form.handleSubmit(handlers.handleMakeDonation)}>
                 <FormField
                     control={form.control}
                     name="amount"
                     render={({ field }) => (
                         <FormItem>
                             <div className="grid gap-4 py-4">
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                    <FormLabel className="text-left"> Monto </FormLabel>
+                                <div className="grid grid-cols-2 items-center gap-4">
+                                    <FormLabel className="text-center sm:text-left"> Monto </FormLabel>
                                     <FormControl>
                                         <Input
                                             type="number"
@@ -63,6 +62,7 @@ export const DonationForm: FC<EventIdProps> = ({
                                             {...field}
                                         />
                                     </FormControl>
+                                    <FormMessage />
                                 </div>
                             </div>
                         </FormItem>
@@ -74,21 +74,31 @@ export const DonationForm: FC<EventIdProps> = ({
                     render={({ field }) => (
                         <FormItem>
                             <div className="grid gap-4 py-4">
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                    <FormLabel className="text-left">
+                                <div className="grid grid-cols-2 items-center gap-4">
+                                    <FormLabel className="text-center sm:text-left">
                                         Mensaje
                                     </FormLabel>
                                     <Textarea
+                                        className="max-h-[50px]"
                                         placeholder="Ingresa un Mensaje"
                                         {...field}
                                     />
+                                    <FormMessage />
+
                                 </div>
                             </div>
                         </FormItem>
                     )}
                 />
                 <DialogFooter>
-                    <Button type="submit"> Donar </Button>
+                    <Button type="submit">
+                        Donar
+                        {status.isLoading && (
+                            <svg className="animate-spin h-5 w-5 ml-1.5" viewBox="0 0 24 24">
+                                <LoaderSVG />
+                            </svg>
+                        )}
+                    </Button>
                 </DialogFooter>
             </form>
         </Form>

@@ -1,5 +1,5 @@
 import { useEffect, type BaseSyntheticEvent } from "react";
-import type { SubmitHandler } from "react-hook-form";
+import type { SubmitHandler, UseFormReset } from "react-hook-form";
 
 import { useUpdateUserMutation } from "@/app/(main)/(routes)/me/hooks";
 import { UserInfoModel } from "@/app/(main)/(routes)/me/models";
@@ -14,12 +14,13 @@ import { useToggle } from "@/hooks";
 interface UseUserInfoProps {
     currentUser: AuthUser;
     defaultValues: UserInfoModel;
+    reset: UseFormReset<UserInfoModel>;
 }
 
 /**
  * Hook para manipular la información del usuario en sesión.
  */
-export const useUserInfo = ({ currentUser, defaultValues }: UseUserInfoProps) => {
+export const useUserInfo = ({ currentUser, defaultValues, reset }: UseUserInfoProps) => {
     // Funcionalidades del toaster.
     const { toast } = useToast();
 
@@ -42,7 +43,6 @@ export const useUserInfo = ({ currentUser, defaultValues }: UseUserInfoProps) =>
     ] = useUpdateUserMutation();
 
     useEffect(() => {
-        debugger
         // Verificamos si la petición fue éxitosa.
         if (isSuccess) {
             /**
@@ -60,7 +60,19 @@ export const useUserInfo = ({ currentUser, defaultValues }: UseUserInfoProps) =>
             // Cambiamos el estado de edición del formulario.
             toggleStatus();
         }
-    }, [isSuccess]);
+
+        if (error) {
+            // Cambiamos el estado de edición.
+            toggleStatus();
+
+            // Mnadamos un mensaje al usuario.
+            toast({
+                title: "Ocurrio un error al modificar tu información.",
+                description: "No se pudo modificar tu información debido a que ocurrio un error."
+            });
+            reset();
+        }
+    }, [isSuccess, isError]);
 
     /**
      * Función para manejar la actualización de la información del usuario.
@@ -74,9 +86,8 @@ export const useUserInfo = ({ currentUser, defaultValues }: UseUserInfoProps) =>
         values: UserInfoModel,
         e?: BaseSyntheticEvent
     ): Promise<any> => {
-        debugger
         // Prevenimos el evento por defecto.
-        //e?.preventDefault();
+        e?.preventDefault();
 
         /**
          * Modelo de las llaves del modelo por defecto del formulario.
@@ -88,17 +99,20 @@ export const useUserInfo = ({ currentUser, defaultValues }: UseUserInfoProps) =>
          */    
         const isDefault = Object
             .keys(values)
-            .every((field) =>
-                values[
-                    field as DefaultValuesKey
-                ] === defaultValues[
-                    field as DefaultValuesKey
-                ]
-            );
-console.log("accionado");
+            .every((field) => {
+                if (field === "dateOfBirth") {
+                    const valueDate = values[field].getTime();
+                    const defaultValueDate = values[field].getTime();
+
+                    return valueDate === defaultValueDate;
+                };
+
+                return values[field as DefaultValuesKey] ===
+                    defaultValues[field as DefaultValuesKey];
+            });
+
         // Si los valores por defecto se mantienen igual, devolvemos un mensaje al usuario.
         if (isDefault) {
-            debugger
             // Cambiamos el estado de edición.
             toggleStatus();
 

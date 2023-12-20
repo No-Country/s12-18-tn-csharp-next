@@ -58,7 +58,8 @@ export const UserForm: FC = (): JSX.Element => {
     // Funcionalidades del hook para manipular las funcionalidades de la información del usuario.
     const { handlers, status } = useUserInfo({
         currentUser: auth,
-        defaultValues
+        defaultValues,
+        reset: form.reset
     });
 
     return (

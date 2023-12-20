@@ -14,8 +14,6 @@ import * as z from "zod";
 //
 import { usePostMediaMutation } from "../../sections/card-event-post-media/hooks";
 
-import { usePostDonationMutation } from "@/components/sections/card-event-post-donate/hook";
-
 import {
   Dialog,
   DialogContent,
@@ -136,9 +134,6 @@ export function CardLandingDetails({ data }: Props) {
 
   // Post image
   const [createMedia, { data: responseMedia }] = usePostMediaMutation();
-
-  // Post donation
-  const [createDonation, { data: Donation }] = usePostDonationMutation();
 
   if (!data.event_Id) return null;
 
