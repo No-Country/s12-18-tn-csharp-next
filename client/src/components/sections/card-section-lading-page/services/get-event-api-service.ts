@@ -4,6 +4,9 @@ export const getEventApi = eventApi.injectEndpoints({
   endpoints: (builder) => ({
     getEvents: builder.query({
       query: () => "/",
-    })
+    }),
+    getFilteredEvents: builder.query({
+      query: (params) => `/?${params}`,
+    }),
   }),
 });

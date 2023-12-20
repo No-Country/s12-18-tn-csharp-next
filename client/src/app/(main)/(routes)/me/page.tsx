@@ -1,7 +1,26 @@
-import React from "react";
+import type { FC, JSX } from "react";
 
-const page = () => {
-  return <div className="container py-6">Profile Page</div>;
+import { FormLayout } from "@/components/layouts";
+import { UserForm, BankDetailsForm, MeEvents } from "@/app/(main)/(routes)/me/components";
+
+/**
+ * Página del usuario en sesión, donde esta toda su información.
+ * 
+ * @returns { JSX.Element } Componente de la página de usuario.
+ */
+const MyProfilePage: FC = (): JSX.Element => {
+  return (
+    <div className="container py-6">
+      <h1 className="text-4xl text-center"> Mi Perfil </h1>
+      <FormLayout>
+        <UserForm />
+      </FormLayout>
+      <FormLayout>
+        <BankDetailsForm />
+      </FormLayout>
+      <MeEvents />
+    </div>
+  );
 };
 
-export default page;
+export default MyProfilePage;

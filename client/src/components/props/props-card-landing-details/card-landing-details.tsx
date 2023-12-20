@@ -1,9 +1,29 @@
+"use client";
 import React from "react";
 
 // Components
-import { Heart, MapPin, Calendar, Video } from "lucide-react";
-
+import { Heart, MapPin, Calendar, Video, Copy } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+
+//
+import { usePostMediaMutation } from "../../sections/card-event-post-media/hooks";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogFooter,
+  DialogClose,
+} from "@/components/ui/dialog";
 
 import {
   Card,
@@ -13,8 +33,21 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 
+import { useToast } from "@/components/ui/use-toast";
+
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+
 import EventProgress from "@/components/event-progress";
 import Link from "next/link";
+import { DonationDialog } from "@/components/donations";
 
 interface Media {
   type?: string;
@@ -41,26 +74,149 @@ interface Complaint {
 
 interface Event {
   event_Id?: number;
-  created_Date?: string;
+  created_Date?: any;
   created_By_User?: string;
   is_Validated?: boolean;
   title?: string;
   description?: string;
   collect_Goal?: number | undefined;
   collected?: number | undefined;
-  media?: Media[];
+  media?: Media[] | any;
   geo?: GeoLocation;
   has_Complaints?: boolean;
-  complaints?: Complaint[];
+  complaints?: Complaint[] | any;
 }
 
 interface Props {
   data: Event;
 }
 
+interface MediaData {
+  event_Id: any;
+  media: string;
+}
+
+interface FormData {
+  event_Id: any;
+  media: string;
+}
+
+const mediaSchema = z.object({
+  event_Id: z.number(),
+  media: z.string(),
+});
+
+// Interfaces Donations
+
+// const donationSchema = z.object({
+//   data: {
+//     donation_Amount: z.number(),
+//     donation_Message: z.string(),
+//   },
+// });
+
+interface DonationPost {
+  donation_Amount: number;
+  donation_Message: string;
+}
+
+interface DonationData {
+  event_Id: any;
+  data: DonationPost;
+}
+
 export function CardLandingDetails({ data }: Props) {
+  // Post image
+  const [createMedia, { data: Media }] = usePostMediaMutation();
+
+  if (!data.event_Id) return null;
+  
+  const idDefault = data?.event_Id;
+  const form = useForm<FormData>({
+    resolver: zodResolver(mediaSchema),
+    defaultValues: {
+      event_Id: idDefault,
+      media: "",
+    },
+  });
+
+  // Donation
+  const formDonation = useForm<DonationData>({
+    // resolver: zodResolver(donationSchema),
+    defaultValues: {
+      event_Id: idDefault,
+      data: {
+        donation_Amount: 0,
+        donation_Message: "",
+      },
+    },
+  });
+
+  const onSubmitDonation = async ({ event_Id, data }: DonationData) => {
+    try {
+      const id_default = idDefault;
+      const donationData: DonationData = {
+        event_Id: id_default,
+        data: {
+          donation_Amount: data.donation_Amount,
+          donation_Message: data.donation_Message,
+        },
+      };
+      console.log(donationData);
+      // Aquí puedes enviar los datos a tu API o realizar otras operaciones.
+    } catch (error) {
+      console.error("Error:", error);
+      // Aquí puedes manejar el error, por ejemplo, mostrar un mensaje al usuario.
+    }
+  };
+
+  const onSubmit = async (formData: FormData) => {
+    try {
+      const { event_Id, media } = formData;
+      const id_default = idDefault;
+
+      if (media) {
+        const mediaData: MediaData = {
+          event_Id: id_default,
+          media: media,
+        };
+
+        // const response = await createMedia(mediaData);
+        console.log("Response:", mediaData);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  React.useEffect(() => {
+    if (Media) {
+      console.log("Datos del evento creado:", Media);
+    }
+  }, [Media]);
+
+  // Post donations
+
+  // copy link
+  const { toast } = useToast();
+
+  // TODO: update with env variable
+  const link = `http://localhost:3000/event/${idDefault}`;
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(link);
+
+    toast({
+      title: "¡El enlace se ha copiado al portapapeles!",
+      description: link,
+    });
+  };
+
+  // complaints
+  const visibleComplaints = data?.complaints?.slice(0, 4);
+
   return (
-    <section>
+    <section key={data?.event_Id}>
       <div className="border-b border-t border-[#e6e8e9] dark:border-none dark:bg-black">
         <section className="container py-6">
           <h1>{data?.title}</h1>
@@ -83,24 +239,20 @@ export function CardLandingDetails({ data }: Props) {
         <section className="container mx-auto grid grid-cols-1 gap-6 py-0 md:grid-cols-2 md:gap-16 md:py-8 lg:grid-cols-3">
           <div className="md:col-span-2 lg:col-span-2">
             <img
-              src="https://source.unsplash.com/random/600x300/?animal"
+              src={
+                data?.media !== null && data?.media[0]?.url
+                  ? `https://humanitarianaidapi.somee.com/${data?.media[0].url}`
+                  : "https://source.unsplash.com/random/600x300/?animal"
+              }
               alt="creator image"
-              height={480}
-              width={851}
+              // height={480}
+              // width={851}
               className="w-full object-contain"
             />
             <h2 className="mt-6 font-bold">Details</h2>
             <p className="mt-4">
-              {/* {content} */}
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. A earum
-              asperiores rem, eaque delectus deleniti ducimus voluptate
-              provident labore deserunt laboriosam quasi explicabo ratione non
-              quas autem ipsum quos beatae cumque unde minima distinctio impedit
-              totam? Eos perspiciatis reiciendis pariatur delectus temporibus
-              neque repellendus laudantium dolores eaque libero amet sunt
-              praesentium, illo nemo eum minus? Quia repellendus aliquam hic nam
-              assumenda nobis. Nesciunt eaque sequi dolore rerum veritatis minus
-              corporis magnam, quod consectetur
+              {data?.description}
+              
             </p>
           </div>
           <div className="order-first mt-6 md:mt-0 lg:order-last lg:mt-0">
@@ -118,7 +270,13 @@ export function CardLandingDetails({ data }: Props) {
             </div>
             <div className="mt-2 flex flex-wrap items-center gap-2 ">
               <Calendar size={20} />
-              <p>{data?.created_Date}</p>
+              <p>
+                {new Date(data?.created_Date).toLocaleDateString("es-ES", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </p>
             </div>
             <div className="mt-2 flex flex-col gap-6 rounded-sm bg-black px-3 py-3 dark:bg-white">
               <div className="flex items-center gap-3 text-white dark:text-slate-800">
@@ -126,8 +284,53 @@ export function CardLandingDetails({ data }: Props) {
                 <p>{`${data?.geo?.country} - ${data?.geo?.city}`}</p>
               </div>
             </div>
-            {/* ONLY DESIGN */}
 
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button className="mb-2 mt-2 w-full" variant="outline">
+                  Agregar Imagen
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle>Añadir Imagen</DialogTitle>
+                  <DialogDescription>
+                    Make changes to your profile here. Click save when you're
+                    done.
+                  </DialogDescription>
+                </DialogHeader>
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(onSubmit)}>
+                    <div className="grid gap-4 py-4">
+                      <div className="grid w-full max-w-sm items-center gap-1.5">
+                        <FormField
+                          control={form.control}
+                          name="media"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>
+                                <Label htmlFor="">Media</Label>
+                              </FormLabel>
+                              <FormControl>
+                                <Input type="file" {...field} />
+                              </FormControl>
+                              <FormDescription>
+                                This is your media.
+                              </FormDescription>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                    </div>
+                    <DialogFooter>
+                      <button type="submit">Save changes</button>
+                    </DialogFooter>
+                  </form>
+                </Form>
+              </DialogContent>
+            </Dialog>
+            {/* ONLY DESIGN */}
             <div className="mt-4 hidden lg:block">
               <h2>Sponsor</h2>
               <Card className="mt-2 dark:border-none">
@@ -142,23 +345,49 @@ export function CardLandingDetails({ data }: Props) {
           </div>
         </section>
       </div>
+
       <section className="container">
-        <h1 className="mb-2">Complaints</h1>
-        {data.complaints?.map((complaint) => (
-          <Link href={`/complaints/${complaint?.complaint_Id}`} target="_blank">
-            <Card>
-              <CardHeader>
-                <CardTitle>{complaint.title}</CardTitle>
-                <p>{complaint.reporter_Name}</p>
-                <span>{complaint.reporter_Id}</span>
-              </CardHeader>
-              <CardContent>
-                <CardDescription>{complaint.description}</CardDescription>
-              </CardContent>
-            </Card>
-          </Link>
-        ))}
+        <div className="flex flex-col md:flex-row md:justify-between">
+          <h1 className="mb-2">Complaints</h1>
+          <div className="flex flex-col gap-2 md:flex-row">
+            <Button>
+              <Link href={`/complaints/${data.event_Id}`}>Ver todos</Link>
+            </Button>
+
+            <Button className="w-full">
+              <Link href={`/complaints-register/${data.event_Id}`}>
+                Crear un reclamo
+              </Link>
+            </Button>
+          </div>
+        </div>
+        {data?.complaints?.length > 0 ? (
+          <div className="relative ">
+            <section className="mt-3 grid grid-cols-1 gap-6 md:grid-cols-3">
+              {visibleComplaints.map((complaint: any) => (
+                <Link
+                  href={`/complaints/${complaint?.complaint_Id}`}
+                  key={complaint?.complaint_Id}
+                >
+                  <Card className="h-full">
+                    <CardHeader>
+                      <CardTitle>{complaint.title}</CardTitle>
+                      <p>{complaint.reporter_Name}</p>
+                      <span>{complaint.reporter_Id}</span>
+                    </CardHeader>
+                    <CardContent>
+                      <CardDescription>{complaint.description}</CardDescription>
+                    </CardContent>
+                  </Card>
+                </Link>
+              ))}
+            </section>
+          </div>
+        ) : (
+          <p className="p-10 text-gray-500">No hay quejas disponibles.</p>
+        )}
       </section>
+
       <section className="container mt-2 flex flex-col gap-2">
         <h1>Participants</h1>
         <section className="flex flex-wrap gap-5">
@@ -238,7 +467,6 @@ export function CardLandingDetails({ data }: Props) {
           </Card>
         </section>
       </section>
-
       <section className="container mb-3">
         <h1 className="mb-2 mt-2">Upcoming events nearby</h1>
         <section className=" grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
@@ -296,8 +524,41 @@ export function CardLandingDetails({ data }: Props) {
           </p>
           <div className="flex items-center gap-6">
             <Heart className="cursor-pointer" />
-            <Button>Share</Button>
-            <Button>Donate</Button>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button>Share</Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                  <DialogTitle>Share link</DialogTitle>
+                  <DialogDescription>
+                    Anyone who has this link will be able to view this.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="flex items-center space-x-2">
+                  <div className="grid flex-1 gap-2">
+                    <Label htmlFor="link" className="sr-only">
+                      Link
+                    </Label>
+                    <Input id="link" defaultValue={link} readOnly />
+                  </div>
+                  <Button type="submit" size="sm" className="px-3">
+                    <span className="sr-only">Copy</span>
+                    <Copy className="h-4 w-4" onClick={handleCopy} />
+                  </Button>
+                </div>
+                <DialogFooter className="sm:justify-start">
+                  <DialogClose asChild>
+                    <Button type="button" variant="secondary">
+                      Close
+                    </Button>
+                  </DialogClose>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+
+            {/* <Button>Donate</Button> */}
+            <DonationDialog eventId={data?.event_Id} />
           </div>
         </section>
       </div>

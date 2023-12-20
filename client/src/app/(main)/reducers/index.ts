@@ -1,1 +1,1 @@
-export * from "./event-reducer"
+export * from "./event-reducer";
