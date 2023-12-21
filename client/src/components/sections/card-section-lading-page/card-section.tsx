@@ -38,7 +38,7 @@ export function CardSection() {
         <article className="mb-5 mt-5 flex items-center justify-between">
           <div className="flex items-center gap-5">
             <h2>Eventos cercanos</h2>
-            <div className="mb-2 mt-1 rounded-lg bg-sky-500 p-2">
+            <div className="mb-2 mt-1 rounded-lg bg-[#0075de] p-2">
               <a
                 href="#"
                 className="cursor-pointer font-bold text-white  hover:underline"
