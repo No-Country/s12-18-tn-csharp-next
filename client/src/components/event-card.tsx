@@ -21,6 +21,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { formatPrice } from "@/lib/format";
 
 export function EventCard({
   media,
@@ -30,7 +31,7 @@ export function EventCard({
   collect_Goal,
 }: Props) {
   return (
-    <Card className="flex flex-row-reverse justify-between dark:border-none md:h-96 md:flex-col md:justify-start">
+    <Card className="flex flex-row-reverse justify-between md:h-96 md:flex-col md:justify-start dark:border-none">
       <img
         src={
           media !== null && media[0]?.url
@@ -46,7 +47,7 @@ export function EventCard({
           <CardTitle className="text-lg font-bold hover:underline">
             {title}
           </CardTitle>
-          <CardDescription>descripción: {description}</CardDescription>
+          <CardDescription>{description}</CardDescription>
         </CardHeader>
 
         <CardContent className="flex flex-col p-2">
@@ -61,11 +62,11 @@ export function EventCard({
           <section className="flex items-center gap-3">
             <p className="flex items-center gap-1">
               <CheckCircle2 className="h-5 w-5 text-gray-500" />
-              {collect_Goal}
+              {formatPrice(collect_Goal)}
             </p>
-            <p className="flex items-center gap-1">
+            {/* <p className="flex items-center gap-1">
               <Ticket className="h-5 w-5 text-gray-500" /> Free
-            </p>
+            </p> */}
           </section>
         </CardContent>
       </section>
