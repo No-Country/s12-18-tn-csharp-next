@@ -14,11 +14,13 @@ namespace s12.Services
         MyDbContext _dbContext;
         Events_Service _events_Service;
         Epayco_PaymentsService _payments_Service;
-        public Donations_Service(MyDbContext context, Events_Service events_Service, Epayco_PaymentsService payments_Service)
+        string _baseUrl;
+        public Donations_Service(MyDbContext context, Events_Service events_Service, Epayco_PaymentsService payments_Service, IConfiguration conf)
         {
             _dbContext = context;
             _events_Service = events_Service;
             _payments_Service = payments_Service;
+            _baseUrl = conf.GetSection("Payments:Epayco:RedirectBaseUrl").Value;
         }
 
         public List<Donation> Get(string? filterParam, int? pageSize, int? pageNumber)
@@ -103,8 +105,7 @@ namespace s12.Services
             return result;
         }
 
-
-        public async Task<object> CreateAsync(int event_Id, Donation_Post donation_Post, string? Donor_Email, string? actual_User_Name)
+        public async Task<object> CreateAsync(int event_Id, Donation_Post donation_Post, string? Donor_Email, string? actual_User_Name, string redirect_Url= "https://s12-18-tn-csharp-next.vercel.app/")
         {
             //event exists??
             // TODO Blocked, events service missing
@@ -128,7 +129,7 @@ namespace s12.Services
                 Description = result.Event.Description,
                 Amount = donation_Post.Donation_Amount,
                 Email = Donor_Email,
-                RedirectUrl = $"https://s12-18-tn-csharp-next.vercel.app/{path}"
+                RedirectUrl = $"{_baseUrl??redirect_Url}/{path}"
 
             };
 
@@ -143,11 +144,5 @@ namespace s12.Services
                 Donation = donation.ToDonation_Get()
             };
         }
-
-        //public Donation_Get Create(int event_Id, Donation_Post donation)
-        //{
-        //    var d = this.Create(event_Id, donation.ToDonation());
-        //    return d;
-        //}
     }
 }
