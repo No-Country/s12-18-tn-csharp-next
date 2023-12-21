@@ -25,7 +25,7 @@ export const DonationDialog: FC<EventIdProps> = ({
             <DialogTrigger asChild>
                 <Button> Donacion </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="dark:bg-black sm:max-w-[425px]">
                 <DialogHeader>
                     <DialogTitle> Hacer una donación </DialogTitle>
                     <DialogDescription>

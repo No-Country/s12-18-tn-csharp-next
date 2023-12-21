@@ -195,7 +195,7 @@ export function CardLandingDetails({ data }: Props) {
 
   return (
     <section key={data?.event_Id}>
-      <div className="border-b border-t border-[#e6e8e9] dark:border-none dark:bg-black">
+      <div className="border-b border-t rounded-b-lg border-[#e6e8e9] dark:border-none dark:bg-black">
         <section className="container py-6">
           <h1>{data?.title}</h1>
           <div className="mt-5 flex items-center gap-3">
@@ -508,7 +508,7 @@ export function CardLandingDetails({ data }: Props) {
         </section>
       </section>
       {/* STICKY */}
-      <div className="sticky bottom-0 z-10 border-b border-t border-[#e6e8e9] bg-white dark:border-none dark:bg-[#000000]">
+      <div className="sticky bottom-0 z-10 border-b rounded-t-lg border-t border-[#e6e8e9] bg-white dark:border-none dark:bg-[#000000]">
         <section className="container flex flex-wrap items-center justify-between gap-4 py-6">
           <p>
             ¿Colaborar con
