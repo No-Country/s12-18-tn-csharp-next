@@ -10,7 +10,7 @@ import { UserForm, BankDetailsForm, MeEvents } from "@/app/(main)/(routes)/me/co
  */
 const MyProfilePage: FC = (): JSX.Element => {
   return (
-    <div className="container py-6">
+    <div className="container py-6 px-0">
       <h1 className="text-4xl text-center"> Mi Perfil </h1>
       <FormLayout>
         <UserForm />

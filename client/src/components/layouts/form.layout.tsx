@@ -25,7 +25,7 @@ export const FormLayout: FC<FormLayoutProps> = ({
             "flex items-center justify-center",
             uniqueForm && "min-h-screen"
         )}>
-            <section className="w-full md:w-[50%] max-w-[30rem] m-10 p-10 border dark:border-white border-black rounded-md">
+            <section className="w-full max-w-[30rem] md:w-[30rem] m-2 my-10 md:m-10 p-10 border dark:border-white border-black rounded-md">
                 { children }
             </section>
         </div>
