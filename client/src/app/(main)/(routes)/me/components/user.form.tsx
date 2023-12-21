@@ -187,7 +187,11 @@ export const UserForm: FC = (): JSX.Element => {
                         type="submit"
                     >
                         Guardar
-                        
+                        {status.isLoading && (
+                            <svg className="animate-spin h-5 w-5 ml-1.5" viewBox="0 0 24 24">
+                                <LoaderSVG />
+                            </svg>
+                        )}
                     </Button>
                 )}
             </form>

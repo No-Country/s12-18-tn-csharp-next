@@ -32,6 +32,9 @@ export const useBankDetails = () => {
     useEffect(() => {
         // Verificamos si la petición fue éxitosa.
         if (isSuccess) {
+            // Cambiamos el estado de edición.
+            toggleStatus();
+            
             // Funcionalidad para configurar la información bancaria del usuario en el estado global.
             handleSetBankDetails(data?.bankDetails as BankDetailsModel);
         }
