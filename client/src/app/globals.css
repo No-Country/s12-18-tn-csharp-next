@@ -82,11 +82,6 @@ h2 {
   @apply text-xl font-semibold;
 }
 
-header,
-footer {
-  background-color: #000;
-}
-
 h3 {
   font-size: 1rem;
   line-height: 1.5rem;
