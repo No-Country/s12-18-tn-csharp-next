@@ -30,14 +30,20 @@ const EventSearchCard = ({
         <Link href={`/event/${id}`} className="mb-10">
           <div className="flex gap-3">
             <Image
-              src="https://source.unsplash.com/random/600x300/?animal"
+              src={
+                imgUrl !== null && imgUrl
+                  ? `https://humanitarianaidapi.somee.com/${imgUrl}`
+                  : "/assets/image-placeholder.png"
+              }
               alt="event image"
               width={222}
               height={125}
               className="self-start rounded-md object-contain"
             />
             <div className="overflow-hidden">
-              <p className="text-xs">{date}</p>
+              <p className="text-xs">
+                {new Date(date).toLocaleDateString("es-Es")}
+              </p>
               <h2>{title}</h2>
               <div className="mt-2">
                 <p className=" truncate whitespace-nowrap">{description}</p>

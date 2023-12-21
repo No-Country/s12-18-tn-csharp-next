@@ -2,7 +2,7 @@
 import React, { useState, ChangeEvent } from "react";
 
 // Components
-import {  MapPin, Calendar, Video } from "lucide-react";
+import { MapPin, Calendar, Video } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -14,8 +14,8 @@ import * as z from "zod";
 import { selectAuth } from "@/app/(auth)/store";
 import { useAppSelector } from "@/hooks";
 
-
 import { usePostMediaMutation } from "../../sections/card-event-post-media/hooks";
+
 
 import {
   Dialog,
@@ -50,13 +50,13 @@ import {
 
 import EventProgress from "@/components/event-progress";
 import Link from "next/link";
-import { Textarea } from "@/components/ui/textarea";
 import EventShareButton from "@/components/event-share-button";
 import { DonationDialog } from "@/components/donations";
+import Image, { StaticImageData } from "next/image";
 
 interface Media {
   type?: string;
-  url?: string;
+  url?: string | undefined | any;
 }
 
 interface GeoLocation {
@@ -74,7 +74,7 @@ interface Complaint {
   reporter_Name?: string;
   title?: string;
   description?: string;
-  media?: Media[];
+  media?: Media[] | any;
 }
 
 interface Event {
@@ -86,7 +86,7 @@ interface Event {
   description?: string;
   collect_Goal?: number | undefined;
   collected?: number | undefined;
-  media?: Media[] | any;
+  media?: Media[] | undefined | any;
   geo?: GeoLocation;
   has_Complaints?: boolean;
   complaints?: Complaint[] | any;
@@ -115,7 +115,6 @@ export function CardLandingDetails({ data }: Props) {
   const { toast } = useToast();
 
   const auth = useAppSelector(selectAuth);
-
 
   const [files, setFiles] = useState<File[]>([]);
 
@@ -191,9 +190,6 @@ export function CardLandingDetails({ data }: Props) {
     }
   };
 
-  // TODO: update with env variable
-  const link = `http://localhost:3000/event/${idDefault}`;
-
   // complaints
   const visibleComplaints = data?.complaints?.slice(0, 4);
 
@@ -220,20 +216,21 @@ export function CardLandingDetails({ data }: Props) {
       <div className="relative">
         <section className="container mx-auto grid grid-cols-1 gap-6 py-0 md:grid-cols-2 md:gap-16 md:py-8 lg:grid-cols-3">
           <div className="md:col-span-2 lg:col-span-2">
-            <img
+            <Image
               src={
                 data?.media[0]?.url
-                  ? `https://humanitarianaidapi.somee.com/${data?.media[0].url}`
+                  ? `https://humanitarianaidapi.somee.com/${data?.media[0]?.url}`
                   : data?.media !== null && data?.media[0]?.url
-                    ? `https://humanitarianaidapi.somee.com/${data?.media[0].url}`
-                    : "https://source.unsplash.com/random/600x300/?animal"
+                    ? `https://humanitarianaidapi.somee.com/${data?.media[0]?.url}`
+                    : `/assets/image-placeholder.png`
               }
+              width={700}
+              height={500}
               alt="creator image"
-              // height={480}
-              // width={851}
               className="w-full object-contain"
             />
-            <h2 className="mt-6 font-bold">Details</h2>
+
+            <h2 className="mt-6 font-bold">Detalles</h2>
             <p className="mt-4">{data?.description}</p>
           </div>
           <div className="order-first mt-6 md:mt-0 lg:order-last lg:mt-0">
@@ -266,73 +263,71 @@ export function CardLandingDetails({ data }: Props) {
               </div>
             </div>
 
-            {
-              auth.user.name === data?.created_By_User && (
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button className="mb-2 mt-2 w-full" variant="outline">
-                      Agregar Imagen
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="dark:bg-black sm:max-w-[425px]">
-                    <DialogHeader>
-                      <DialogTitle>Añadir Imagen</DialogTitle>
-                      <DialogDescription>
-                        Make changes to your profile here. Click save when you're
-                        done.
-                      </DialogDescription>
-                    </DialogHeader>
-                    <Form {...form}>
-                      <form onSubmit={form.handleSubmit(onSubmit)}>
-                        <div className="grid gap-4 py-4">
-                          <div className="grid w-full max-w-sm items-center gap-1.5">
-                            <FormField
-                              control={form.control}
-                              name="media"
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel>
-                                    <Label htmlFor="">Media</Label>
-                                  </FormLabel>
-                                  <FormControl>
-                                    <Input
-                                      type="file"
-                                      accept="image/*"
-                                      onChange={(e) =>
-                                        handleImage(e, field.onChange)
-                                      }
-                                    />
-                                  </FormControl>
-                                  <FormDescription>
-                                    This is your media.
-                                  </FormDescription>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                          </div>
+            {auth.user.name === data?.created_By_User && (
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button className="mb-2 mt-2 w-full" variant="outline">
+                    Agregar Imagen
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[425px] dark:bg-black">
+                  <DialogHeader>
+                    <DialogTitle>Añadir Imagen</DialogTitle>
+                    <DialogDescription>
+                      Make changes to your profile here. Click save when you're
+                      done.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)}>
+                      <div className="grid gap-4 py-4">
+                        <div className="grid w-full max-w-sm items-center gap-1.5">
+                          <FormField
+                            control={form.control}
+                            name="media"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>
+                                  <Label htmlFor="">Media</Label>
+                                </FormLabel>
+                                <FormControl>
+                                  <Input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={(e) =>
+                                      handleImage(e, field.onChange)
+                                    }
+                                  />
+                                </FormControl>
+                                <FormDescription>
+                                  This is your media.
+                                </FormDescription>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
                         </div>
-                        <DialogFooter>
-                          <DialogClose asChild>
-                            <button type="submit">Save changes</button>
-                          </DialogClose>
-                        </DialogFooter>
-                      </form>
-                    </Form>
-                  </DialogContent>
-            </Dialog>
-              )
-            }
+                      </div>
+                      <DialogFooter>
+                        <DialogClose asChild>
+                          <button type="submit">Save changes</button>
+                        </DialogClose>
+                      </DialogFooter>
+                    </form>
+                  </Form>
+                </DialogContent>
+              </Dialog>
+            )}
 
             {/* ONLY DESIGN */}
             <div className="mt-4 hidden lg:block">
-              <h2>Sponsor</h2>
+              <h2>Espónsor</h2>
               <Card className="mt-2 dark:border-none">
                 <CardHeader>
-                  <CardTitle>Nestle</CardTitle>
+                  <CardTitle>Nestlé</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  company dedicated to the export of dairy products
+                  Empresa dedicada a la exportación de productos lácteos.
                 </CardContent>
               </Card>
             </div>
@@ -342,7 +337,7 @@ export function CardLandingDetails({ data }: Props) {
 
       <section className="container">
         <div className="flex flex-col md:flex-row md:justify-between">
-          <h1 className="mb-2">Complaints</h1>
+          <h1 className="mb-2">Quejas</h1>
           <div className="flex flex-col gap-2 md:flex-row">
             <Button>
               <Link href={`/complaints/${data.event_Id}`}>Ver todos</Link>
@@ -383,7 +378,7 @@ export function CardLandingDetails({ data }: Props) {
       </section>
 
       <section className="container mt-2 flex flex-col gap-2">
-        <h1>Participants</h1>
+        <h1>Participantes</h1>
         <section className="flex flex-wrap gap-5">
           <Card>
             <CardHeader className="flex items-center justify-center">
@@ -414,82 +409,22 @@ export function CardLandingDetails({ data }: Props) {
           </Card>
         </section>
       </section>
+
       <section className="container">
-        <h1 className="mb-2 mt-2">Similar events nearby</h1>
-        <section className=" grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+        <h1 className="mb-2 mt-2">Eventos similares cercanos</h1>
+        <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
           <Card className="dark:border-none">
             <CardHeader>
               <h5 className="text-sm font-semibold text-[#3796A3]">
                 16 DIC 2023 19:00 PET
               </h5>
               <CardTitle className="text-sm">
-                Unreal Engine Lima Virtual Meetup - DIciembre
+                Unreal Engine Lima Virtual Meetup - Diciembre
               </CardTitle>
             </CardHeader>
             <CardContent className="flex items-center gap-1">
               <Video size={20} />
-              <p className="text-sm">Presential event</p>
-            </CardContent>
-          </Card>
-          <Card className="dark:border-none">
-            <CardHeader>
-              <h5 className="text-sm font-semibold text-[#3796A3]">
-                16 DIC 2023 19:00 PET
-              </h5>
-              <CardTitle className="text-sm">
-                Unreal Engine Lima Virtual Meetup - DIciembre
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="flex items-center gap-1">
-              <Video size={20} />
-              <p className="text-sm">Presential event</p>
-            </CardContent>
-          </Card>
-          <Card className="dark:border-none">
-            <CardHeader>
-              <h5 className="text-sm font-semibold text-[#3796A3]">
-                16 DIC 2023 19:00 PET
-              </h5>
-              <CardTitle className="text-sm">
-                Unreal Engine Lima Virtual Meetup - DIciembre
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="flex items-center gap-1">
-              <Video size={20} />
-              <p className="text-sm">Presential event</p>
-            </CardContent>
-          </Card>
-        </section>
-      </section>
-      <section className="container mb-3">
-        <h1 className="mb-2 mt-2">Upcoming events nearby</h1>
-        <section className=" grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
-          <Card className="dark:border-none">
-            <CardHeader>
-              <h5 className="text-sm font-semibold text-[#3796A3]">
-                16 DIC 2023 19:00 PET
-              </h5>
-              <CardTitle className="text-sm">
-                Unreal Engine Lima Virtual Meetup - DIciembre
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="flex items-center gap-1">
-              <Video size={20} />
-              <p className="text-sm">Presential event</p>
-            </CardContent>
-          </Card>
-          <Card className="dark:border-none">
-            <CardHeader>
-              <h5 className="text-sm font-semibold text-[#3796A3]">
-                16 DIC 2023 19:00 PET
-              </h5>
-              <CardTitle className="text-sm">
-                Unreal Engine Lima Virtual Meetup - DIciembre
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="flex items-center gap-1">
-              <Video size={20} />
-              <p className="text-sm">Presential event</p>
+              <p className="text-sm">Evento presencial</p>
             </CardContent>
           </Card>
           <Card className="dark:border-none">
@@ -503,7 +438,69 @@ export function CardLandingDetails({ data }: Props) {
             </CardHeader>
             <CardContent className="flex items-center gap-1">
               <Video size={20} />
-              <p className="text-sm">Presential event</p>
+              <p className="text-sm">Evento presencial</p>
+            </CardContent>
+          </Card>
+          <Card className="dark:border-none">
+            <CardHeader>
+              <h5 className="text-sm font-semibold text-[#3796A3]">
+                16 DIC 2023 19:00 PET
+              </h5>
+              <CardTitle className="text-sm">
+                Unreal Engine Lima Virtual Meetup - Diciembre
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="flex items-center gap-1">
+              <Video size={20} />
+              <p className="text-sm">Evento presencial</p>
+            </CardContent>
+          </Card>
+        </section>
+      </section>
+
+      <section className="container mb-3">
+        <h1 className="mb-2 mt-2">Próximos eventos cercanos</h1>
+        <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+          <Card className="dark:border-none">
+            <CardHeader>
+              <h5 className="text-sm font-semibold text-[#3796A3]">
+                16 DIC 2023 19:00 PET
+              </h5>
+              <CardTitle className="text-sm">
+                Unreal Engine Lima Virtual Meetup - Diciembre
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="flex items-center gap-1">
+              <Video size={20} />
+              <p className="text-sm">Evento presencial</p>
+            </CardContent>
+          </Card>
+          <Card className="dark:border-none">
+            <CardHeader>
+              <h5 className="text-sm font-semibold text-[#3796A3]">
+                16 DIC 2023 19:00 PET
+              </h5>
+              <CardTitle className="text-sm">
+                Unreal Engine Lima Virtual Meetup - Diciembre
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="flex items-center gap-1">
+              <Video size={20} />
+              <p className="text-sm">Evento presencial</p>
+            </CardContent>
+          </Card>
+          <Card className="dark:border-none">
+            <CardHeader>
+              <h5 className="text-sm font-semibold text-[#3796A3]">
+                16 DIC 2023 19:00 PET
+              </h5>
+              <CardTitle className="text-sm">
+                Unreal Engine Lima Virtual Meetup - Diciembre
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="flex items-center gap-1">
+              <Video size={20} />
+              <p className="text-sm">Evento presencial</p>
             </CardContent>
           </Card>
         </section>
@@ -512,10 +509,11 @@ export function CardLandingDetails({ data }: Props) {
       <div className="sticky bottom-0 z-10 border-t border-[#e6e8e9] bg-white dark:border-none dark:bg-[#000000]">
         <section className="container flex flex-wrap items-center justify-between gap-4 py-6">
           <p>
-            Collaborate with
-            <span className="font-bold"> {data?.created_By_User} </span> and
-            contribute to this cause?
+            ¿Colaborar con
+            <span className="font-bold"> {data?.created_By_User} </span> y
+            contribuir a esta causa?
           </p>
+
           <div className="flex items-center gap-6">
             {/* <Heart className="cursor-pointer" /> */}
             <EventShareButton
