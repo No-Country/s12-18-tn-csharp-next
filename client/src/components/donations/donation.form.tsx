@@ -84,7 +84,6 @@ export const DonationForm: FC<EventIdProps> = ({
                                         {...field}
                                     />
                                     <FormMessage />
-
                                 </div>
                             </div>
                         </FormItem>
