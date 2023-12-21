@@ -11,6 +11,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
+import { selectAuth } from "@/app/(auth)/store";
+import { useAppSelector } from "@/hooks";
+
+
 import { usePostMediaMutation } from "../../sections/card-event-post-media/hooks";
 
 import {
@@ -109,6 +113,9 @@ const mediaSchema = z.object({
 
 export function CardLandingDetails({ data }: Props) {
   const { toast } = useToast();
+
+  const auth = useAppSelector(selectAuth);
+
 
   const [files, setFiles] = useState<File[]>([]);
 
@@ -215,7 +222,7 @@ export function CardLandingDetails({ data }: Props) {
           <div className="md:col-span-2 lg:col-span-2">
             <img
               src={
-                data?.media[0].url
+                data?.media[0]?.url
                   ? `https://humanitarianaidapi.somee.com/${data?.media[0].url}`
                   : data?.media !== null && data?.media[0]?.url
                     ? `https://humanitarianaidapi.somee.com/${data?.media[0].url}`
@@ -259,59 +266,63 @@ export function CardLandingDetails({ data }: Props) {
               </div>
             </div>
 
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button className="mb-2 mt-2 w-full" variant="outline">
-                  Agregar Imagen
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="dark:bg-black sm:max-w-[425px]">
-                <DialogHeader>
-                  <DialogTitle>Añadir Imagen</DialogTitle>
-                  <DialogDescription>
-                    Make changes to your profile here. Click save when you're
-                    done.
-                  </DialogDescription>
-                </DialogHeader>
-                <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)}>
-                    <div className="grid gap-4 py-4">
-                      <div className="grid w-full max-w-sm items-center gap-1.5">
-                        <FormField
-                          control={form.control}
-                          name="media"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>
-                                <Label htmlFor="">Media</Label>
-                              </FormLabel>
-                              <FormControl>
-                                <Input
-                                  type="file"
-                                  accept="image/*"
-                                  onChange={(e) =>
-                                    handleImage(e, field.onChange)
-                                  }
-                                />
-                              </FormControl>
-                              <FormDescription>
-                                This is your media.
-                              </FormDescription>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      </div>
-                    </div>
-                    <DialogFooter>
-                      <DialogClose asChild>
-                        <button type="submit">Save changes</button>
-                      </DialogClose>
-                    </DialogFooter>
-                  </form>
-                </Form>
-              </DialogContent>
+            {
+              auth.user.name === data?.created_By_User && (
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button className="mb-2 mt-2 w-full" variant="outline">
+                      Agregar Imagen
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="dark:bg-black sm:max-w-[425px]">
+                    <DialogHeader>
+                      <DialogTitle>Añadir Imagen</DialogTitle>
+                      <DialogDescription>
+                        Make changes to your profile here. Click save when you're
+                        done.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <Form {...form}>
+                      <form onSubmit={form.handleSubmit(onSubmit)}>
+                        <div className="grid gap-4 py-4">
+                          <div className="grid w-full max-w-sm items-center gap-1.5">
+                            <FormField
+                              control={form.control}
+                              name="media"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>
+                                    <Label htmlFor="">Media</Label>
+                                  </FormLabel>
+                                  <FormControl>
+                                    <Input
+                                      type="file"
+                                      accept="image/*"
+                                      onChange={(e) =>
+                                        handleImage(e, field.onChange)
+                                      }
+                                    />
+                                  </FormControl>
+                                  <FormDescription>
+                                    This is your media.
+                                  </FormDescription>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                          </div>
+                        </div>
+                        <DialogFooter>
+                          <DialogClose asChild>
+                            <button type="submit">Save changes</button>
+                          </DialogClose>
+                        </DialogFooter>
+                      </form>
+                    </Form>
+                  </DialogContent>
             </Dialog>
+              )
+            }
 
             {/* ONLY DESIGN */}
             <div className="mt-4 hidden lg:block">
