@@ -13,7 +13,7 @@ import { handlerDataInLocalStorage } from "@/store/middlewares";
 export const rootMiddlewares = (
   getDefaultMiddleware: CurriedGetDefaultMiddleware,
 ): ThunkMiddleware[] =>
-    getDefaultMiddleware().concat(
+    getDefaultMiddleware({ serializableCheck: false }).concat(
         authApiMiddleware,
         meApiMiddleware,
         donationApiMiddleware,

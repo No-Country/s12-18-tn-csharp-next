@@ -9,9 +9,9 @@ import type { UpdatedUserInfo } from "@/app/(main)/(routes)/me/models";
  */
 export const updateUserInfo = (
     bankDetails: any
-): Partial<UpdatedUserInfo> => ({
+): Partial<UpdatedUserInfo> =>({
     bankDetails: {
-        accountNumber: bankDetails.accountNumber,
+        accountNumber: bankDetails.account_Number,
         type: bankDetails.type,
         bank: bankDetails.bank
     }

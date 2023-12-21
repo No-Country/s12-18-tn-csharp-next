@@ -32,7 +32,7 @@ const EventList = ({ events, isLoading }: Props) => {
                 id={event.event_Id}
                 title={event.title}
                 description={event.description}
-                imgUrl="example"
+                imgUrl={event?.media[0]?.url}
                 date={event.created_Date}
                 author={event.created_By_User}
               />

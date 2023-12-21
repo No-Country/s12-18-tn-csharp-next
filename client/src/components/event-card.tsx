@@ -35,7 +35,7 @@ export function EventCard({
         src={
           media !== null && media[0]?.url
             ? `https://humanitarianaidapi.somee.com/${media[0].url}`
-            : "https://source.unsplash.com/random/600x300/?animal"
+            : "/assets/image-placeholder.png"
         }
         alt="image"
         className="mx-4 mt-5 h-20 w-20 rounded-md md:mx-0 md:mt-0 md:h-40 md:w-full"
