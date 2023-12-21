@@ -51,8 +51,8 @@ export const Nav = () => {
 
   return (
     <>
-      <header className="bg-white dark:bg-black">
-        <nav className="flex justify-between gap-10 px-6 py-3">
+      <header className="bg-white dark:bg-black max-w-full flex flex-col items-center justify-start">
+        <nav className="flex gap-10 px-6 py-3 w-full max-w-[70rem] items-center justify-between">
           <div className="flex flex-1 items-center gap-10">
             <div>
               <Link
