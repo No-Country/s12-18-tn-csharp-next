@@ -13,14 +13,12 @@ Una aplicación que sirva para hacer donativos, ya sea de suministros o dinero p
 | --------- |
 | [Juan Pablo Quintana](https://github.com/jp-quintana) |
 | [Juan Oscco Mori](https://github.com/jcom-dev) |
-| [María Eugenia Costa](https://github.com/eugenia1984) |
 | [Oscar Miguel Luciani](https://github.com/OLuciani) |
 | [Govanni Gonzalez Rivera](https://github.com/GoRiDeveloper) |
 
 | <img width="30" height="30" src="https://img.icons8.com/external-itim2101-lineal-color-itim2101/30/external-server-network-technology-itim2101-lineal-color-itim2101-2.png" alt="external server network"/> Back End |
 | -------- |
 | [Daniel Torres](https://github.com/DnTo) |
-| [Lautaro Villarroel](https://github.com/lautaro0298) |
 | [Sebastián Perichón](https://github.com/modestsp) |
 
 | <img width="30" height="30" src="https://img.icons8.com/external-smashingstocks-flat-smashing-stocks/30/external-Tester-testing-services-smashingstocks-flat-smashing-stocks.png" alt="Tester testing services"/> QA |
@@ -42,11 +40,11 @@ Una aplicación que sirva para hacer donativos, ya sea de suministros o dinero p
 
 - Estilos: [<img width="30" height="30" src="https://img.icons8.com/fluency/30/tailwind_css.png" alt="tailwind_css"/> **TailwindCSS**](https://tailwindcss.com/)
 
-- Manejo de estado global: Redux / Zustand
+- Manejo de estado global: Redux 
 
-- Peticiones: Axios / RTK
+- Peticiones: RTK
 
-- Formularios: YUP y Formik / React Hook Form
+- Formularios: React Hook Form
 
 ### <img width="30" height="30" src="https://img.icons8.com/external-itim2101-lineal-color-itim2101/30/external-server-network-technology-itim2101-lineal-color-itim2101-2.png" alt="external server network"/> Back End
 
