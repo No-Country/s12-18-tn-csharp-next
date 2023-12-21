@@ -22,7 +22,7 @@ export const MeEvents: FC = (): JSX.Element => {
     } = useEventsQuery();
 
     return (
-        <section>
+        <section className="sm:mx-10 xl:mx-0">
             <h2 className="text-4xl"> Mis Eventos </h2>
             <section className="mt-10">
                 {isError && (
