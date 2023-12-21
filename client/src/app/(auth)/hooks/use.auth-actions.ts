@@ -1,3 +1,5 @@
+import { redirect } from "next/navigation";
+
 import type { AuthUser } from "@/app/(auth)/models";
 import { setUser, removeUser } from "@/app/(auth)/store";
 import { useAppDispatch } from "@/hooks";
@@ -27,7 +29,10 @@ export const useAuthActions = () => {
      * 
      * @returns Funcionalidad para remover al usuario de la aplicación.
      */
-    const handleRemoveUser = () => dispatch(removeUser());
+    const handleRemoveUser = () => {
+        dispatch(removeUser());
+        redirect("/sign-in");
+    };
 
     return { handleSetUser, handleRemoveUser };
 };
