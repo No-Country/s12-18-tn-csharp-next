@@ -36,7 +36,7 @@ export const CreateEventBanner: FC = (): JSX.Element => {
                             <Button
                                 variant="outline"
                                 className="
-                                    my-5 ml-[0px] rounded-lg bg-[#00798A] px-4 py-2 text-[16px] text-[white]
+                                    my-5 ml-[0px] rounded-lg bg-[#0075DE] px-4 py-2 text-[16px] text-[white]
                                     hover:bg-gray-600 hover:text-white dark:hover:bg-gray-400
                                 "
                             >
