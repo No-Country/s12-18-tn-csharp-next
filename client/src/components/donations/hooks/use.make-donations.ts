@@ -7,7 +7,6 @@ import { usePostDonationMutation } from "@/components/donations/hooks";
 import { useToast } from "@/components/ui/use-toast";
 
 export const useMakeDonation = ({ eventId }: EventIdProps) => {
-    const router = useRouter();
     // Funcionalidades del toaster.
     const { toast } = useToast();
     // Funcionalidades del hook de la api para realizar donaciones.
@@ -25,11 +24,11 @@ export const useMakeDonation = ({ eventId }: EventIdProps) => {
     useEffect(() => {
         if (isSuccess) {
             toast({
-                title: "Donación exitosa",
-                description: "Haz hecho una donación éxitosa."
+                title: "Se ha abierto la pestaña de donación.",
+                description: "Cuando realices el pago, habras hecho una donación éxitosa."
             });
             
-            router.refresh();
+            window.open(donation.link.data.routeLink);
         }
         if (error) {
             toast({
@@ -55,6 +54,7 @@ export const useMakeDonation = ({ eventId }: EventIdProps) => {
             handleMakeDonation
         },
         status: {
+            donation,
             isSuccess,
             isLoading,
             isError,
