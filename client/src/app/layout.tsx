@@ -30,7 +30,7 @@ export default function RootLayout({
             <div className="flex flex-col">
               <Nav />
             </div>
-            <div className="min-h-screen max-w-[71rem] my-0 mx-auto">{children}</div>
+            <div className="min-h-screen max-w-[71rem] my-0 lg:mx-auto">{children}</div>
             <div className="mt-auto flex flex-col">
               <Footer />
             </div>
