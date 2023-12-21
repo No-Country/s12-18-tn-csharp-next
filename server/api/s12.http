@@ -1,0 +1,51 @@
+@s12_HostAddress = https://localhost:7006
+
+GET {{s12_HostAddress}}/Itworks/
+Accept: application/json
+
+###
+
+POST {{s12_HostAddress}}/Itworks
+Content-Type: application/json
+
+{
+  "name": "User"
+}
+
+###
+
+
+
+POST {{s12_HostAddress}}/auth/register
+Content-Type: application/json
+
+{
+   "name":"sad3454sdf2",
+   "email": "dada3sdff4sd54@2asdas.com",
+   "password" : "123!adasSDS"
+}
+
+###
+
+POST {{s12_HostAddress}}/auth/login
+Content-Type: application/json
+
+{
+   "email": "dada3sdff4sd54@2asdas.com",
+   "password" : "123!adasSDS"
+}
+
+###
+Post and get  events,  post and get complaints
+
+GET {{s12_HostAddress}}/events
+
+###
+
+GET {{s12_HostAddress}}/events/1
+
+###
+
+GET {{s12_HostAddress}}/api/protected
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJOYW1lIjoic2FkMzQ1NHNkZjIiLCJFbWFpbCI6ImRhZGEzc2RmZjRzZDU0QDJhc2Rhcy5jb20iLCJJZCI6ImQ3MjQzYmQyLWUzMjEtNDE1Ny05MTM5LWZhMmJmNjFkZmQ5NSIsIlJvbGUiOiJVc2VyIiwiZXhwIjoxNzAxNDU5NzIxLCJpc3MiOiJBUEkiLCJhdWQiOiJOZXh0IENsaWVudCJ9.BUwgXn3-qkYb2lBt0TOP0KIu_ax_Oz62CrDXUGbz_5w
+###
