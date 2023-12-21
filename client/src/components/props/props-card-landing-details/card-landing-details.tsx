@@ -2,7 +2,7 @@
 import React, { useState, ChangeEvent } from "react";
 
 // Components
-import { Heart, MapPin, Calendar, Video, Copy } from "lucide-react";
+import {  MapPin, Calendar, Video } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,6 +10,10 @@ import { Label } from "@/components/ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+
+import { selectAuth } from "@/app/(auth)/store";
+import { useAppSelector } from "@/hooks";
+
 
 import { usePostMediaMutation } from "../../sections/card-event-post-media/hooks";
 
@@ -110,6 +114,9 @@ const mediaSchema = z.object({
 export function CardLandingDetails({ data }: Props) {
   const { toast } = useToast();
 
+  const auth = useAppSelector(selectAuth);
+
+
   const [files, setFiles] = useState<File[]>([]);
 
   // Post image
@@ -204,7 +211,7 @@ export function CardLandingDetails({ data }: Props) {
               />
             </div>
             <div>
-              <p>Created by</p>
+              <p>Creado por:</p>
               <p className="font-bold">{data?.created_By_User}</p>
             </div>
           </div>
@@ -215,8 +222,8 @@ export function CardLandingDetails({ data }: Props) {
           <div className="md:col-span-2 lg:col-span-2">
             <img
               src={
-                responseMedia?.event?.media[0].url
-                  ? `https://humanitarianaidapi.somee.com/${responseMedia?.event?.media[0].url}`
+                data?.media[0]?.url
+                  ? `https://humanitarianaidapi.somee.com/${data?.media[0].url}`
                   : data?.media !== null && data?.media[0]?.url
                     ? `https://humanitarianaidapi.somee.com/${data?.media[0].url}`
                     : "https://source.unsplash.com/random/600x300/?animal"
@@ -259,59 +266,63 @@ export function CardLandingDetails({ data }: Props) {
               </div>
             </div>
 
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button className="mb-2 mt-2 w-full" variant="outline">
-                  Agregar Imagen
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="dark:bg-black sm:max-w-[425px]">
-                <DialogHeader>
-                  <DialogTitle>Añadir Imagen</DialogTitle>
-                  <DialogDescription>
-                    Make changes to your profile here. Click save when you're
-                    done.
-                  </DialogDescription>
-                </DialogHeader>
-                <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)}>
-                    <div className="grid gap-4 py-4">
-                      <div className="grid w-full max-w-sm items-center gap-1.5">
-                        <FormField
-                          control={form.control}
-                          name="media"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>
-                                <Label htmlFor="">Media</Label>
-                              </FormLabel>
-                              <FormControl>
-                                <Input
-                                  type="file"
-                                  accept="image/*"
-                                  onChange={(e) =>
-                                    handleImage(e, field.onChange)
-                                  }
-                                />
-                              </FormControl>
-                              <FormDescription>
-                                This is your media.
-                              </FormDescription>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      </div>
-                    </div>
-                    <DialogFooter>
-                      <DialogClose asChild>
-                        <button type="submit">Save changes</button>
-                      </DialogClose>
-                    </DialogFooter>
-                  </form>
-                </Form>
-              </DialogContent>
+            {
+              auth.user.name === data?.created_By_User && (
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button className="mb-2 mt-2 w-full" variant="outline">
+                      Agregar Imagen
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="dark:bg-black sm:max-w-[425px]">
+                    <DialogHeader>
+                      <DialogTitle>Añadir Imagen</DialogTitle>
+                      <DialogDescription>
+                        Make changes to your profile here. Click save when you're
+                        done.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <Form {...form}>
+                      <form onSubmit={form.handleSubmit(onSubmit)}>
+                        <div className="grid gap-4 py-4">
+                          <div className="grid w-full max-w-sm items-center gap-1.5">
+                            <FormField
+                              control={form.control}
+                              name="media"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>
+                                    <Label htmlFor="">Media</Label>
+                                  </FormLabel>
+                                  <FormControl>
+                                    <Input
+                                      type="file"
+                                      accept="image/*"
+                                      onChange={(e) =>
+                                        handleImage(e, field.onChange)
+                                      }
+                                    />
+                                  </FormControl>
+                                  <FormDescription>
+                                    This is your media.
+                                  </FormDescription>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                          </div>
+                        </div>
+                        <DialogFooter>
+                          <DialogClose asChild>
+                            <button type="submit">Save changes</button>
+                          </DialogClose>
+                        </DialogFooter>
+                      </form>
+                    </Form>
+                  </DialogContent>
             </Dialog>
+              )
+            }
 
             {/* ONLY DESIGN */}
             <div className="mt-4 hidden lg:block">
