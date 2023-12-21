@@ -42,11 +42,15 @@ const EventSearchCard = ({
             />
             <div className="overflow-hidden">
               <p className="text-xs">
-                {new Date(date).toLocaleDateString("es-Es")}
+                {new Date(date).toLocaleDateString("es-ES", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
               </p>
               <h2>{title}</h2>
               <div className="mt-2">
-                <p className=" truncate whitespace-nowrap">{description}</p>
+                <p className="truncate whitespace-nowrap">{description}</p>
                 <p className="text-sm">{author}</p>
               </div>
             </div>
