@@ -69,10 +69,10 @@ const ComplaintForm: FC<ComplaintFormProps> = ({ event_id }): JSX.Element => {
 
       console.log(
         "Media_Collection array before submitting:",
-        fields.map((field) => field.file),
+        fields.map((field: any) => field.file),
       );
 
-      fields.forEach((field, index) => {
+      fields.forEach((field: any, index: number) => {
         if (field.file && field.file.length > 0) {
           for (let i = 0; i < field.file.length; i++) {
             // Asegúrate de que field.file[i] sea un objeto File válido
@@ -208,7 +208,7 @@ const ComplaintForm: FC<ComplaintFormProps> = ({ event_id }): JSX.Element => {
           )}
         />
 
-        {fields.map((field, index) => (
+        {fields.map((field:any, index: number) => (
           <div key={field.id} className="relative">
             <div className="relative">
               <FormItem>
@@ -231,7 +231,7 @@ const ComplaintForm: FC<ComplaintFormProps> = ({ event_id }): JSX.Element => {
 
                       // Crea un nuevo array de objetos para Media_Collection
                       const updatedMediaCollection = currentMediaCollection.map(
-                        (item, i) =>
+                        (item: any, i:number) =>
                           i === index ? { file: selectedFiles } : item
                       );
 
