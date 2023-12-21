@@ -17,7 +17,9 @@ import {
 import { BankDetailsModel, EmptyBankDetails } from "@/app/(main)/(routes)/me/models";
 import { bankDetailsSchema } from "@/app/(main)/(routes)/me/schemas";
 import { useBankDetails } from "@/app/(main)/(routes)/me/hooks";
+import { selectBankDetails } from "@/app/(main)/(routes)/me/store";
 import { LoaderSVG } from "@/components/loader";
+import { useAppSelector } from "@/hooks";
 
 /**
  * Componente del formulario para modificar la información bancaria del usuario.
@@ -26,11 +28,16 @@ import { LoaderSVG } from "@/components/loader";
  */
 export const BankDetailsForm: FC = (): JSX.Element => {
     /**
+     * Persistencia de la información bancaria.
+     */
+    const bankDetails = useAppSelector(selectBankDetails);
+
+    /**
      * Formulario de los datos bancarios del usuario.
      */
     const form = useForm<BankDetailsModel>({
         resolver: zodResolver(bankDetailsSchema),
-        defaultValues: EmptyBankDetails
+        defaultValues: bankDetails
     });
 
     // Funcionalidades del hook para manipular las funcionalidades de la información bancaria del usuario.
