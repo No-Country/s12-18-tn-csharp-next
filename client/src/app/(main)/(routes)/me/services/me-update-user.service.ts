@@ -20,17 +20,17 @@ export const MeUpdateUserService = MeApi.injectEndpoints({
                 url: "/",
                 method: HTTP_METHODS.PATCH,
                 body: body.bankDetails?.accountNumber
-                    ? sendUpdateBankDetailsUser(body)
+                    ? sendUpdateBankDetailsUser(body.bankDetails)
                     : body
             }),
             transformResponse: (response): Partial<UpdatedUserInfo> => {
                 // Verificamos si en la respuesta vienen datos bancarios.
-                if (!(response as Partial<UpdatedUserInfo>).bankDetails?.accountNumber)
+                if (!(response as any).bank_Details?.account_Number)
                     // Devolvemos la información actualizada del usuario.
                     return userInfoAdapter(response);
                 else
                     // Devolvemos los datos bancarios en caso que existan.
-                    return updateUserInfo((response as Partial<UpdatedUserInfo>).bankDetails);
+                    return updateUserInfo((response as any).bank_Details);
             },
         })
     })

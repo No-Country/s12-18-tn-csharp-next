@@ -11,17 +11,13 @@ import {
     FormItem,
     FormControl,
     FormMessage,
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-    RadioGroup,
-    RadioGroupItem,
     Input,
     Button
 } from "@/components/ui";
 import { BankDetailsModel, EmptyBankDetails } from "@/app/(main)/(routes)/me/models";
 import { bankDetailsSchema } from "@/app/(main)/(routes)/me/schemas";
 import { useBankDetails } from "@/app/(main)/(routes)/me/hooks";
+import { LoaderSVG } from "@/components/loader";
 
 /**
  * Componente del formulario para modificar la información bancaria del usuario.
@@ -109,6 +105,11 @@ export const BankDetailsForm: FC = (): JSX.Element => {
                         type="submit"
                     >
                         Guardar
+                        {status.isLoading && (
+                            <svg className="animate-spin h-5 w-5 ml-1.5" viewBox="0 0 24 24">
+                                <LoaderSVG />
+                            </svg>
+                        )}
                     </Button>
                 )}
             </form>
