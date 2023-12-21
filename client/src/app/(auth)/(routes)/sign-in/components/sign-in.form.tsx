@@ -17,6 +17,7 @@ import {
 import { signInSchema } from "@/app/(auth)/(routes)/sign-in/schemas";
 import { signUpDefaultValues, type SignInSchema } from "@/app/(auth)/(routes)/sign-in/models";
 import { useSignIn } from "@/app/(auth)/(routes)/sign-in/hooks";
+import { LoaderSVG } from "@/components/loader";
 
 export const SignInForm: FC = (): JSX.Element => {
     /**
@@ -27,7 +28,7 @@ export const SignInForm: FC = (): JSX.Element => {
         defaultValues: signUpDefaultValues
     });
 
-    const { handleAuth } = useSignIn();
+    const { status, handleAuth } = useSignIn();
 
     return (
         <Form {...form}>
@@ -83,6 +84,11 @@ export const SignInForm: FC = (): JSX.Element => {
                     type="submit"
                 >
                     Iniciar Sesión
+                    {status.isLoading && (
+                        <svg className="animate-spin h-5 w-5 ml-1.5" viewBox="0 0 24 24">
+                            <LoaderSVG />
+                        </svg>
+                    )}
                 </Button>
             </form>
         </Form>

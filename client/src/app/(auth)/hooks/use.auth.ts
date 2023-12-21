@@ -16,6 +16,7 @@ import { AppRoutesModel } from "@/models";
 import { useAuthActions } from "@/app/(auth)/hooks";
 import { SignUpSchema } from "@/app/(auth)/(routes)/sign-up/models";
 import { SignInSchema } from "../(routes)/sign-in/models";
+import { useToast } from "@/components/ui/use-toast";
 
 /**
  * Modelo de las propiedades del hook de autenticación.
@@ -52,6 +53,7 @@ export const useAuth = ({
     isError,
     error
 }: UseAuthProps) => {
+    const { toast } = useToast();
     // Funcionalidades de los estados globales de autenticación de la aplicación.
     const { handleSetUser } = useAuthActions();
 
@@ -63,7 +65,15 @@ export const useAuth = ({
             // Redirijimos a la pantalla principal.
             redirect(AppRoutesModel.HOME);
         };
-    }, [isSuccess]);
+        if (error) {
+            if ((error as any).originalStatus === 401) {
+                toast({
+                    title: "Credenciales invalidas.",
+                    description: "Tus datos son incorrectos, verfica que tus datos sean correctos."
+                })
+            }
+        };
+    }, [isSuccess, isError]);
 
     /**
      * Modelo de los valores del manejador de autenticación.

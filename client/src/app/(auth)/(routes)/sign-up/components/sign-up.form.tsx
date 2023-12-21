@@ -27,6 +27,7 @@ import {
 import { cn } from "@/lib";
 import { signUpSchema } from "@/app/(auth)/(routes)/sign-up/schemas";
 import { useSignUp } from "@/app/(auth)/(routes)/sign-up/hooks";
+import { LoaderSVG } from "@/components/loader";
 //import { GenericFormField } from "@/app/(auth)/components";
 
 /**
@@ -43,7 +44,7 @@ export const SignUpForm: FC = (): JSX.Element => {
         defaultValues: signUpDefaultValues
     });
 
-    const { handleAuth } = useSignUp();
+    const { status, handleAuth } = useSignUp();
 
     return (
         <Form {...form}>
@@ -214,6 +215,11 @@ export const SignUpForm: FC = (): JSX.Element => {
                     type="submit"
                 >
                     Registrate
+                    {status.isLoading && (
+                        <svg className="animate-spin h-5 w-5 ml-1.5" viewBox="0 0 24 24">
+                            <LoaderSVG />
+                        </svg>
+                    )}
                 </Button>
             </form>
         </Form>
