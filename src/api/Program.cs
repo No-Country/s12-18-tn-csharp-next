@@ -106,13 +106,15 @@ builder.Services.AddCors(policyBuilder =>
         policy
             .WithOrigins("*")
             .AllowAnyHeader()
-            .AllowAnyHeader())
+            .AllowAnyMethod()
+            )
 );
 
 builder.Services.AddScoped<Events_Service>();
 builder.Services.AddScoped<Users_Service>();
 builder.Services.AddScoped<Donations_Service>();
 builder.Services.AddScoped<Local_MediaStorage_Service>();
+builder.Services.AddScoped<Epayco_PaymentsService>();
 
 var app = builder.Build();
 app.UseStaticFiles();

@@ -60,6 +60,13 @@ namespace s12.Services
                     // .ToList();
                 }
 
+                //amount and count
+                var events = await query.ToListAsync();
+                foreach (var item in events)
+                {
+                    SetAmounts(item);
+                }
+
                 return new Get_Events_Response(await query.ToListAsync(), "Query Successful", true);
             }
             catch (Exception e)
@@ -75,13 +82,25 @@ namespace s12.Services
                 var Event = await _context.Events.Include(x => x.Complaints).FirstOrDefaultAsync(x => x.Event_Id == event_Id);
                 if (Event is null)
                     return new Get_Event_Response(null, "Event not found", false);
-
+                SetAmounts(Event);
                 return new Get_Event_Response(Event, "Query Successful", true);
             }
             catch (Exception e)
             {
                 return new Get_Event_Response(null, e.Message, false);
             }
+        }
+
+        //TODO calculate this on create insted on listing
+        private void SetAmounts(Event ev)
+        {
+            var q = _context.Donations.Where(x => x.Event_Id == ev.Event_Id);
+
+            var s = q.Sum(x => x.Donation_Amount);
+            var c = q.Count(x => x.Donation_Amount > 0);
+
+            ev.Donors_Count = c;
+            ev.Collected = s;
         }
 
         // TODO: Refactor To Create_Event_Response

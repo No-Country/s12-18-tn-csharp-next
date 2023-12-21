@@ -24,4 +24,17 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="epayco.net">
+      <HintPath>..\..\..\epayco-sdk-.net\EpaycoSdk\bin\Debug\epayco.net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\..\epayco-sdk-.net\EpaycoSdk\bin\Debug\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>..\..\..\epayco-sdk-.net\EpaycoSdk\bin\Debug\RestSharp.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
