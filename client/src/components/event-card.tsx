@@ -47,7 +47,9 @@ export function EventCard({
           <CardTitle className="text-lg font-bold hover:underline">
             {title}
           </CardTitle>
-          <CardDescription>{description}</CardDescription>
+          <CardDescription className="md:truncate md:whitespace-nowrap">
+            {description}
+          </CardDescription>
         </CardHeader>
 
         <CardContent className="flex flex-col p-2">
