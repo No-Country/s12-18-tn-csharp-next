@@ -10,7 +10,7 @@ export const Footer = () => {
 
   return (
     <div className="max-w-full flex flex-col items-center justify-start">
-      <footer className="w-full text-white">
+      <footer className="w-full bg-white dark:bg-black">
         <section className="container mx-auto flex flex-col gap-8  p-8 md:grid md:grid-cols-3">
           <div className="flex flex-col items-center">
             <h2 className="my-4">Informacion</h2>

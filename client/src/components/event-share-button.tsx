@@ -32,7 +32,7 @@ const EventShareButton = ({ id, title, author, size, className }: Props) => {
   const { toast } = useToast();
 
   // TODO: update with env variable
-  const link = `http://localhost:3000/event/${id}`;
+  const link = `https://s12-18-tn-csharp-next.vercel.app/event/${id}`;
 
   const handleCopy = () => {
     navigator.clipboard.writeText(link);
@@ -52,7 +52,7 @@ const EventShareButton = ({ id, title, author, size, className }: Props) => {
           <Share size={size || 24} />
         </Button>
       </DialogTrigger>
-      <DialogContent className="bg-white dark:bg-black sm:max-w-[425px]">
+      <DialogContent className="bg-white sm:max-w-[425px] dark:bg-black">
         <DialogHeader>
           <DialogTitle className="text-center">
             Compartí este evento
@@ -62,7 +62,7 @@ const EventShareButton = ({ id, title, author, size, className }: Props) => {
           <li>
             {/* TODO: update app id with env */}
             <Link
-              href={`https://www.facebook.com/dialog/feed?app_id=completar&display=popup&link=${link}`}
+              href={`https://www.facebook.com/dialog/feed?app_id=1888590798204517&display=popup&link=${link}`}
               target="_blank"
             >
               <Button
