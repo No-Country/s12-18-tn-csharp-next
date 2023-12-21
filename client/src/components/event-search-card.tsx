@@ -38,7 +38,7 @@ const EventSearchCard = ({
               alt="event image"
               width={222}
               height={125}
-              className="self-start rounded-md object-contain"
+              className="max-h-[111px] min-w-[222px] self-start rounded-md object-cover"
             />
             <div className="overflow-hidden">
               <p className="text-xs">

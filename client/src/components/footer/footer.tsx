@@ -9,7 +9,7 @@ export const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="w-full text-white">
+    <footer className="w-full bg-white dark:bg-black">
       <section className="container mx-auto flex flex-col gap-8  p-8 md:grid md:grid-cols-3">
         <div>
           <h2 className="my-4">Informacion</h2>

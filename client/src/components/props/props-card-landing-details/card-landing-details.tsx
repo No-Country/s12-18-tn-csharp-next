@@ -16,7 +16,6 @@ import { useAppSelector } from "@/hooks";
 
 import { usePostMediaMutation } from "../../sections/card-event-post-media/hooks";
 
-
 import {
   Dialog,
   DialogContent,
@@ -53,6 +52,7 @@ import Link from "next/link";
 import EventShareButton from "@/components/event-share-button";
 import { DonationDialog } from "@/components/donations";
 import Image, { StaticImageData } from "next/image";
+import { formatPrice } from "@/lib/format";
 
 interface Media {
   type?: string;
@@ -218,11 +218,13 @@ export function CardLandingDetails({ data }: Props) {
           <div className="md:col-span-2 lg:col-span-2">
             <Image
               src={
-                data?.media[0]?.url
-                  ? `https://humanitarianaidapi.somee.com/${data?.media[0]?.url}`
-                  : data?.media !== null && data?.media[0]?.url
+                responseMedia?.event?.media[0].url
+                  ? `https://humanitarianaidapi.somee.com/${responseMedia?.event?.media[0].url}`
+                  : data?.media[0]?.url
                     ? `https://humanitarianaidapi.somee.com/${data?.media[0]?.url}`
-                    : `/assets/image-placeholder.png`
+                    : data?.media !== null && data?.media[0]?.url
+                      ? `https://humanitarianaidapi.somee.com/${data?.media[0]?.url}`
+                      : `/assets/image-placeholder.png`
               }
               width={700}
               height={500}
@@ -235,15 +237,15 @@ export function CardLandingDetails({ data }: Props) {
           </div>
           <div className="order-first mt-6 md:mt-0 lg:order-last lg:mt-0">
             <div>
-              <h2 className="mb-3">
-                Event Goal:
-                <span className="font-bold"> ${data?.collect_Goal}</span>
+              <h2 className="mb-3 font-bold">
+                Objetivo:
+                {data?.collect_Goal && (
+                  <span> {formatPrice(data.collect_Goal)}</span>
+                )}
               </h2>
               <EventProgress
-                collected={
-                  data?.collect_Goal === undefined ? 0 : data.collect_Goal
-                }
-                goal={data?.collected === undefined ? 0 : data.collected}
+                goal={data?.collect_Goal === undefined ? 0 : data.collect_Goal}
+                collected={data?.collected === undefined ? 0 : data.collected}
               />
             </div>
             <div className="mt-2 flex flex-wrap items-center gap-2 ">
@@ -321,7 +323,7 @@ export function CardLandingDetails({ data }: Props) {
 
             {/* ONLY DESIGN */}
             <div className="mt-4 hidden lg:block">
-              <h2>Espónsor</h2>
+              <h2 className="font-bold">Espónsor</h2>
               <Card className="mt-2 dark:border-none">
                 <CardHeader>
                   <CardTitle>Nestlé</CardTitle>
@@ -335,9 +337,9 @@ export function CardLandingDetails({ data }: Props) {
         </section>
       </div>
 
-      <section className="container">
+      <section className="container mt-6">
         <div className="flex flex-col md:flex-row md:justify-between">
-          <h1 className="mb-2">Quejas</h1>
+          <h2 className="mb-2 font-bold">Quejas</h2>
           <div className="flex flex-col gap-2 md:flex-row">
             <Button>
               <Link href={`/complaints/${data.event_Id}`}>Ver todos</Link>
@@ -378,7 +380,7 @@ export function CardLandingDetails({ data }: Props) {
       </section>
 
       <section className="container mt-2 flex flex-col gap-2">
-        <h1>Participantes</h1>
+        <h2 className="font-bold">Top donadores</h2>
         <section className="flex flex-wrap gap-5">
           <Card>
             <CardHeader className="flex items-center justify-center">
@@ -410,8 +412,8 @@ export function CardLandingDetails({ data }: Props) {
         </section>
       </section>
 
-      <section className="container">
-        <h1 className="mb-2 mt-2">Eventos similares cercanos</h1>
+      <section className="container mt-6">
+        <h2 className="mb-2 mt-2 font-bold">Eventos similares cercanos</h2>
         <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
           <Card className="dark:border-none">
             <CardHeader>
@@ -458,8 +460,8 @@ export function CardLandingDetails({ data }: Props) {
         </section>
       </section>
 
-      <section className="container mb-3">
-        <h1 className="mb-2 mt-2">Próximos eventos cercanos</h1>
+      <section className="container mb-3 mt-6">
+        <h2 className="mb-2 mt-2 font-bold">Próximos eventos cercanos</h2>
         <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
           <Card className="dark:border-none">
             <CardHeader>
@@ -506,7 +508,7 @@ export function CardLandingDetails({ data }: Props) {
         </section>
       </section>
       {/* STICKY */}
-      <div className="sticky bottom-0 z-10 border-t border-[#e6e8e9] bg-white dark:border-none dark:bg-[#000000]">
+      <div className="sticky bottom-0 z-10 border-b border-t border-[#e6e8e9] bg-white dark:border-none dark:bg-[#000000]">
         <section className="container flex flex-wrap items-center justify-between gap-4 py-6">
           <p>
             ¿Colaborar con
