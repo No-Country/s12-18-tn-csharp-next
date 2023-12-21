@@ -23,11 +23,7 @@ Una aplicación que sirva para hacer donativos, ya sea de suministros o dinero p
 
 | <img width="30" height="30" src="https://img.icons8.com/external-smashingstocks-flat-smashing-stocks/30/external-Tester-testing-services-smashingstocks-flat-smashing-stocks.png" alt="Tester testing services"/> QA |
 | -- |
-| [Yoselin Salazar]	|
-
-
-[Jareth Guerrero](https://github.com/JarethGuerrero)
-
+| Yoselin Salazar	|
 
 
 ---
